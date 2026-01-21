@@ -7,17 +7,24 @@
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
-//                          MarioRRom's Dotfiles
-//                 https://github.com/MarioRRom/bspwm-dotfiles
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
 
+//  .-------------------------.
+//  | .---------------------. |
+//  | |  Importar Modulos   | |
+//  | `---------------------' |
+//  `-------------------------'
+
+// Quickshell
 import QtQuick
 import QtMultimedia
 
 Item {
 
-    property var sourceWallpaper: "file:///home/mario/.config/quickshell/wallpapers/bocchi.png"
+    property var sourceWallpaper: "../../wallpapers/bocchi.png"
     property bool isVideoWallpaper: false
 
     Image {

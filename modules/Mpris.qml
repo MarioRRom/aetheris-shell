@@ -7,11 +7,9 @@
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
-//                          MarioRRom's Dotfiles
-//                 https://github.com/MarioRRom/bspwm-dotfiles
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
-
-pragma Singleton
 
 
 //  .-------------------------.
@@ -21,6 +19,7 @@ pragma Singleton
 //  `-------------------------'
 
 // Quickshell
+pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Services.Mpris

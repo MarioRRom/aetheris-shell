@@ -7,11 +7,18 @@
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
-//                          MarioRRom's Dotfiles
-//                 https://github.com/MarioRRom/bspwm-dotfiles
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
 
+//  .-------------------------.
+//  | .---------------------. |
+//  | |  Importar Modulos   | |
+//  | `---------------------' |
+//  `-------------------------'
+
+// Quickshell
 pragma Singleton
 import QtQuick
 import Quickshell
@@ -26,6 +33,7 @@ Item {
     
     property string username: "User"
     property string distro: "Linux"
+    property string desktop: "Unknown"
 
     Process {
         id: procUser
@@ -42,6 +50,19 @@ Item {
         running: false
         stdout: SplitParser {
             onRead: data => root.distro = data.trim()
+        }
+    }
+
+    // Desktop en Ejecucion
+    Process {
+        id: procDesk
+        // Todo el comando de bash debe ir en el mismo elemento del array después del -c
+        command: ["sh", "-c", "echo $XDG_CURRENT_DESKTOP"] 
+        running: false // Si lo dejas en false, recordá llamar a procDesk.start()
+        stdout: SplitParser {
+            onRead: data => {
+                root.desktop = data.trim();
+            }
         }
     }
 
@@ -185,5 +206,6 @@ Item {
     Component.onCompleted: {
         procUser.running = true
         procDistro.running = true
+        procDesk.running = true
     }
 }

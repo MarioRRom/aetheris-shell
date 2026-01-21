@@ -1,8 +1,32 @@
-// modules/WeatherManager.qml
+//===========================================================================
+//
+//
+//███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+//████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+//██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+//██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+//██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
+//===========================================================================
+
+
+//  .-------------------------.
+//  | .---------------------. |
+//  | |  Importar Modulos   | |
+//  | `---------------------' |
+//  `-------------------------'
+
+
+// Quickshell
 pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+
+// Globales
+import qs.themes
 
 QtObject {
     id: weatherManager
@@ -88,25 +112,25 @@ QtObject {
     
     function getIconData(iconCode) {
         switch (iconCode) {
-            case "01d": return {icon: "󰖨", color: "#FAB387", bg: "sun.png"}
-            case "01n": return {icon: "", color: "#89B4FA", bg: "moon.png"}
+            case "01d": return {icon: "󰖨", color: ThemeManager.colors.peach, bg: "sun.png"}
+            case "01n": return {icon: "", color: ThemeManager.colors.blue, bg: "moon.png"}
             case "02d":
-            case "02n": return {icon: "󰅟", color: "#A6ADC8", bg: "cloudy.png"}
+            case "02n": return {icon: "󰅟", color: ThemeManager.colors.subtext0, bg: "cloudy.png"}
             case "03d":
-            case "03n": return {icon: "", color: "#A6ADC8", bg: "cloudy.png"}
+            case "03n": return {icon: "", color: ThemeManager.colors.subtext0, bg: "cloudy.png"}
             case "04d":
-            case "04n": return {icon: "", color: "#A6ADC8", bg: "cloudy.png"}
-            case "09d": return {icon: "", color: "#94E2D5", bg: "rain.png"}
-            case "09n": return {icon: "", color: "#94E2D5", bg: "nightrain.png"}
-            case "10d": return {icon: "", color: "#74C7EC", bg: "rain.png"}
-            case "10n": return {icon: "", color: "#74C7EC", bg: "nightrain.png"}
+            case "04n": return {icon: "", color: ThemeManager.colors.subtext0, bg: "cloudy.png"}
+            case "09d": return {icon: "", color: ThemeManager.colors.teal, bg: "rain.png"}
+            case "09n": return {icon: "", color: ThemeManager.colors.teal, bg: "nightrain.png"}
+            case "10d": return {icon: "", color: ThemeManager.colors.sapphire, bg: "rain.png"}
+            case "10n": return {icon: "", color: ThemeManager.colors.sapphire, bg: "nightrain.png"}
             case "11d":
-            case "11n": return {icon: "", color: "#f9e2af", bg: "storm.png"}
+            case "11n": return {icon: "", color: ThemeManager.colors.yellow, bg: "storm.png"}
             case "13d":
-            case "13n": return {icon: "", color: "#FFFFFF", bg: "snow.png"}
+            case "13n": return {icon: "", color: ThemeManager.colors.subtext0, bg: "snow.png"}
             case "50d":
-            case "50n": return {icon: "", color: "#C6D0F5", bg: "wind.png"}
-            default: return {icon: "?", color: "#F28FAD", bg: "rain.png"}
+            case "50n": return {icon: "", color: ThemeManager.colors.subtext0, bg: "wind.png"}
+            default: return {icon: "?", color: ThemeManager.colors.red, bg: "rain.png"}
         }
     }
     
@@ -117,7 +141,7 @@ QtObject {
         windSpeed = "0 m/s"
         humidity = "0%"
         icon = "?"
-        color = "#F28FAD"
+        color = ThemeManager.colors.red
         backgroundImage = "rain.png"
     }
     

@@ -7,8 +7,8 @@
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
-//                          MarioRRom's Dotfiles
-//                 https://github.com/MarioRRom/bspwm-dotfiles
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
 
@@ -18,7 +18,10 @@
 //  | `---------------------' |
 //  `-------------------------'
 
+// Quickshell
 import QtQuick
+
+// Globales
 import qs.themes
 import qs.modules.bspwm
 

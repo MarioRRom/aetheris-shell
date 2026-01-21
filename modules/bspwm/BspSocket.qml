@@ -7,10 +7,9 @@
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
-//                          MarioRRom's Dotfiles
-//                 https://github.com/MarioRRom/bspwm-dotfiles
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
-
 
 // Esta es mi propuesta de Socket para Bspwm. 
 // Obtiene los Workspaces y estados por monitor, tambien el layout.
@@ -22,6 +21,7 @@
 //  | `---------------------' |
 //  `-------------------------'
 
+// Quickshell
 pragma Singleton
 import QtQuick
 import Quickshell

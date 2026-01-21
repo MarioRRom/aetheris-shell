@@ -7,8 +7,8 @@
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
-//                          MarioRRom's Dotfiles
-//                 https://github.com/MarioRRom/bspwm-dotfiles
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
 
@@ -26,6 +26,7 @@ import Qt5Compat.GraphicalEffects
 
 // Config
 import qs.config
+import qs.components
 import qs.themes
 import qs.modules
 
@@ -123,7 +124,11 @@ Rectangle {
                 border.color: Config.shadows.color
                 border.width: 5
                 color: "transparent"
-
+//  .-------------------------.
+//  | .---------------------. |
+//  | |  Importar Modulos   | |
+//  | `---------------------' |
+//  `-------------------------'
                 // Blurry Effect
                 layer.enabled: true
                 layer.effect: MultiEffect {
@@ -278,26 +283,16 @@ Rectangle {
                 }
 
                 // Song progress Bar
-                Rectangle {
-                    Layout.fillWidth: true
-                    height: 5
-                    clip: true
-                    
-                    radius: 20
-                    color: ThemeManager.colors.surface2
+                HorizontalSlider {
+                    sliderHeight: 5
+                    backgroundColor: ThemeManager.colors.surface2
 
-                    Rectangle {
-                        height: parent.height
-                        width: (Mpris.duration > 0) ? (Mpris.position / Mpris.duration) * parent.width : 0
-                        
-                        radius: 20
-                        color: ThemeManager.colors.text
-
-                        Behavior on width {
-                            NumberAnimation { duration: 500; easing.type: Easing.InOutQuad }
-                        }
-                    }
-
+                    accent: ThemeManager.colors.subtext1
+                    gradient: ThemeManager.colors.text
+                    animationDuration: 650
+                    value: Mpris.position / Mpris.duration
+                    mouseEnabled: false
+                    borderEnabled: false
                 }
             }
         }

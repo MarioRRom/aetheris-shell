@@ -7,10 +7,9 @@
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
-//                          MarioRRom's Dotfiles
-//                 https://github.com/MarioRRom/bspwm-dotfiles
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
-
 
 // Workspaces indicator para bspwm usando socket directo
 // Refactorizado para usar BspSocket singleton en lugar de scripts externos
@@ -23,8 +22,11 @@
 //  | `---------------------' |
 //  `-------------------------'
 
+// Quickshell
 import QtQuick
 import Quickshell
+
+// Globales
 import qs.themes
 import qs.modules.bspwm
 

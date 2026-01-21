@@ -7,8 +7,8 @@
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
-//                          MarioRRom's Dotfiles
-//                 https://github.com/MarioRRom/bspwm-dotfiles
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
 
@@ -93,52 +93,12 @@ Rectangle {
             }
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.minimumWidth: 10
-            height: 19
-            radius: 20
-            color: ThemeManager.colors.overlay0
-            Layout.alignment: Qt.AlignVCenter
-            border.width: 2
-            border.color: ThemeManager.colors.surface0
-
-            Rectangle {
-                height: parent.height
-                width: parent.width * (sliderRoot.value / 100)
-                radius: 20
-                gradient: Gradient {
-                    orientation: Gradient.Horizontal
-                    GradientStop {
-                        position: 0.0
-                        color: accent
-                    }
-                    GradientStop {
-                        position: 1.0
-                        color: gradient
-                    }
-                }
-
-                Behavior on width {
-                    NumberAnimation {
-                        duration: 350
-                        easing.type: Easing.OutQuint 
-                    }
-                }
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-
-                function updateValue(mouseX) {
-                    var newValue = Math.max(0, Math.min(100, (mouseX / width) * 100));
-                    if (sliderRoot.updateCommand) sliderRoot.updateCommand(Math.round(newValue));
-                }
-
-                onPressed: (mouse) => updateValue(mouse.x)
-                onPositionChanged: (mouse) => updateValue(mouse.x)
-            }
+        HorizontalSlider {
+            value: sliderRoot.value
+            accent: sliderRoot.accent
+            gradient: sliderRoot.gradient
+            usePercentage: true
+            updateCommand: sliderRoot.updateCommand
         }
 
         Text {

@@ -7,8 +7,8 @@
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
-//                          MarioRRom's Dotfiles
-//                 https://github.com/MarioRRom/bspwm-dotfiles
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
 
@@ -113,83 +113,17 @@ PopupWindow {
 
 
                     // Unified Slider (position + volume)
-                    Rectangle {
-                        id: mainSliderContainer // Le damos un ID para referenciar el width
-                        Layout.fillWidth: true
-                        height: 10
-                        clip: true
-                        radius: 20
-                        color: ThemeManager.colors.surface2
+                    HorizontalSlider {
+                        sliderHeight: 10
+                        backgroundColor: ThemeManager.colors.surface2
 
-                        // Barra de progreso/volumen
-                        Rectangle {
-                            height: parent.height
-                            width: !volumeControl 
-                                ? ((Mpris.duration > 0) ? (Mpris.position / Mpris.duration) * parent.width : 0) 
-                                : (Mpris.canVolume ? (Mpris.volume * parent.width) : 0)
-
-                            radius: 20
-                            color: !volumeControl 
-                                ? (Mpris.isPaused ? ThemeManager.colors.yellow : ThemeManager.colors.sapphire)
-                                : ThemeManager.colors.green
-
-                            Behavior on color { ColorAnimation { duration: 200 } }
-
-                            Behavior on width {
-                                NumberAnimation {
-                                    duration: 650
-                                    easing.type: Easing.OutQuint 
-                                }
-                            }
-                        }
-
-                        // MouseArea Única (La mente de Akasha)
-                        MouseArea {
-                            id: hybridMouseArea
-                            anchors.fill: parent
-                            
-                            // Combinamos las condiciones de poder [cite: 2025-12-29]
-                            enabled: volumeControl ? Mpris.canVolume : (Mpris.canSeek && Mpris.positionSupported)
-                            cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-
-                            // Propiedad para que la barra no "salte" mientras arrastramos la canción
-                            property bool isDraggingPos: false
-
-                            function handleInput(mouseX, isFinalClick) {
-                                var ratio = Math.max(0, Math.min(1, mouseX / mainSliderContainer.width));
-                                
-                                if (volumeControl) {
-                                    // EL PODER DEL VOLUMEN: Reactividad total [cite: 2025-12-29]
-                                    Mpris.setVolume(ratio);
-                                } else {
-                                    // LA INFORMACIÓN DE POSICIÓN: Solo al soltar o click inicial
-                                    if (isFinalClick) {
-                                        Mpris.setPosition(ratio);
-                                    }
-                                }
-                            }
-
-                            onPressed: (mouse) => {
-                                if (!volumeControl) isDraggingPos = true;
-                                handleInput(mouse.x, true); // El primer click siempre mueve la canción
-                            }
-
-                            onPositionChanged: (mouse) => {
-                                if (pressed) {
-                                    // Si es volumen, actualiza mientras mueves. Si es canción, solo visual (opcional)
-                                    if (volumeControl) {
-                                        handleInput(mouse.x, false);
-                                    }
-                                }
-                            }
-
-                            onReleased: (mouse) => {
-                                if (!volumeControl && isDraggingPos) {
-                                    handleInput(mouse.x, true); // Al soltar, enviamos la posición final a Spotify
-                                    isDraggingPos = false;
-                                }
-                            }
-                        }
+                        accent: !volumeControl ? (Mpris.isPaused ? ThemeManager.colors.yellow : ThemeManager.colors.sapphire) : ThemeManager.colors.green
+                        gradient: !volumeControl ? (Mpris.isPaused ? ThemeManager.colors.peach : ThemeManager.colors.sky) : ThemeManager.colors.teal
+                        animationDuration: 650
+                        value: !volumeControl ? (Mpris.duration > 0 ? Mpris.position / Mpris.duration : 0) : Mpris.volume
+                        updateCommand: volumeControl ? Mpris.setVolume : Mpris.setPosition
+                        updateOnDrag: volumeControl
+                        mouseEnabled: volumeControl ? Mpris.canVolume : (Mpris.canSeek && Mpris.positionSupported)
                     }
 
 

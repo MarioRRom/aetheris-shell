@@ -7,8 +7,8 @@
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
-//                          MarioRRom's Dotfiles
-//                 https://github.com/MarioRRom/bspwm-dotfiles
+//                          MarioRRom's Aetheris Shell
+//                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
 
@@ -115,13 +115,13 @@ Item {
             
                 BspWorkspaces {
                     anchors.verticalCenter: parent.verticalCenter
-                    visible: true
+                    visible: SystemStatus.desktop === "bspwm"
                     monitorName: modelData.name
                 }
 
                 HyprWorkspaces {
                     anchors.verticalCenter: parent.verticalCenter
-                    visible: false
+                    visible: SystemStatus.desktop === "Hyprland"
                     monitorName: modelData.name
                 }
             }
@@ -490,13 +490,18 @@ Item {
 
         // Windows Stacking //
         BspLayout {
-            visible: true
+            visible: SystemStatus.desktop === "bspwm"
             anchors.verticalCenter: parent.verticalCenter
         }
 
         HyprLayout {
-            visible: false
+            visible: SystemStatus.desktop === "Hyprland"
             anchors.verticalCenter: parent.verticalCenter
         }
+    }
+
+    Component.onCompleted: {
+        // Buscamos el entorno justo cuando se crea la Topbar
+        desktopName = "ola"//Quickshell.env["XDG_CURRENT_DESKTOP"] ?? "None"
     }
 }
