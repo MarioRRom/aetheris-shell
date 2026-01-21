@@ -28,6 +28,7 @@ import Quickshell
 import qs.themes
 import qs.modules.bspwm
 
+
 Row {
     id: iconRow
     spacing: 7
@@ -60,6 +61,7 @@ Row {
             color: wsName === focusedWorkspace ? ThemeManager.colors.yellow : occupiedWorkspaces.indexOf(wsName) !== -1 ? ThemeManager.colors.sky : ThemeManager.colors.overlay1
             font.family: ThemeManager.fonts.icons
             font.pixelSize: 16
+            Behavior on color { ColorAnimation { duration: 350 } }
 
             MouseArea {
                 anchors.fill: parent

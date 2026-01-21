@@ -61,8 +61,8 @@ PopupWindow {
     property int windowMargin: 10 // Margen interno.
     property int itemRadius: cornerRadius - windowMargin
 
-    width: 310
-    height: (root.currentView === "main" ? mainLayout.implicitHeight : 454) + (windowMargin * 2) + 10
+    implicitWidth: 310
+    implicitHeight: (root.currentView === "main" ? mainLayout.implicitHeight : 454) + (windowMargin * 2) + 10
     
     anchor.window: bar
     anchor.rect.x: (bar.width - width) - (globalMargin - 5) // 5px por el margin en el Contenedor Principal.

@@ -114,16 +114,17 @@ Item {
                 rightPadding: 10
             
                 BspWorkspaces {
-                anchors.verticalCenter: parent.verticalCenter
-                visible: true
-                monitorName: modelData.name
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: true
+                    monitorName: modelData.name
+                }
+
+                HyprWorkspaces {
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: false
+                    monitorName: modelData.name
                 }
             }
-        }
-
-        HyprWorkspaces {
-        visible: false
-        monitorName: modelData.name
         }
         
 
@@ -471,7 +472,7 @@ Item {
             Text {
                 text: Pipewire.icon
                 color: Pipewire.muted? ThemeManager.colors.red : ThemeManager.colors.green
-                font.family: ThemeManager.fonts.icon
+                font.family: ThemeManager.fonts.icons
                 font.pixelSize: 16
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -490,6 +491,11 @@ Item {
         // Windows Stacking //
         BspLayout {
             visible: true
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        HyprLayout {
+            visible: false
             anchors.verticalCenter: parent.verticalCenter
         }
     }

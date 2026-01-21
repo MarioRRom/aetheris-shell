@@ -57,8 +57,8 @@ PopupWindow {
     property int itemRadius: cornerRadius - windowMargin
 
 
-    width: 310
-    height: sysContainer.implicitHeight + (windowMargin * 2) + 10
+    implicitWidth: 310
+    implicitHeight: sysContainer.implicitHeight + (windowMargin * 2) + 10
     anchor.window: bar
     anchor.rect.x: globalMargin - 5 // 5px por el margin en el Contenedor Principal.
     anchor.rect.y: bar.height + (globalMargin - 5) // 5px por el Margin del Contenedor Principal.

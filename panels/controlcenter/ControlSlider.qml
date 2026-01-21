@@ -118,6 +118,13 @@ Rectangle {
                         color: gradient
                     }
                 }
+
+                Behavior on width {
+                    NumberAnimation {
+                        duration: 350
+                        easing.type: Easing.OutQuint 
+                    }
+                }
             }
 
             MouseArea {

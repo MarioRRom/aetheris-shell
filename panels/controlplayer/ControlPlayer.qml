@@ -48,8 +48,8 @@ PopupWindow {
     property int windowMargin: 10 // Margen interno.
     property int itemRadius: cornerRadius - windowMargin
 
-    width: 290
-    height: 100
+    implicitWidth: 290
+    implicitHeight: 100
     
     anchor.window: bar
     anchor.rect.x: globalPos - (width - 200) // 5px por el margin en el Contenedor Principal.
@@ -106,112 +106,92 @@ PopupWindow {
 
                 // Control de Tiempo y Volumen
                 ColumnLayout {
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.margins: 5
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
+                    Layout.margins: 5
                     spacing: 0
 
 
                     // Unified Slider (position + volume)
-                    RowLayout {
-                        spacing: 5
+                    Rectangle {
+                        id: mainSliderContainer // Le damos un ID para referenciar el width
+                        Layout.fillWidth: true
+                        height: 10
+                        clip: true
+                        radius: 20
+                        color: ThemeManager.colors.surface2
 
-                        // Icono de Volumen
-                        Text {
-                            text: "󰕾"
-                            color: ThemeManager.colors.green
-                            font.family: ThemeManager.fonts.icons
-                            font.pixelSize: 10
+                        // Barra de progreso/volumen
+                        Rectangle {
+                            height: parent.height
+                            width: !volumeControl 
+                                ? ((Mpris.duration > 0) ? (Mpris.position / Mpris.duration) * parent.width : 0) 
+                                : (Mpris.canVolume ? (Mpris.volume * parent.width) : 0)
 
-                            // Control de visibilidad suave
-                            opacity: volumeControl ? 1 : 0
-                            scale: volumeControl ? 1 : 0.5
-                            visible: opacity > 0 // Optimizamos: si no se ve, no se procesa
+                            radius: 20
+                            color: !volumeControl 
+                                ? (Mpris.isPaused ? ThemeManager.colors.yellow : ThemeManager.colors.sapphire)
+                                : ThemeManager.colors.green
 
-                            Behavior on opacity { NumberAnimation { duration: 250 } }
-                            Behavior on scale { NumberAnimation { duration: 250; easing.type: Easing.OutBack } }
+                            Behavior on color { ColorAnimation { duration: 200 } }
+
+                            Behavior on width {
+                                NumberAnimation {
+                                    duration: 650
+                                    easing.type: Easing.OutQuint 
+                                }
+                            }
                         }
 
-                        Rectangle {
-                            id: mainSliderContainer // Le damos un ID para referenciar el width
-                            Layout.fillWidth: true
-                            height: 10
-                            clip: true
-                            radius: 20
-                            color: ThemeManager.colors.surface2
+                        // MouseArea Única (La mente de Akasha)
+                        MouseArea {
+                            id: hybridMouseArea
+                            anchors.fill: parent
+                            
+                            // Combinamos las condiciones de poder [cite: 2025-12-29]
+                            enabled: volumeControl ? Mpris.canVolume : (Mpris.canSeek && Mpris.positionSupported)
+                            cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
 
-                            // Barra de progreso/volumen
-                            Rectangle {
-                                height: parent.height
-                                width: !volumeControl 
-                                    ? ((Mpris.duration > 0) ? (Mpris.position / Mpris.duration) * parent.width : 0) 
-                                    : (Mpris.canVolume ? (Mpris.volume * parent.width) : 0)
+                            // Propiedad para que la barra no "salte" mientras arrastramos la canción
+                            property bool isDraggingPos: false
 
-                                radius: 20
-                                color: !volumeControl 
-                                    ? (Mpris.isPaused ? ThemeManager.colors.yellow : ThemeManager.colors.sapphire)
-                                    : ThemeManager.colors.green
-
-                                Behavior on color { ColorAnimation { duration: 200 } }
-
-                                Behavior on width {
-                                    NumberAnimation {
-                                        duration: 950
-                                        easing.type: Easing.OutQuint 
+                            function handleInput(mouseX, isFinalClick) {
+                                var ratio = Math.max(0, Math.min(1, mouseX / mainSliderContainer.width));
+                                
+                                if (volumeControl) {
+                                    // EL PODER DEL VOLUMEN: Reactividad total [cite: 2025-12-29]
+                                    Mpris.setVolume(ratio);
+                                } else {
+                                    // LA INFORMACIÓN DE POSICIÓN: Solo al soltar o click inicial
+                                    if (isFinalClick) {
+                                        Mpris.setPosition(ratio);
                                     }
                                 }
                             }
 
-                            // MouseArea Única (La mente de Akasha)
-                            MouseArea {
-                                id: hybridMouseArea
-                                anchors.fill: parent
-                                
-                                // Combinamos las condiciones de poder [cite: 2025-12-29]
-                                enabled: volumeControl ? Mpris.canVolume : (Mpris.canSeek && Mpris.positionSupported)
-                                cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                            onPressed: (mouse) => {
+                                if (!volumeControl) isDraggingPos = true;
+                                handleInput(mouse.x, true); // El primer click siempre mueve la canción
+                            }
 
-                                // Propiedad para que la barra no "salte" mientras arrastramos la canción
-                                property bool isDraggingPos: false
-
-                                function handleInput(mouseX, isFinalClick) {
-                                    var ratio = Math.max(0, Math.min(1, mouseX / mainSliderContainer.width));
-                                    
+                            onPositionChanged: (mouse) => {
+                                if (pressed) {
+                                    // Si es volumen, actualiza mientras mueves. Si es canción, solo visual (opcional)
                                     if (volumeControl) {
-                                        // EL PODER DEL VOLUMEN: Reactividad total [cite: 2025-12-29]
-                                        Mpris.setVolume(ratio);
-                                    } else {
-                                        // LA INFORMACIÓN DE POSICIÓN: Solo al soltar o click inicial
-                                        if (isFinalClick) {
-                                            Mpris.setPosition(ratio);
-                                        }
+                                        handleInput(mouse.x, false);
                                     }
                                 }
+                            }
 
-                                onPressed: (mouse) => {
-                                    if (!volumeControl) isDraggingPos = true;
-                                    handleInput(mouse.x, true); // El primer click siempre mueve la canción
-                                }
-
-                                onPositionChanged: (mouse) => {
-                                    if (pressed) {
-                                        // Si es volumen, actualiza mientras mueves. Si es canción, solo visual (opcional)
-                                        if (volumeControl) {
-                                            handleInput(mouse.x, false);
-                                        }
-                                    }
-                                }
-
-                                onReleased: (mouse) => {
-                                    if (!volumeControl && isDraggingPos) {
-                                        handleInput(mouse.x, true); // Al soltar, enviamos la posición final a Spotify
-                                        isDraggingPos = false;
-                                    }
+                            onReleased: (mouse) => {
+                                if (!volumeControl && isDraggingPos) {
+                                    handleInput(mouse.x, true); // Al soltar, enviamos la posición final a Spotify
+                                    isDraggingPos = false;
                                 }
                             }
                         }
                     }
+
 
                     // Song Time
                     Rectangle {
@@ -255,9 +235,8 @@ PopupWindow {
 
                 // Music Control
                 GridLayout{
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottom: parent.bottom
-                    anchors.margins: -5
+                    Layout.alignment: Qt.AlignHCenter || Qt.AlignBottom
+                    Layout.margins: -5
                     columns: 7
 
                     // Change Player

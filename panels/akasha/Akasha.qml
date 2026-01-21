@@ -58,8 +58,8 @@ PopupWindow {
     property int itemRadius: cornerRadius - windowMargin
 
 
-    width: 680
-    height: akaContainer.implicitHeight + (windowMargin * 2) + 10
+    implicitWidth: 680
+    implicitHeight: akaContainer.implicitHeight + (windowMargin * 2) + 10
     anchor.window: bar
     anchor.rect.x: (bar.width - width) / 2 // Centrado en la Barra.
     anchor.rect.y: bar.height + (globalMargin - 5) // 5px por el Margin del Contenedor Principal.

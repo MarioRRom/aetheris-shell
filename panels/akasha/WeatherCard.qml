@@ -97,7 +97,7 @@ Rectangle {
             
             RowLayout {
                 spacing: 5
-                Text { text: ""; color: ThemeManager.colors.text; font.pixelSize: 18; font.family: ThemeManager.fonts.icon }
+                Text { text: ""; color: ThemeManager.colors.text; font.pixelSize: 18; font.family: ThemeManager.fonts.icons }
                 Text { text: Weather.location; color: ThemeManager.colors.text; font.pixelSize: 18; font.family: ThemeManager.fonts.main }
             }
             
@@ -107,13 +107,13 @@ Rectangle {
             
             RowLayout {
                 spacing: 5
-                Text { text: ""; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.icon }
+                Text { text: ""; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.icons }
                 Text { text: Weather.windSpeed; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.main }
             }
 
             RowLayout {
                 spacing: 5
-                Text { text: "󰖌"; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.icon }
+                Text { text: "󰖌"; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.icons }
                 Text { text: Weather.humidity; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.main }
             }
         }
