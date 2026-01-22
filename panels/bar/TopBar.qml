@@ -24,11 +24,22 @@
 //  | `---------------------' |
 //  `-------------------------'
 
+// Quickshell
 import QtQuick
 import Quickshell
+import Quickshell.Io
+
+// Globales
 import qs.config
 import qs.themes
 import qs.modules
+import qs.panels.bar.elements
+
+// Menus
+import qs.panels.systeminfo
+import qs.panels.akasha
+import qs.panels.controlcenter
+import qs.panels.controlplayer
 
 
 //  .-------------------------.
@@ -39,6 +50,16 @@ import qs.modules
 
 Scope {
   id: topBar
+
+
+  // IPC Handler(para atajos de teclado) //
+  signal closeAllWidgets()
+  IpcHandler {
+    target: "bar"
+    function closeAllWidgets() {
+      topBar.closeAllWidgets()
+    }
+  }
 
   property string panelState: Config.topBar.state // "maximized" o "float"
 
@@ -84,18 +105,153 @@ Scope {
         //  | `---------------------' |
         //  `-------------------------'
 
-        TopBarContent {
+        Item {
           id: topBarContent
           anchors.fill: parent
-          barWindow: topBarRoot
+          property int cornerRadius: 0
+
+          Rectangle {
+            id: barBackground
+            anchors.fill: parent
+            color: ThemeManager.colors.mantle
+            radius: topBarContent.cornerRadius
+          }
 
           // Maximized State
-          cornerRadius: 0
           anchors {
             left: parent.left
             right: parent.right
             top: parent.top
             bottom: undefined
+          }
+
+          //  .-------------------------.
+          //  | .---------------------. |
+          //  | | Elementos Izquierda | |
+          //  | `---------------------' |
+          //  `-------------------------'
+
+          Row {
+            height: parent.height
+            anchors {
+              left: parent.left
+              leftMargin: 10
+            }
+
+            spacing: 5
+
+            // Euthymia (System Info) //
+            SysInfo {
+              // Mouse Actions //         
+              // Loader para Optimización //
+              LazyLoader {
+                id: sysInfoLoader
+                active: false 
+
+                component: SystemInfo {
+                  anchor.window: topBarRoot
+                  bar: topBarRoot
+                  visible: true
+                }
+              }
+            }
+
+            // Workspaces Indicator //
+            Workspaces {}
+
+            // Media Player Info //
+            PlayerInfo {
+              // Mouse Actions //
+              // LazyLoader para Optimización
+              LazyLoader {
+                id: conPlayerLoader
+                active: false 
+
+                component: ControlPlayer {
+                  anchor.window: topBarRoot
+                  bar: topBarRoot
+                  visible: true
+                }
+              }
+            }
+          }
+
+          //  .-------------------------.
+          //  | .---------------------. |
+          //  | | Elementos Centrales | |
+          //  | `---------------------' |
+          //  `-------------------------'
+
+          // Center Panel Toggle Button //
+          CenterPanel {
+            // Mouse Actions //
+            // Loader para Optimización //
+            LazyLoader {
+              id: akashaLoader
+              active: false
+
+              Akasha {
+                anchor.window: topBarRoot
+                bar: topBarRoot
+                visible: true
+              }
+            }
+          }
+
+          //  .-------------------------.
+          //  | .---------------------. |
+          //  | |  Elementos Derecha  | |
+          //  | `---------------------' |
+          //  `-------------------------'
+
+          Row {
+            height: parent.height
+            anchors {
+              right: parent.right
+              rightMargin: 10
+            }
+
+            spacing: 5
+
+            // System Usage //
+            SysUsage {}
+
+            // System Tray //
+            SystemTray {
+              anchors.verticalCenter: parent.verticalCenter
+              bar: topBarRoot  // Referencia al PanelWindow
+            }
+            
+            // Control Center //
+            StatusIndicators {
+              // Mouse Actions //
+              // Loader para Optimización //
+              LazyLoader {
+                id: controlCenterLoader
+                active: false
+
+                component:ControlCenter {
+                  anchor.window: topBarRoot
+                  bar: topBarRoot
+                  visible: true
+                }
+              }
+            }
+
+            // Windows Stacking //
+            WorkLayout {}
+          }
+
+          // IPC Handler(para atajos de teclado) //
+          Connections {
+            target: topBar
+
+            function onCloseAllWidgets() {
+              sysInfoLoader.active = false
+              conPlayerLoader.active = false
+              akashaLoader.active = false
+              controlCenterLoader.active = false
+            }
           }
 
           // Float State
