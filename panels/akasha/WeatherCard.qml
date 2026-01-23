@@ -23,6 +23,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 import Qt5Compat.GraphicalEffects
+import Quickshell.Widgets
 
 // Globales
 import qs.config
@@ -33,8 +34,7 @@ import qs.themes
 Rectangle {
     Layout.fillWidth: true
     height: 139
-    color: ThemeManager.colors.base
-    radius: 14
+    color: "transparent"
 
     // Definimos la ruta de los backgrounds
     readonly property string assetsPath: "../../assets/weather/"
@@ -46,7 +46,7 @@ Rectangle {
         color: Config.shadows.color
 
         blur: 3
-        offset: Qt.vector2d(1, 1)
+        offset: Qt.vector2d(1, 3)
         spread: 0.0
         cached: true
     }
@@ -71,66 +71,86 @@ Rectangle {
         }
     }
 
-    InnerLine {
-        anchors.fill: parent
-        lineradius: itemRadius
-        linewidth: 1
-        linecolor: ThemeManager.colors.surface0
-    }
-
-    RowLayout {
+    // Contenido
+    Item {
+        id: container
         anchors.fill: parent
         anchors.leftMargin: 10
         anchors.rightMargin: 10
         anchors.topMargin: 5
-        anchors.bottomMargin: 5
-        
-        // Sombra para mejorar la legibilidad del texto sobre el fondo
-        layer.enabled: true
-        layer.effect: DropShadow {
-            transparentBorder: true
-            horizontalOffset: 2
-            verticalOffset: 2
-            radius: 6
-            samples: 12
-            color: "#80000000"
-        }
-        
-        // Bloque Izquierdo
+        anchors.bottomMargin: 10
+
         ColumnLayout {
-            Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+            anchors.fill: parent
             spacing: 2
             
             RowLayout {
                 spacing: 5
-                Text { text: ""; color: ThemeManager.colors.text; font.pixelSize: 18; font.family: ThemeManager.fonts.icons }
-                Text { text: Weather.location; color: ThemeManager.colors.text; font.pixelSize: 18; font.family: ThemeManager.fonts.main }
+
+                Text {
+                    text: ""
+                    color: "white"
+                    font.pixelSize: 18
+                    font.family: ThemeManager.fonts.icons
+                
+                }
+                Text {
+                    text: Weather.location
+                    color: "white"
+                    font.pixelSize: 18
+                    font.family: ThemeManager.fonts.main
+                    font.bold: true
+                
+                }
+                Item { Layout.fillWidth: true }
+
+                Text {
+                    Layout.topMargin: -14
+                    Layout.bottomMargin: -20
+                    text: Weather.temperature
+                    color: "white"
+                    font.pixelSize: 35
+                    font.family: ThemeManager.fonts.main
+                    font.bold: true
+                }
             }
-            
-            Text { text: Weather.temperature; color: ThemeManager.colors.text; font.pixelSize: 35; font.family: ThemeManager.fonts.main; font.bold: true }
             
             Item { Layout.fillHeight: true }
             
-            RowLayout {
-                spacing: 5
-                Text { text: ""; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.icons }
-                Text { text: Weather.windSpeed; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.main }
-            }
+            Item {
+                Layout.fillWidth: true
+                height: 40
 
-            RowLayout {
-                spacing: 5
-                Text { text: "󰖌"; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.icons }
-                Text { text: Weather.humidity; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.main }
-            }
-        }
-        
-        Item { Layout.fillWidth: true }
-        
-        // Bloque Derecho
-        ColumnLayout {
-            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
+                Rectangle {
+                    anchors.fill: parent
+                    color: "#1e1e2e"
+                    radius: 8
+                    opacity: 0.5
+                }
+                RowLayout {
+                    anchors.centerIn: parent
+                    spacing: 10
 
-            Text { text: Weather.description ; color: ThemeManager.colors.text; font.pixelSize: 18; font.family: ThemeManager.fonts.main; font.bold: true }
+                    ColumnLayout {
+                        spacing: -2
+                        RowLayout {
+                            spacing:5
+                            Layout.alignment: Qt.AlignRight
+                        
+                            Text { text: Weather.windSpeed; color: "white"; font.family: ThemeManager.fonts.main }
+                            Text { text: ""; color: "white"; font.family: ThemeManager.fonts.icons }
+                        }
+                        RowLayout {
+                            Layout.alignment: Qt.AlignRight
+                            spacing: 5
+                            Text { text: Weather.humidity; color: "white"; font.family: ThemeManager.fonts.main }
+                            Text { text: "󰖌"; color: "white"; font.family: ThemeManager.fonts.icons }
+                        }
+                    }
+                    Text { text: "|" ; color: "white"; font.pixelSize: 25; font.family: ThemeManager.fonts.main; font.bold: true }
+                    Text { text: Weather.description ; color: "white"; font.pixelSize: 18; font.family: ThemeManager.fonts.main; font.bold: true }
+                }
+            }
         }
     }
 }

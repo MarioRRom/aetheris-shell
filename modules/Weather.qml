@@ -105,16 +105,22 @@ QtObject {
     // Procesar datos del clima
     function processWeatherData(data, cityName) {
         var current = data.current_condition[0]
+        var astronomy = data.weather[0].astronomy[0]
         
         var temp = units === "metric" ? current.temp_C : current.temp_F
-        var wind = units === "metric" ? (current.windspeedKmph / 3.6).toFixed(1) : current.windspeedMiles
+        var wind = units === "metric" ? current.windspeedKmph : current.windspeedMiles
         var hum = current.humidity
         var desc = current.weatherDesc[0].value
         var code = current.weatherCode
         
-        var iconData = getIconData(code)
+        // Calcular si es de día o de noche
+        var now = new Date()
+        var currentMins = now.getHours() * 60 + now.getMinutes()
+        var isDay = currentMins >= parseTime(astronomy.sunrise) && currentMins < parseTime(astronomy.sunset)
+        
+        var iconData = getIconData(code, isDay)
         var tempUnit = units === "metric" ? "°C" : "°F"
-        var windUnit = units === "metric" ? " m/s" : " mph"
+        var windUnit = units === "metric" ? " Km/h" : " mph"
         
         temperature = temp + tempUnit
         description = capitalizeFirst(desc)
@@ -127,11 +133,14 @@ QtObject {
     }
     
     // Asignar iconos, colores y fondo
-    function getIconData(weatherCode) {
+    function getIconData(weatherCode, isDay) {
         var code = parseInt(weatherCode)
         
         // Sun/Clear
-        if (code === 113) return {icon: "󰖨", color: ThemeManager.colors.peach, bg: "sun.png"}
+        if (code === 113) {
+            return isDay ? {icon: "󰖨", color: ThemeManager.colors.peach, bg: "sun.png"}
+                         : {icon: "", color: ThemeManager.colors.blue, bg: "moon.png"}
+        }
         
         // Cloudy/Partly Cloudy
         if ([116, 119, 122].includes(code)) return {icon: "", color: ThemeManager.colors.subtext0, bg: "cloudy.png"}
@@ -140,8 +149,10 @@ QtObject {
         if ([143, 248, 260].includes(code)) return {icon: "", color: ThemeManager.colors.subtext0, bg: "wind.png"}
         
         // Rain
-        if ([176, 263, 266, 281, 284, 293, 296, 299, 302, 305, 308, 311, 314, 317, 350, 353, 356, 359, 362, 365].includes(code)) 
-            return {icon: "", color: ThemeManager.colors.teal, bg: "rain.png"}
+        if ([176, 263, 266, 281, 284, 293, 296, 299, 302, 305, 308, 311, 314, 317, 350, 353, 356, 359, 362, 365].includes(code)) {
+            var bg = isDay ? "rain.png" : "nightrain.png"
+            return {icon: "", color: ThemeManager.colors.teal, bg: bg}
+        }
             
         // Snow
         if ([227, 230, 323, 326, 329, 332, 335, 338, 368, 371, 374, 377, 392, 395].includes(code))
@@ -162,6 +173,17 @@ QtObject {
         icon = "?"
         color = ThemeManager.colors.red
         backgroundImage = "rain.png"
+    }
+    
+    function parseTime(timeStr) {
+        var parts = timeStr.match(/(\d+):(\d+)\s+(AM|PM)/)
+        if (!parts) return 0
+        var hours = parseInt(parts[1])
+        var minutes = parseInt(parts[2])
+        var ampm = parts[3]
+        if (ampm === "PM" && hours < 12) hours += 12
+        if (ampm === "AM" && hours === 12) hours = 0
+        return hours * 60 + minutes
     }
     
     function capitalizeFirst(str) {
