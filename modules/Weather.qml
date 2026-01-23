@@ -31,15 +31,13 @@ import qs.themes
 QtObject {
     id: weatherManager
     
-    // Configuración de API
-    property string apiKey: "b412dae84b266e46cbc31c1d476f03a7"
-    property string cityId: "3841956" 
+    // Configuración
     property string units: "metric"
     
     // Datos del clima
     property string temperature: "N/A"
     property string description: "Cargando..."
-    property string location: ""
+    property string location: "Unknown"
     property string windSpeed: "0 m/s"
     property string humidity: "0%"
     property string icon: "?"
@@ -51,20 +49,16 @@ QtObject {
         interval: 900000
         running: true
         repeat: true
-        onTriggered: fetchWeather()
+        onTriggered: fetchLocation()
     }
     
     Component.onCompleted: {
-        fetchWeather()
+        fetchLocation()
     }
     
-    function fetchWeather() {
-        if (!apiKey || !cityId) {
-            console.log("Weather: API key o City ID no configurados")
-            return
-        }
-        
-        var url = "http://api.openweathermap.org/data/2.5/weather?id=" + cityId + "&units=" + units + "&appid=" + apiKey
+    // Obtener ubicación para mas Precisión
+    function fetchLocation() {
+        var url = "http://ip-api.com/json"
         
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
@@ -72,13 +66,11 @@ QtObject {
                 if (xhr.status === 200) {
                     try {
                         var data = JSON.parse(xhr.responseText)
-                        processWeatherData(data)
+                        fetchWeather(data.lat, data.lon, data.city)
                     } catch (e) {
-                        console.log("Weather: Error parsing JSON:", e)
                         setErrorState()
                     }
                 } else {
-                    console.log("Weather: HTTP Error:", xhr.status)
                     setErrorState()
                 }
             }
@@ -88,50 +80,77 @@ QtObject {
         xhr.send()
     }
     
-    function processWeatherData(data) {
-        var temp = Math.round(data.main.temp)
-        var iconCode = data.weather[0].icon
-        var desc = data.weather[0].description
-        var city = data.name
-        var country = data.sys.country
-        var wind = data.wind.speed
-        var hum = data.main.humidity
+    // Obtener clima desde la wttr.in
+    function fetchWeather(lat, lon, city) {
+        var url = "https://wttr.in/" + lat + "," + lon + "?format=j1"
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    try {
+                        var data = JSON.parse(xhr.responseText)
+                        processWeatherData(data, city)
+                    } catch (e) {
+                        setErrorState()
+                    }
+                } else {
+                    setErrorState()
+                }
+            }
+        }
+        xhr.open("GET", url)
+        xhr.send()
+    }
+    
+    // Procesar datos del clima
+    function processWeatherData(data, cityName) {
+        var current = data.current_condition[0]
         
-        var iconData = getIconData(iconCode)
-        var tempUnit = units === "metric" ? "°C" : (units === "imperial" ? "°F" : "")
+        var temp = units === "metric" ? current.temp_C : current.temp_F
+        var wind = units === "metric" ? (current.windspeedKmph / 3.6).toFixed(1) : current.windspeedMiles
+        var hum = current.humidity
+        var desc = current.weatherDesc[0].value
+        var code = current.weatherCode
+        
+        var iconData = getIconData(code)
+        var tempUnit = units === "metric" ? "°C" : "°F"
+        var windUnit = units === "metric" ? " m/s" : " mph"
         
         temperature = temp + tempUnit
         description = capitalizeFirst(desc)
-        location = city + ", " + country
-        windSpeed = wind + " m/s"
+        location = cityName
+        windSpeed = wind + windUnit
         humidity = hum + "%"
         icon = iconData.icon
         color = iconData.color
         backgroundImage = iconData.bg
     }
     
-    function getIconData(iconCode) {
-        switch (iconCode) {
-            case "01d": return {icon: "󰖨", color: ThemeManager.colors.peach, bg: "sun.png"}
-            case "01n": return {icon: "", color: ThemeManager.colors.blue, bg: "moon.png"}
-            case "02d":
-            case "02n": return {icon: "󰅟", color: ThemeManager.colors.subtext0, bg: "cloudy.png"}
-            case "03d":
-            case "03n": return {icon: "", color: ThemeManager.colors.subtext0, bg: "cloudy.png"}
-            case "04d":
-            case "04n": return {icon: "", color: ThemeManager.colors.subtext0, bg: "cloudy.png"}
-            case "09d": return {icon: "", color: ThemeManager.colors.teal, bg: "rain.png"}
-            case "09n": return {icon: "", color: ThemeManager.colors.teal, bg: "nightrain.png"}
-            case "10d": return {icon: "", color: ThemeManager.colors.sapphire, bg: "rain.png"}
-            case "10n": return {icon: "", color: ThemeManager.colors.sapphire, bg: "nightrain.png"}
-            case "11d":
-            case "11n": return {icon: "", color: ThemeManager.colors.yellow, bg: "storm.png"}
-            case "13d":
-            case "13n": return {icon: "", color: ThemeManager.colors.subtext0, bg: "snow.png"}
-            case "50d":
-            case "50n": return {icon: "", color: ThemeManager.colors.subtext0, bg: "wind.png"}
-            default: return {icon: "?", color: ThemeManager.colors.red, bg: "rain.png"}
-        }
+    // Asignar iconos, colores y fondo
+    function getIconData(weatherCode) {
+        var code = parseInt(weatherCode)
+        
+        // Sun/Clear
+        if (code === 113) return {icon: "󰖨", color: ThemeManager.colors.peach, bg: "sun.png"}
+        
+        // Cloudy/Partly Cloudy
+        if ([116, 119, 122].includes(code)) return {icon: "", color: ThemeManager.colors.subtext0, bg: "cloudy.png"}
+        
+        // Fog/Mist
+        if ([143, 248, 260].includes(code)) return {icon: "", color: ThemeManager.colors.subtext0, bg: "wind.png"}
+        
+        // Rain
+        if ([176, 263, 266, 281, 284, 293, 296, 299, 302, 305, 308, 311, 314, 317, 350, 353, 356, 359, 362, 365].includes(code)) 
+            return {icon: "", color: ThemeManager.colors.teal, bg: "rain.png"}
+            
+        // Snow
+        if ([227, 230, 323, 326, 329, 332, 335, 338, 368, 371, 374, 377, 392, 395].includes(code))
+            return {icon: "", color: ThemeManager.colors.subtext0, bg: "snow.png"}
+            
+        // Thunder
+        if ([200, 386, 389].includes(code)) return {icon: "", color: ThemeManager.colors.yellow, bg: "storm.png"}
+        
+        return {icon: "?", color: ThemeManager.colors.red, bg: "rain.png"}
     }
     
     function setErrorState() {
@@ -150,6 +169,6 @@ QtObject {
     }
     
     function refresh() {
-        fetchWeather()
+        fetchLocation()
     }
 }
