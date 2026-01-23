@@ -26,7 +26,7 @@ import qs.modules
 import qs.themes
 Item {
     id: player
-    //visible: Mpris.status
+    visible: Mpris.status
     anchors.verticalCenter: parent.verticalCenter
     width: 190
     height: parent.height

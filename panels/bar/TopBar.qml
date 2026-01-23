@@ -30,6 +30,7 @@ import Quickshell
 import Quickshell.Io
 
 // Globales
+import qs.components
 import qs.config
 import qs.themes
 import qs.modules
@@ -110,6 +111,8 @@ Scope {
           anchors.fill: parent
           property int cornerRadius: 0
 
+
+          // Background de la Barra //
           Rectangle {
             id: barBackground
             anchors.fill: parent
@@ -117,7 +120,14 @@ Scope {
             radius: topBarContent.cornerRadius
           }
 
-          // Maximized State
+          // Irminsul Animation //
+          AkashaPulse {
+            id: irmiPulse
+            anchors.fill: parent
+
+          }
+
+          // Maximized State //
           anchors {
             left: parent.left
             right: parent.right

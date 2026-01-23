@@ -54,11 +54,11 @@ Row {
 
             text: wsName === focusedWorkspace ? "󰮯"
                 : occupiedWorkspaces.indexOf(wsName) !== -1 ? "󰊠"
-                : "󰧞"
+                : "󰊠"
 
             color: wsName === focusedWorkspace ? ThemeManager.colors.yellow
                 : occupiedWorkspaces.indexOf(wsName) !== -1 ? ThemeManager.colors.sky
-                : ThemeManager.colors.overlay1
+                : ThemeManager.colors.sky
 
             font.family: ThemeManager.fonts.icons
             font.pixelSize: 16

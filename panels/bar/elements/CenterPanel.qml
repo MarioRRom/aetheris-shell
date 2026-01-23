@@ -37,6 +37,11 @@ WrapperMouseArea {
 
     onClicked: {
         akashaLoader.active = !akashaLoader.active
+
+        // Irminsul Animation //
+        let gx = centerPanelArea.mapToItem(topBarRoot.contentItem, 0, 0).x
+        let centroX = gx + (centerPanelArea.width / 2) 
+        irmiPulse.trigger(centroX)
     }
 
     WrapperRectangle {
