@@ -71,9 +71,9 @@ Variants {
                 anchors.topMargin: Config.topBar.state === "maximized" ? Config.topBar.height : 0
 
                 // Bordeado cuando la barra esta maximizada.
-                anchors.leftMargin: Config.topBar.state === "maximized" ? Config.topBar.wallborder : 0
-                anchors.rightMargin: Config.topBar.state === "maximized" ? Config.topBar.wallborder : 0
-                anchors.bottomMargin: Config.topBar.state === "maximized" ? Config.topBar.wallborder : 0
+                anchors.leftMargin: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
+                anchors.rightMargin: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
+                anchors.bottomMargin: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
                 
                 // Hug Corners
                 layer.enabled: Config.topBar.state === "maximized" && Config.topBar.hug
@@ -86,7 +86,7 @@ Variants {
                             width: backgroundContainer.width 
                             height: backgroundContainer.height
                             y: 40
-                            radius: Config.topBar.hugsize
+                            radius: Config.global.corners
                         }
                     }
                 }
@@ -135,7 +135,7 @@ Variants {
                         // Shadow Config 
                         border.color: Config.shadows.color
                         border.width: 15
-                        radius: Config.topBar.hug ? (Config.topBar.hugsize + 12) : 0
+                        radius: Config.topBar.hug ? (Config.global.corners + 12) : 0
 
                         // Blurry Effect
                         layer.enabled: true
@@ -167,13 +167,13 @@ Variants {
                                 left: parent.left
                                 right: parent.right
 
-                                topMargin: Config.topBar.margin
+                                topMargin: Config.global.margins
                                 leftMargin: Math.round(modelData.width * 0.02)
                                 rightMargin: Math.round(modelData.width * 0.02)
                             }
                             
                             height: Config.topBar.height
-                            radius: Config.topBar.corners
+                            radius: Config.global.corners
                             color: Config.shadows.color
 
                             blur: 5

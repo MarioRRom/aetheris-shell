@@ -27,8 +27,14 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
+// Global
+import qs.config
+
 QtObject {
     id: root
+
+    // Propiedad pública para que los widgets sepan si BSPWM está activo
+    property bool isActive: false
 
     // Socket de bspwm (para comandos)
     property Socket socket: Socket {
@@ -118,6 +124,14 @@ QtObject {
     property var monitorData: ({})
     property var tempMonitorIds: []
     property string currentDesktop: ""
+    property int windowGap: 10
+    property int topPadding: 0
+    property int bottomPadding: 0
+    property int leftPadding: 0
+    property int rightPadding: 0
+    property int borderWidth: 0
+    property string activeBorderColor: ""
+    property string focusedBorderColor: ""
     
     // Cola de comandos con tipo
     property var commandQueue: []
@@ -185,6 +199,78 @@ QtObject {
         } else {
             sendCommand("query -T -d focused", "layout")
         }
+    }
+
+    /**
+     * Establece el window_gap global.
+     * @param {int} gap - Tamaño del gap en píxeles
+     */
+    function setWindowGap(gap) {
+        sendCommand("config window_gap " + gap, "")
+        windowGap = gap
+    }
+
+    /**
+     * Establece el top_padding global.
+     * @param {int} padding - Tamaño del padding superior en píxeles
+     */
+    function setTopPadding(padding) {
+        sendCommand("config top_padding " + padding, "")
+        topPadding = padding
+    }
+
+    /**
+     * Establece el bottom_padding global.
+     * @param {int} padding - Tamaño del padding inferior en píxeles
+     */
+    function setBottomPadding(padding) {
+        sendCommand("config bottom_padding " + padding, "")
+        bottomPadding = padding
+    }
+
+    /**
+     * Establece el left_padding global.
+     * @param {int} padding - Tamaño del padding izquierdo en píxeles
+     */
+    function setLeftPadding(padding) {
+        sendCommand("config left_padding " + padding, "")
+        leftPadding = padding
+    }
+
+    /**
+     * Establece el right_padding global.
+     * @param {int} padding - Tamaño del padding derecho en píxeles
+     */
+    function setRightPadding(padding) {
+        sendCommand("config right_padding " + padding, "")
+        rightPadding = padding
+    }
+
+    /**
+     * Establece el border_width global.
+     * @param {int} width - Grosor del borde en píxeles
+     */
+    function setBorderWidth(width) {
+        sendCommand("config border_width " + width, "")
+        borderWidth = width
+    }
+
+    /**
+     * Establece el active_border_color global.
+     * @param {string} color - Color en formato hex (ej. "#RRGGBB")
+     */
+    function setActiveBorderColor(color) {
+        sendCommand("config active_border_color " + color, "")
+        activeBorderColor = color
+    }
+
+    /**
+     * Establece el focused_border_color global.
+     * @param {string} color - Color en formato hex (ej. "#RRGGBB")
+     */
+    function setFocusedBorderColor(color) {
+        sendCommand("config focused_border_color " + color, "")
+        focusedBorderColor = color
     }
 
     /**
@@ -421,9 +507,43 @@ QtObject {
     signal desktopLayoutChanged(string monitorId, string desktopId, string layout)
     signal nodeChanged()
 
+
+    // === CONFIGURACION INTERNA ===
+    function updateBspwmSettings() {
+        // Gap
+        setWindowGap(Config.global.margins)
+        
+        // Padding (para el WallBorder)
+        if (Config.topBar.state === "maximized") {
+            setTopPadding(Config.topBar.height)
+            setBottomPadding(Config.global.wallborder)
+            setLeftPadding(Config.global.wallborder)
+            setRightPadding(Config.global.wallborder)
+        } else {
+            setTopPadding(Config.topBar.height + Config.global.margins)
+            setBottomPadding(0)
+            setLeftPadding(0)
+            setRightPadding(0)
+        }
+
+        // Bordeado
+        setBorderWidth(Config.windows.borderWidth)
+        setActiveBorderColor(Config.windows.activeColor)
+        setFocusedBorderColor(Config.windows.focusedColor)
+    }
+
     Component.onCompleted: {
+        // Verificar si estamos en bspwm
+        var session = (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
+        if (session !== "bspwm") return
+
+        isActive = true
+
         // Query monitores al inicio
-        BspSocket.queryMonitors()
+        queryMonitors()
+
+        // Establecer Configuracion Interna
+        updateBspwmSettings()
 
         // Activar socket de eventos para updates en tiempo real
         Qt.callLater(() => {

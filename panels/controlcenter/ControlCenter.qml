@@ -56,6 +56,7 @@ PopupWindow {
     // El Radius de la Ventana se Establece desde la Configuración global.
     property int globalCorners: Config.global.corners
     property int globalMargin: Config.global.margins
+    property int globalWallborder: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
     property int cornerRadius: globalCorners - globalMargin
     
     property int windowMargin: 10 // Margen interno.
@@ -65,7 +66,7 @@ PopupWindow {
     implicitHeight: (root.currentView === "main" ? mainLayout.implicitHeight : 454) + (windowMargin * 2) + 10
     
     anchor.window: bar
-    anchor.rect.x: (bar.width - width) - (globalMargin - 5) // 5px por el margin en el Contenedor Principal.
+    anchor.rect.x: (bar.width - width) - ((globalMargin + globalWallborder) - 5) // 5px por el margin en el Contenedor Principal.
     anchor.rect.y: bar.height + (globalMargin - 5) //5px por el Margin del Contenedor Principal.
     
     color: "transparent"

@@ -270,16 +270,16 @@ Scope {
             when: panelState === "float"
             PropertyChanges {
               target: topBarContent
-              cornerRadius: Config.topBar.corners
+              cornerRadius: Config.global.corners
               anchors {
-                topMargin: Config.topBar.margin
+                topMargin: Config.global.margins
                 leftMargin: Math.round(modelData.width * 0.02)
                 rightMargin: Math.round(modelData.width * 0.02)
               }
             }
             PropertyChanges {
               target: topBarRoot
-              implicitHeight: Config.topBar.height + Config.topBar.margin
+              implicitHeight: Config.topBar.height + Config.global.margins
             }
           }
         }

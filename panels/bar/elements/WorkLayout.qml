@@ -30,13 +30,18 @@ Row {
     height: parent.height
     anchors.verticalCenter: parent.verticalCenter
     
-    BspLayout {
-        visible: SystemStatus.desktop === "bspwm"
+    Loader {
         anchors.verticalCenter: parent.verticalCenter
+        active: SystemStatus.desktop === "bspwm"
+        sourceComponent: Component {
+            BspLayout {}
+        }
     }
-
-    HyprLayout {
-        visible: SystemStatus.desktop === "Hyprland"
+    Loader {
         anchors.verticalCenter: parent.verticalCenter
+        active: SystemStatus.desktop === "hyprland"
+        sourceComponent: Component {
+            HyprLayout {}
+        }
     }
 }

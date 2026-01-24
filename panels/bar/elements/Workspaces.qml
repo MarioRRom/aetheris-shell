@@ -20,10 +20,12 @@
 
 // Quickshell
 import QtQuick
+import Quickshell
 import Quickshell.Widgets
 
 // Globales
 import qs.themes
+import qs.modules
 import qs.modules.bspwm
 import qs.modules.hyprland
 
@@ -36,17 +38,24 @@ WrapperRectangle {
     Row {
         leftPadding: 10
         rightPadding: 10
-    
-        BspWorkspaces {
-            anchors.verticalCenter: parent.verticalCenter
-            visible: SystemStatus.desktop === "bspwm"
-            monitorName: modelData.name
-        }
 
-        HyprWorkspaces {
+        Loader {
             anchors.verticalCenter: parent.verticalCenter
-            visible: SystemStatus.desktop === "Hyprland"
-            monitorName: modelData.name
+            active: SystemStatus.desktop === "bspwm"
+            sourceComponent: Component {
+                BspWorkspaces {
+                    monitorName: modelData.name
+                }
+            }
+        }
+        Loader {
+            anchors.verticalCenter: parent.verticalCenter
+            active: SystemStatus.desktop === "hyprland"
+            sourceComponent: Component {
+                HyprWorkspaces {
+                    monitorName: modelData.name
+                }
+            }
         }
     }
 }
