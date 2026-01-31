@@ -41,8 +41,6 @@ Item {
 
         onClicked: (mouse) => {
             if (mouse.button === Qt.LeftButton) {
-                Mpris.playpause()
-            } else if (mouse.button === Qt.RightButton) {
                 let gx = player.mapToItem(topBarRoot.contentItem, 0, 0).x
 
                 conPlayerLoader.active = !conPlayerLoader.active
@@ -50,6 +48,8 @@ Item {
                 if (conPlayerLoader.active && conPlayerLoader.item) {
                     conPlayerLoader.item.globalPos = gx
                 }
+            } else if (mouse.button === Qt.RightButton) {
+                Mpris.playpause()
             }
         }
     }
