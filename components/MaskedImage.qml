@@ -20,62 +20,33 @@
 
 // Quickshell
 import QtQuick
-import QtQuick.Effects
-import Quickshell
+import Qt5Compat.GraphicalEffects
 
-// Global
-import qs.components
-import qs.themes
-import qs.modules
+Image {
+    // Config
+    property int imageRadius: 5
+    property var imageFill: Image.PreserveAspectCrop
+    property var imageSource: ""
 
+    // Image
+    id: image
+    cache: false
+    smooth: false
+    fillMode: imageFill
 
-//  .-------------------------.
-//  | .---------------------. |
-//  | |    Profile Card     | |
-//  | `---------------------' |
-//  `-------------------------'
+    // Ruta de la Imagen
+    source: imageSource
 
-Item {
-    anchors.fill: parent
-    property int pfpRadius: itemRadius - 8
-        
-    Row {
-        anchors.margins: 50
-        anchors.verticalCenter: parent.verticalCenter
-        spacing: 14
+    layer.enabled: true
+    layer.effect: OpacityMask {
+        maskSource: bgMask
+    }
 
-        // Profile Photo //
-        MaskedImage {
-            width: 80
-            height: 80
-            imageRadius: pfpRadius
-
-            imageSource: "file:///home/mario/.face"
-        }
-
-        // User Info //
-        Column {
-            anchors.verticalCenter: parent.verticalCenter
-            spacing: 1
-            Text {
-                text: SystemStatus.username
-                color: ThemeManager.colors.green
-                font.family: ThemeManager.fonts.main
-                font.bold: true
-                font.pixelSize: 23
-            }
-            Text {
-                text: "welcome to " + SystemStatus.distro
-                color: ThemeManager.colors.subtext1
-                font.family: ThemeManager.fonts.main
-                font.pixelSize: 14
-            }
-            Text {
-                text: SystemStatus.uptime
-                color: ThemeManager.colors.subtext1
-                font.family: ThemeManager.fonts.main
-                font.pixelSize: 14
-            }
-        }
+    // Mask
+    Rectangle {
+        id: bgMask
+        anchors.fill: parent
+        visible: false
+        radius: imageRadius
     }
 }
