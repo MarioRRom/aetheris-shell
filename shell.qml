@@ -30,20 +30,23 @@ import Quickshell
 // Globales
 import qs.config
 import qs.panels
+import qs.overlays.notifications
 import qs.panels.background
 import qs.panels.bar
+import qs.modules
 import qs.modules.hyprland
 import qs.modules.bspwm
 
 ShellRoot {
-
+    // Obtener el Desktop en Ejecución, para cargar los Sockets.
     property string _session: (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
 
     // Inicializar Sockets para asegurar que se carguen y apliquen configs
     property bool _initHyprSocket: _session.indexOf("hyprland") !== -1 ? HyprSocket.isActive : false
     property bool _initBspSocket: _session.indexOf("bspwm") !== -1 ? BspSocket.isActive : false
 
-    property bool enableTopBar: true
+
+    property bool enableBar: true
     property bool enableBackground: true
     property bool enableNightMode: false
 
@@ -54,21 +57,11 @@ ShellRoot {
         }
     }
 
-    LazyLoader {
-        active: enableBackground
+    // Quickshell Background
+    Background { isActivated: enableBackground }
 
-        component: Background {
-        }
-
-    }
-
-    LazyLoader {
-        active: enableTopBar
-
-        component: TopBar {
-        }
-
-    }
+    // Quickshell Bar
+    TopBar { isActivated: enableBar }
 
     Loader {
         active: false
@@ -77,5 +70,8 @@ ShellRoot {
         }
 
     }
+    
+    // Popup de Notificaciones.
+    NotificationsPopup {}
 
 }

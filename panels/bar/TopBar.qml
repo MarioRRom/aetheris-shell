@@ -63,13 +63,14 @@ Scope {
   }
 
   property string panelState: Config.topBar.state // "maximized" o "float"
+  property bool isActivated: false
 
   Variants {
     model: Quickshell.screens
 
     LazyLoader {
       id: topBarLoader
-      active: true
+      active: isActivated
       
       required property var modelData
 

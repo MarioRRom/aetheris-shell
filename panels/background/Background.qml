@@ -30,9 +30,10 @@ import qs.themes
 Variants {
     id: root
     model: Quickshell.screens
+    property bool isActivated: false
     
     LazyLoader {
-        active: true
+        active: isActivated
         required property var modelData
 
         component: PanelWindow {
