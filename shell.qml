@@ -26,6 +26,7 @@
 // Quickshell
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
 // Globales
 import qs.config
@@ -74,4 +75,15 @@ ShellRoot {
     // Popup de Notificaciones.
     NotificationsPopup {}
 
+    // Fix Stacking para BSPWM
+    Process {
+        id: fixStacking
+        command: ["sh", Qt.resolvedUrl("scripts/fix_stacking.sh").toString().replace("file://", "")]
+    }
+
+    Component.onCompleted: {
+        if (_session.indexOf("bspwm") !== -1) {
+            fixStacking.running = true
+        }
+    }
 }
