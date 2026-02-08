@@ -91,18 +91,20 @@ Rectangle {
             visible: true
 
             onClicked: {
-                Quickshell.execDetached(["notify-send", "No Molestar", "funciona"])
+                Notifications.toggleDnd()
             }
 
             Rectangle {
                 radius: gridRadius
-                color: ThemeManager.colors.surface0
+                color: Notifications.dnd ? ThemeManager.colors.sky : ThemeManager.colors.surface0
+                Behavior on color { ColorAnimation { duration: 250 } }
                 Text {
                     anchors.centerIn: parent
                     text: "󱏧"
                     font.family: ThemeManager.fonts.icons
                     font.pixelSize: iconSize
-                    color: ThemeManager.colors.text
+                    color: Notifications.dnd ? ThemeManager.colors.base : ThemeManager.colors.text
+                    Behavior on color { ColorAnimation { duration: 250 } }
                 }
             }
         }

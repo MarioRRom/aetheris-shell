@@ -97,6 +97,10 @@ QtObject {
             n.close()
     }
 
+    function toggleDnd() {
+        root.dnd = !root.dnd
+    }
+
     // =========================
     // NOTIFICATION WRAPPER
     // =========================
@@ -107,6 +111,7 @@ QtObject {
         // --- runtime ---
         property bool popup: true
         property bool closed: false
+        property bool shown: false
 
         // --- raw notification ---
         property Notification notification

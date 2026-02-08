@@ -114,6 +114,7 @@ LazyLoader {
 
                     MouseArea {
                         id: hoverArea
+                        visible: notif.actions > []
                         anchors.fill: parent
                         hoverEnabled: true
                         onClicked: Notifications.activate(notif)
@@ -186,7 +187,7 @@ LazyLoader {
                         }
                         MaskedImage {
                             visible: iconSource != ""
-                            Layout.fillHeight: true
+                            Layout.preferredHeight: parent.height - 10
                             Layout.preferredWidth: height
 
                             imageRadius: itemRadius

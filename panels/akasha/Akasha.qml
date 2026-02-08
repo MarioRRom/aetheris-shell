@@ -140,19 +140,17 @@ PopupWindow {
                         // Switch No Molestar
                         RowLayout {
                             spacing: 10
-                            Rectangle {
-                                width: 40; height: 20
-                                radius: 10
-                                color: ThemeManager.colors.surface1
-                                Rectangle {
-                                    width: 16; height: 16
-                                    radius: 8
-                                    color: ThemeManager.colors.text
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    x: 2
-                                }
+                            SimpleSwitch {
+                                size: 40
+                                status: Notifications.dnd
+                                action: Notifications.toggleDnd
                             }
-                            Text { text: "No Molestar"; color: ThemeManager.colors.text; font.family: ThemeManager.fonts.main }
+
+                            Text {
+                                text: "No Molestar";
+                                color: ThemeManager.colors.text;
+                                font.family: ThemeManager.fonts.main
+                            }
                         }
 
                         Item { Layout.fillWidth: true }
@@ -160,13 +158,85 @@ PopupWindow {
                         // Botón Limpiar
                         Rectangle {
                             width: 80; height: 35
-                            radius: 12
-                            color: ThemeManager.colors.base
+                            color: "transparent"
+
+
+                            //  .-------------------------.
+                            //  | .---------------------. |
+                            //  | |    Decoraciones     | |
+                            //  | `---------------------' |
+                            //  `-------------------------'
+
+                            // Sombreado
+                            Loader {
+                                anchors.fill: parent
+                                active: Config.shadows.enabled
+
+                                sourceComponent:RectangularShadow {
+                                    anchors.fill: parent
+                                    radius: itemRadius
+                                    color: Config.shadows.color
+
+                                    blur: 3
+                                    offset: Qt.vector2d(1, 1)
+                                    spread: 1.0
+                                    cached: true
+                                }
+                            }
+
+                            // Background
+                            Rectangle {
+                                id: notsClearAll
+                                anchors.fill: parent
+                                radius: itemRadius
+                                color: ThemeManager.colors.base
+                            }
+
+                            // InnerLine
+                            InnerLine {
+                                anchors.fill: parent
+                                lineradius: itemRadius
+                                linewidth: 1
+                                linecolor: ThemeManager.colors.surface0
+                            }
+
+                            // Button Content
                             Text {
                                 anchors.centerIn: parent
                                 text: "Limpiar"
                                 color: ThemeManager.colors.text
                                 font.family: ThemeManager.fonts.main
+                            }
+
+                            MouseArea {
+                                id: clearArea
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                hoverEnabled: true
+                                onClicked: Notifications.clearAll()
+                            }
+
+                            states: [
+                                State {
+                                    name: "hover"
+                                    when: clearArea.containsMouse && !clearArea.pressed
+                                    PropertyChanges {
+                                        target: notsClearAll
+                                        color: ThemeManager.colors.surface0
+                                    }
+                                },
+                                State {
+                                    name: "pressed"
+                                    when: clearArea.pressed
+                                    PropertyChanges {
+                                        target: notsClearAll
+                                        color: ThemeManager.colors.surface1
+                                    }
+                                }
+                            ]
+
+                            transitions: Transition {
+                                ColorAnimation { duration: 250 }
                             }
                         }
                     }
