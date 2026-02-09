@@ -80,6 +80,16 @@ WrapperMouseArea {
             leftPadding: 10
             rightPadding: 10
 
+            // Notifications Indicator //
+            Text {
+                visible: Notifications.history.length > 0
+                text: "󰧞"
+                color: ThemeManager.colors.text
+                font.family: ThemeManager.fonts.icons
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: 20
+            }
+
             // System Time //
             Text {
                 text: SystemTime.timeFormat
