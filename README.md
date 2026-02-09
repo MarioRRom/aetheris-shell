@@ -37,9 +37,12 @@ Actualmente se está trabajando en los cimientos del shell:
 
 ### BSPWM
 
-Para que **Ætheris-shell** funcione correctamente en BSPWM, es necesario asignar nombres específicos a los monitores para mantener la consistencia en Quickshell. Agrega lo siguiente a tu `bspwmrc`:
+Para que **Ætheris-shell** funcione correctamente en BSPWM, es necesario contener lo siguiente en tu `bspwmrc`:
 
 ```bash
+export XDG_CURRENT_DESKTOP=bspwm
+
+
 # Asignar espacios de trabajo a cada monitor basándose en su nombre de hardware (xrandr)
 # Esto es necesario para que Quickshell identifique las pantallas correctamente.
 
