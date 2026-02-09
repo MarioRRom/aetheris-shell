@@ -66,3 +66,15 @@ Para Hyprland, simplemente lanzalo al inicio.
 ```bash
 exec-once = quickshell
 ```
+
+---
+
+### **☕ Apóyame**
+
+Si te gusta mi trabajo y quieres apoyarme, puedes invitarme un café en Ko-fi. ¡Cualquier ayuda es bienvenida! ☕
+
+<a href="https://ko-fi.com/mariorrom">
+  <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="ko-fi" width="200px">
+</a>
+
+---
