@@ -13,6 +13,8 @@
 
 ---
 
+<img src="assets/preview.png" alt="Gestión de ventanas" width="800px">
+
 ## 📝 Descripción
 
 **Ætheris-shell** es una interfaz de shell moderna construida sobre **Quickshell** (QtQuick/QML), diseñada para integrarse visual y funcionalmente con **BSPWM** y **Hyprland**. El objetivo es reemplazar componentes tradicionales (como Polybar, Eww, Waybar) con una solución más fluida y animada basada en QML.
