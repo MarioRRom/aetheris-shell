@@ -36,6 +36,7 @@ QtObject {
     
     // Acceso al reproductor activo (o nulo si no hay ninguno)
     readonly property var activePlayer: selectedPlayer ?? (Mpris.players.values[0] ?? null)
+    readonly property var casseteImg: Qt.resolvedUrl("../assets/cassette.png")
 
     //  .-------------------------.
     //  | .---------------------. |
@@ -46,7 +47,7 @@ QtObject {
     // Obtención de Metadatos (Wiki: trackArtist > trackArtists)
     property string title: activePlayer?.trackTitle || "No Title"
     property string artist: activePlayer?.trackArtist || "No Artist"
-    property string artUrl: activePlayer?.trackArtUrl ?? ""
+    property string artUrl: activePlayer?.trackArtUrl || casseteImg
     property string player: activePlayer?.identity ?? "No Player"
     
     // Estados del Reproductor Activo

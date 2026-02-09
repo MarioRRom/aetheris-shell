@@ -72,30 +72,15 @@ Rectangle {
                 spread: 0.0
                 cached: true
             }
-
-            Image {
+            
+            // Image
+            MaskedImage {
                 id: albumport
                 anchors.fill: parent
-                visible: true
-                cache: true
-                smooth: true
-                fillMode: Image.PreserveAspectCrop
                 anchors.margins: 2
 
-                source: Mpris.artUrl
-
-                layer.enabled: true
-                layer.effect: OpacityMask {
-                    maskSource: bgMask
-                }
-
-                Rectangle {
-                    id: bgMask
-                    anchors.fill: parent
-                    anchors.margins: 2
-                    radius: itemRadius
-                    visible: false
-                }
+                imageSource: Mpris.artUrl
+                imageRadius: itemRadius
             }
         }
         
@@ -124,11 +109,7 @@ Rectangle {
                 border.color: Config.shadows.color
                 border.width: 5
                 color: "transparent"
-//  .-------------------------.
-//  | .---------------------. |
-//  | |  Importar Modulos   | |
-//  | `---------------------' |
-//  `-------------------------'
+
                 // Blurry Effect
                 layer.enabled: true
                 layer.effect: MultiEffect {

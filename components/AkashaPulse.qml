@@ -77,6 +77,7 @@ Item {
             source: image
             sourceSize.width: pulseRoot.height
             sourceSize.height: pulseRoot.height
+            mipmap: true
             smooth: true
             cache: false
             opacity: 0
@@ -119,6 +120,7 @@ Item {
                 source: image
                 sourceSize.width: pulseRoot.height
                 sourceSize.height: pulseRoot.height
+                mipmap: true
                 smooth: true
                 cache: false
                 opacity: 0
@@ -166,6 +168,7 @@ Item {
                 source: image
                 sourceSize.width: pulseRoot.height
                 sourceSize.height: pulseRoot.height
+                mipmap: true
                 smooth: true
                 cache: false
                 opacity: 0
