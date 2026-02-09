@@ -31,10 +31,9 @@ import qs.themes
 import qs.modules
 
 
-// Lazy Loader para no cargar en RAM
-// el popup cuando no esta activo.
 LazyLoader {
-    active: true
+    active: isActivated
+    property bool isActivated: false
 
 
     //  .-------------------------.

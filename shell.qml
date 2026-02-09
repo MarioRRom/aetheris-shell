@@ -38,6 +38,13 @@ import qs.modules
 import qs.modules.hyprland
 import qs.modules.bspwm
 
+
+//  .-------------------------.
+//  | .---------------------. |
+//  | |     Shell Root      | |
+//  | `---------------------' |
+//  `-------------------------'
+
 ShellRoot {
     // Obtener el Desktop en Ejecución, para cargar los Sockets.
     property string _session: (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
@@ -49,6 +56,7 @@ ShellRoot {
 
     property bool enableBar: true
     property bool enableBackground: true
+    property bool enablePopups: true
     property bool enableNightMode: false
 
     LazyLoader {
@@ -71,9 +79,10 @@ ShellRoot {
         }
 
     }
-    
+
     // Popup de Notificaciones.
-    NotificationsPopup {}
+    NotificationsPopup { isActivated: enablePopups }
+    
 
     // Fix Stacking para BSPWM
     Process {
