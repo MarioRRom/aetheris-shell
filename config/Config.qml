@@ -46,6 +46,11 @@ QtObject {
         property int borderWidth: 2 // Grosor del borde.
         property color activeColor: ThemeManager.colors.base // Color del borde.
         property color focusedColor: ThemeManager.colors.sky // Color del borde Focuseado.
+        property string inactiveOpacity: "0.9" // Opacidad de las ventanas Inactivas.
+        property string activeOpacity: "1.0" // Opacidad de las ventanas Activas.
+        property bool enableBlur: true // Activar/Desactivar Blur.
+        property bool enableFading: true // Activar/Desactivar Fading.
+
     }
 
     // Configuracion Global

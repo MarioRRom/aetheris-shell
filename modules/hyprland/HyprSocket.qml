@@ -100,6 +100,26 @@ QtObject {
         sendCommand("decoration:shadow:color " + toHyprColor(color))
     }
 
+    function inactiveOpacity(value) {
+        sendCommand("decoration:inactive_opacity " + value)
+    }
+
+    function activeOpacity(value) {
+        sendCommand("decoration:active_opacity " + value)
+    }
+
+    function setBlur(enabled) {
+        sendCommand("decoration:blur:enabled " + enabled)
+    }
+
+    function setFading(enabled) {
+        if (enabled) {
+            sendCommand("animation fade, 1")
+        } else {
+            sendCommand("animation fade,0")
+        }
+    }
+
     /**
      * Lee la configuración global y la aplica a Hyprland.
      */
@@ -124,6 +144,16 @@ QtObject {
         // Shadows
         setShadows(Config.shadows.enabled)
         setShadowColor(Config.shadows.color)
+
+        // Active/Inactive Opacity
+        inactiveOpacity(Config.windows.inactiveOpacity)
+        activeOpacity(Config.windows.activeOpacity)
+
+        // Blur
+        setBlur(Config.windows.enableBlur)
+
+        // Fading
+        setFading(Config.windows.enableFading)
     }
 
     // === INICIALIZACIÓN ===

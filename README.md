@@ -31,7 +31,7 @@ Actualmente se está trabajando en los cimientos del shell:
 
 - **Quickshell**: Necesitas tener instalado el runtime de Quickshell.
 - **BSPWM** (X11):
-  - Dependencias de sistema: `xrandr`, `xwininfo`, `xprop`, `xdo` (utilizados por los scripts de ayuda).
+  - Dependencias de sistema: `xrandr`, `xwininfo`, `xprop`, `xdo`, `picom` (utilizados por los scripts de ayuda).
 - **Hyprland** (Wayland):
   - Dependencias de sistema: *Ninguna por el momento.*
 

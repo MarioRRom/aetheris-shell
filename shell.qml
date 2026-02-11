@@ -90,6 +90,12 @@ ShellRoot {
         command: ["sh", Qt.resolvedUrl("scripts/fix_stacking.sh").toString().replace("file://", "")]
     }
 
+    // Cargar Picom (X11)
+    Loader {
+        active: _session.indexOf("bspwm") !== -1
+        sourceComponent: Picom {}
+    }
+
     Component.onCompleted: {
         if (_session.indexOf("bspwm") !== -1) {
             fixStacking.running = true
