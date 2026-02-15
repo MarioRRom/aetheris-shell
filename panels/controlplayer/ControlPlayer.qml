@@ -39,6 +39,8 @@ PopupWindow {
     property var bar
     property real globalPos: 0
     property bool volumeControl: false
+    property string currentView: "player"
+
 
     // El Radius de la Ventana se Establece desde la Configuración global.
     property int globalCorners: Config.global.corners
@@ -49,7 +51,7 @@ PopupWindow {
     property int itemRadius: cornerRadius - windowMargin
 
     implicitWidth: 290
-    implicitHeight: 100
+    implicitHeight: currentView === "player" ? 100 : playerList.contentHeight < 100 ? 100 : (playerList.contentHeight + (windowMargin * 2) + 10)
     
     anchor.window: bar
     anchor.rect.x: globalPos - (width - 200) // 5px por el margin en el Contenedor Principal.
@@ -97,11 +99,12 @@ PopupWindow {
                 linecolor: ThemeManager.colors.surface0
             }
 
-            // Columna principal
+            // Columna principal (Player)
             ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: windowMargin
                 spacing: 0
+                visible: currentView === "player"
 
 
                 // Control de Tiempo y Volumen
@@ -175,9 +178,9 @@ PopupWindow {
 
                     // Change Player
                     WrapperMouseArea {
-                        cursorShape: Mpris.canShuffle ? Qt.PointingHandCursor : Qt.ArrowCursor
+                        cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            Mpris.shuffle()
+                            currentView = "listplayers"
                         }
                         
                         Text{
@@ -288,6 +291,45 @@ PopupWindow {
                             font.pixelSize: 25
 
                             Behavior on color { ColorAnimation { duration: 200 } }
+                        }
+                    }
+                }
+            }
+
+            // Player List
+            ListView {
+                id: playerList
+                anchors.fill: parent
+                anchors.margins: windowMargin
+                visible: currentView === "listplayers"
+                clip: true
+                spacing: 5
+
+                // Asumiendo que Mpris expone una lista de reproductores llamada 'players'
+                model: Mpris.allPlayers
+
+                delegate: Rectangle {
+                    width: ListView.view.width
+                    height: 30
+                    radius: itemRadius
+                    color: modelData === Mpris.activePlayer ? ThemeManager.colors.overlay0 : ThemeManager.colors.surface0
+
+
+                    Text {
+                        anchors.centerIn: parent
+                        // Muestra el nombre del reproductor (ej. "Spotify")
+                        text: modelData.identity || "Unknown" 
+                        color: ThemeManager.colors.text
+                        font.family: ThemeManager.fonts.main
+                        font.bold: true
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: {
+                            Mpris.selectPlayer(modelData)
+                            currentView = "player"
                         }
                     }
                 }
