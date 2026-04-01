@@ -149,6 +149,18 @@ PopupWindow {
                             font.family: ThemeManager.fonts.main
                         }
 
+                        // Player Name
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            id: playName
+                            text: Mpris.player
+                            color: ThemeManager.colors.green
+                            font.pixelSize: 12
+                            font.bold: true
+                            font.family: ThemeManager.fonts.main
+                        }
+
                         // Song Duration
                         Text {
                             anchors.verticalCenter: parent.verticalCenter
@@ -330,6 +342,7 @@ PopupWindow {
                         onClicked: {
                             Mpris.selectPlayer(modelData)
                             currentView = "player"
+                            volumeControl = false
                         }
                     }
                 }

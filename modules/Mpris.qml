@@ -120,6 +120,10 @@ QtObject {
 
     // Propiedad para forzar un reproductor específico
     property var selectedPlayer: null
+    onSelectedPlayerChanged: {
+        // Sincronizar datos cuando cambia el reproductor
+        syncActivePlayerData();
+    }
 
     // Lista de todos los reproductores
     readonly property var allPlayers: Mpris.players.values
@@ -163,6 +167,14 @@ QtObject {
     //  | `---------------------' |
     //  `-------------------------'
 
+    function syncActivePlayerData() {
+        if (activePlayer) {
+            duration = activePlayer.length;
+            position = activePlayer.position;
+            volume = activePlayer.volume;
+        }
+    }
+
     function formatTime(totalSeconds) {
         if (isNaN(totalSeconds) || totalSeconds < 0) return "00:00";
         const minutes = Math.floor(totalSeconds / 60);
@@ -205,7 +217,10 @@ QtObject {
         }
     }
 
-    function selectPlayer(player) { selectedPlayer = player; }
+    function selectPlayer(player) { 
+        selectedPlayer = player;
+        syncActivePlayerData();
+    }
 
     Component.onCompleted: {
         lastPlayerCount = Mpris.players.values.length;
