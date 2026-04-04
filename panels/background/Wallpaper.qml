@@ -24,7 +24,7 @@ import QtMultimedia
 
 Item {
 
-    property var sourceWallpaper: "../../wallpapers/bocchi.png"
+    property var sourceWallpaper: "../../wallpapers/paimon.png"
     property bool isVideoWallpaper: false
 
     Image {
