@@ -40,7 +40,7 @@ import qs.themes
 //  `-------------------------'
 
 Rectangle {
-    property bool actived: true
+    property bool actived: Network.wifiEnabled || Network.hasInternet
 
 
     Layout.fillWidth: true
@@ -78,7 +78,7 @@ Rectangle {
         spacing: 10
 
         Text {
-            text: "󰖩"
+            text: Network.wifiIcon
             font.family: ThemeManager.fonts.icons
             font.pixelSize: 28
             color: actived ? ThemeManager.colors.mantle : ThemeManager.colors.text
@@ -98,7 +98,7 @@ Rectangle {
             }
 
             Text {
-                text: "Conectado"
+                text: Network.hasInternet ? (Network.wifiConnected ? Network.ssid : "Conectado") : "No conectado"
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 10
                 color: actived ? ThemeManager.colors.mantle : ThemeManager.colors.text

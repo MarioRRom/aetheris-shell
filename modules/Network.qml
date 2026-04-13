@@ -104,6 +104,7 @@ QtObject {
     // | `---------------------' |
     // `-------------------------'
 
+    function toggleWifi()                   { wifiEnabled = !wifiEnabled }
     function connectToNetwork(network)      { if (network) network.connect()    }
     function disconnectFromNetwork(network) { if (network) network.disconnect() }
     function disconnectActive()             { if (activeNetwork) activeNetwork.disconnect() }
@@ -116,15 +117,14 @@ QtObject {
     // | `---------------------' |
     // `-------------------------'
 
+    // Helper universal: recibe cualquier WifiNetwork
     function networkIcon(network) {
-        if (!network) return "network-wireless-offline-symbolic"
-        if (!network.connected && network.signalStrength === 0)
-            return "network-wireless-signal-weak-symbolic"
+        if (!network) return "󰤭"  // 󰤖 wifi-strength-off-outline
         const s = network.signalStrength
-        if (s > 0.75) return "network-wireless-signal-excellent-symbolic"
-        if (s > 0.50) return "network-wireless-signal-good-symbolic"
-        if (s > 0.25) return "network-wireless-signal-ok-symbolic"
-        return "network-wireless-signal-weak-symbolic"
+        if (s > 0.75) return "󰤨"  // 󰤓 wifi-strength-4
+        if (s > 0.50) return "󰤥"  // 󰤐 wifi-strength-3  
+        if (s > 0.25) return "󰤢"  // 󰤍 wifi-strength-2
+        return "󰤟"                // 󰤊 wifi-strength-1
     }
 
     function networkPercent(network) {
@@ -132,11 +132,20 @@ QtObject {
     }
 
     readonly property string wifiIcon: {
-        if (!wifiHardwareEnabled) return "network-wireless-hardware-disabled-symbolic"
-        if (!wifiEnabled)         return "network-wireless-disabled-symbolic"
-        if (!wifiConnected)       return "network-wireless-offline-symbolic"
-        if (connectivity === NetworkConnectivity.Portal)  return "network-wireless-acquiring-symbolic"
-        if (connectivity === NetworkConnectivity.Limited) return "network-wireless-no-route-symbolic"
+        if (!wifiHardwareEnabled) {
+            if (connectivity === NetworkConnectivity.Full) return "󰈀"
+            return "󰤮"
+        }
+        if (!wifiEnabled){
+            if (connectivity === NetworkConnectivity.Full) return "󰈀"
+            return "󰤭"
+        }
+        if (!wifiConnected){
+            if (connectivity === NetworkConnectivity.Full) return "󰈀"
+            return "󰤫"
+        }
+        if (connectivity === NetworkConnectivity.Portal)  return "󰤬"
+        if (connectivity === NetworkConnectivity.Limited) return "󰤫"
         return networkIcon(activeNetwork)  // delega en el helper universal
     }
 

@@ -75,7 +75,7 @@ WrapperMouseArea{
             rightPadding: 10
             
             Text {
-                text: "󰈀"
+                text: Network.wifiIcon
                 color: ThemeManager.colors.mauve
                 font.family: ThemeManager.fonts.icons
                 font.pixelSize: 16
