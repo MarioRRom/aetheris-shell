@@ -108,6 +108,19 @@ ColumnLayout {
             font.family: ThemeManager.fonts.main
             font.pixelSize: 15
         }
+
+        // No hay redes disponibles
+        Text {
+            opacity: Network.wifiEnabled && Network.networkList.length === 0 ? 1 : 0
+            Behavior on opacity { NumberAnimation { duration: 300 } }
+            visible: opacity > 0
+
+            anchors.centerIn: parent
+            text: "No hay redes disponibles"
+            color: ThemeManager.colors.subtext0
+            font.family: ThemeManager.fonts.main
+            font.pixelSize: 15
+        }
         
         // Lista de Redes
         Flickable {
