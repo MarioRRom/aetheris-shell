@@ -44,7 +44,7 @@ LazyLoader {
     
     // global Status
     property int globalCorners: Config.global.corners
-    property int globalMargin: Config.global.margins
+    property int globalMargin: Config.global.margins + 10
     property int cornerRadius: globalCorners - globalMargin
     
     // bar maximized case
@@ -66,6 +66,7 @@ LazyLoader {
 
     component: PanelWindow {
         id: notificationsRoot
+        visible: Notifications.popups.length > 0
 
         // Alinear abajo izquierda
         anchors {

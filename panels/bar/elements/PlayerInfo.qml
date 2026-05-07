@@ -50,6 +50,7 @@ Item {
                 }
             } else if (mouse.button === Qt.RightButton) {
                 Mpris.playpause()
+                conPlayerLoader.active = false
             }
         }
     }
