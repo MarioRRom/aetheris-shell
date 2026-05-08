@@ -40,7 +40,7 @@ import qs.themes
 //  `-------------------------'
 
 Rectangle {
-    property bool actived: Network.wifiEnabled || Network.hasInternet
+    property bool active: Network.wifiEnabled || Network.wiredConnected
 
 
     Layout.fillWidth: true
@@ -62,11 +62,11 @@ Rectangle {
         gradient: Gradient {
             GradientStop {
                 position: 0.0
-                color: actived ? ThemeManager.colors.mauve : ThemeManager.colors.surface0
+                color: active ? ThemeManager.colors.mauve : ThemeManager.colors.surface0
             }
             GradientStop { 
                 position: 1.0
-                color: actived ? ThemeManager.colors.pink : ThemeManager.colors.surface1
+                color: active ? ThemeManager.colors.pink : ThemeManager.colors.surface1
             }
         }
     }
@@ -78,10 +78,10 @@ Rectangle {
         spacing: 10
 
         Text {
-            text: Network.wifiIcon
+            text: Network.statusIcon
             font.family: ThemeManager.fonts.icons
             font.pixelSize: 28
-            color: actived ? ThemeManager.colors.mantle : ThemeManager.colors.text
+            color: active ? ThemeManager.colors.mantle : ThemeManager.colors.text
             Layout.alignment: Qt.AlignVCenter
         }
         
@@ -94,14 +94,14 @@ Rectangle {
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 16
                 font.bold: false
-                color: actived ? ThemeManager.colors.mantle : ThemeManager.colors.text
+                color: active ? ThemeManager.colors.mantle : ThemeManager.colors.text
             }
 
             Text {
-                text: Network.hasInternet ? (Network.wifiConnected ? Network.ssid : "Conectado") : "No conectado"
+                text: Network.statusText
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 10
-                color: actived ? ThemeManager.colors.mantle : ThemeManager.colors.text
+                color: active ? ThemeManager.colors.mantle : ThemeManager.colors.text
             }
         }
     }
