@@ -96,6 +96,7 @@ PopupWindow {
         anchors.fill: parent
         radius: cornerRadius
         color: ThemeManager.colors.mantle
+        clip: true
 
             // Decoración
             InnerLine {
@@ -190,14 +191,15 @@ PopupWindow {
                                 anchors.fill: parent
                                 radius: itemRadius
                                 color: ThemeManager.colors.base
-                            }
+                                clip: true
 
-                            // InnerLine
-                            InnerLine {
-                                anchors.fill: parent
-                                lineradius: itemRadius
-                                linewidth: 1
-                                linecolor: ThemeManager.colors.surface0
+                                // Decoración
+                                InnerLine {
+                                    anchors.fill: parent
+                                    lineradius: itemRadius
+                                    linewidth: 1
+                                    linecolor: ThemeManager.colors.surface0
+                                }
                             }
 
                             // Button Content

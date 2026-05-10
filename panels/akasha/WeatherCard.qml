@@ -39,7 +39,10 @@ Rectangle {
     // Definimos la ruta de los backgrounds
     readonly property string assetsPath: "../../assets/weather/"
 
-    // Decoraciones
+    // Margenes internos de la card
+    property int infoMargins: 10
+
+    // Sombreado
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -75,10 +78,10 @@ Rectangle {
     Item {
         id: container
         anchors.fill: parent
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
-        anchors.topMargin: 5
-        anchors.bottomMargin: 10
+        anchors.leftMargin: infoMargins
+        anchors.rightMargin: infoMargins
+        anchors.topMargin: (infoMargins / 2)
+        anchors.bottomMargin: infoMargins
 
         ColumnLayout {
             anchors.fill: parent
@@ -124,9 +127,10 @@ Rectangle {
                 Rectangle {
                     anchors.fill: parent
                     color: "#1e1e2e"
-                    radius: 8
+                    radius: itemRadius - infoMargins
                     opacity: 0.5
                 }
+                
                 RowLayout {
                     anchors.centerIn: parent
                     spacing: 10

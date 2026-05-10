@@ -48,7 +48,7 @@ Rectangle {
     Layout.fillWidth: true
     Layout.preferredHeight: 50
 
-    // Decoraciones
+    // Sombreado
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -59,18 +59,21 @@ Rectangle {
         spread: 0.0
         cached: true
     }
-
+    
+    // Background
     Rectangle {
         anchors.fill: parent
         color: ThemeManager.colors.base
         radius: itemRadius
-    }
+        clip: true
 
-    InnerLine {
-        anchors.fill: parent
-        lineradius: itemRadius
-        linewidth: 1
-        linecolor: ThemeManager.colors.surface0
+        // Decoración
+        InnerLine {
+            anchors.fill: parent
+            lineradius: itemRadius
+            linewidth: 1
+            linecolor: ThemeManager.colors.surface0
+        }
     }
     
     // Slider

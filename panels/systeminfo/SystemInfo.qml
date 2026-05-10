@@ -95,6 +95,7 @@ PopupWindow {
         anchors.fill: parent
         radius: cornerRadius
         color: ThemeManager.colors.mantle
+        clip: true
 
             // Decoración
             InnerLine {
@@ -142,19 +143,20 @@ PopupWindow {
                         anchors.fill: parent
                         color: ThemeManager.colors.base
                         radius: itemRadius
+                        clip: true
 
                         ProfileCard {
                             anchors.fill: parent
                             anchors.margins: 8
                         }
-                    }
-
-                    // Decoración
-                    InnerLine {
-                        anchors.fill: parent
-                        lineradius: itemRadius
-                        linewidth: 1
-                        linecolor: ThemeManager.colors.surface0
+                        
+                        // Decoración
+                        InnerLine {
+                            anchors.fill: parent
+                            lineradius: itemRadius
+                            linewidth: 1
+                            linecolor: ThemeManager.colors.surface0
+                        }
                     }
                 }
 

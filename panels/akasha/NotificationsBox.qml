@@ -37,9 +37,11 @@ Rectangle {
     property int rootRadius: itemRadius
     property int rootMargin: 10
 
+    // Ajustes de las notifCards
     property int notifRadius:  rootRadius - rootMargin
+    property int internalMargin: 5
 
-    // Decoraciones
+    // Sombreado
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -50,18 +52,21 @@ Rectangle {
         spread: 0.0
         cached: true
     }
-
+    
+    // Background
     Rectangle {
         anchors.fill: parent
         color: ThemeManager.colors.base
         radius: itemRadius
-    }
+        clip: true
 
-    InnerLine {
-        anchors.fill: parent
-        lineradius: itemRadius
-        linewidth: 1
-        linecolor: ThemeManager.colors.surface0
+        // Decoración
+        InnerLine {
+            anchors.fill: parent
+            lineradius: itemRadius
+            linewidth: 1
+            linecolor: ThemeManager.colors.surface0
+        }
     }
     
     // Notification Box
@@ -124,7 +129,7 @@ Rectangle {
                         delegate: Rectangle {
                             id: notifDelegate
                             Layout.fillWidth: true
-                            Layout.preferredHeight: 90
+                            Layout.preferredHeight: 80 + (internalMargin * 2)
 
                             color: "transparent"
 
@@ -179,15 +184,17 @@ Rectangle {
                                 anchors.fill: parent
                                 radius: notifRadius
                                 color: ThemeManager.colors.surface0
+                                clip: true
+
+                                // Decoración
+                                InnerLine {
+                                    anchors.fill: parent
+                                    lineradius: notifRadius
+                                    linewidth: 1
+                                    linecolor: ThemeManager.colors.surface2
+                                }
                             }
 
-                            // InnerLine
-                            InnerLine {
-                                anchors.fill: parent
-                                lineradius: notifRadius
-                                linewidth: 1
-                                linecolor: ThemeManager.colors.surface2
-                            }
 
 
                             //  .-------------------------.
@@ -208,7 +215,7 @@ Rectangle {
 
                             RowLayout {
                                 anchors.fill: parent
-                                anchors.margins: 5
+                                anchors.margins: internalMargin
 
                                 // Imagen o bell
                                 Text {
@@ -242,6 +249,7 @@ Rectangle {
                                         font.pixelSize: 12
                                         Layout.fillWidth: true
                                         horizontalAlignment: Text.AlignLeft
+                                        maximumLineCount: 1
                                     }
 
                                     // Title
@@ -252,6 +260,7 @@ Rectangle {
                                         font.pixelSize: 18
                                         Layout.fillWidth: true
                                         horizontalAlignment: Text.AlignLeft
+                                        maximumLineCount: 1
                                     }
 
                                     // Content
@@ -262,6 +271,7 @@ Rectangle {
                                         font.pixelSize: 14
                                         Layout.fillWidth: true
                                         horizontalAlignment: Text.AlignLeft
+                                        maximumLineCount: 2
                                     }
                                 }
 
@@ -271,7 +281,7 @@ Rectangle {
                                     width: 23
                                     height: width
                                     color: ThemeManager.colors.surface0
-                                    radius: 100
+                                    radius: notifRadius - internalMargin
                                     Layout.alignment: Qt.AlignTop
 
                                     Text {

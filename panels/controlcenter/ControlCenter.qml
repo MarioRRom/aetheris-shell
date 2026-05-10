@@ -101,6 +101,7 @@ PopupWindow {
             anchors.fill: parent
             radius: cornerRadius
             color: ThemeManager.colors.mantle
+            clip: true
 
             // Decoración
             InnerLine {

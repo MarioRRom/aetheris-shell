@@ -66,6 +66,7 @@ WrapperMouseArea {
         id: buttonContainer
         color: "transparent"
 
+        // Sombreado
         RectangularShadow {
             anchors.fill: parent
             radius: itemRadius
@@ -84,6 +85,15 @@ WrapperMouseArea {
             anchors.fill: parent
             color: ThemeManager.colors.base
             radius: itemRadius
+            clip: true
+
+            // Decoración
+            InnerLine {
+                anchors.fill: parent
+                lineradius: itemRadius
+                linewidth: 1
+                linecolor: ThemeManager.colors.surface0
+            }
 
             // Coloreado para Hover y Pressed
             Rectangle {
@@ -148,12 +158,5 @@ WrapperMouseArea {
             }
             }
         ]
-
-        InnerLine {
-            anchors.fill: parent
-            lineradius: itemRadius
-            linewidth: 1
-            linecolor: ThemeManager.colors.surface0
-        }
     }
 }

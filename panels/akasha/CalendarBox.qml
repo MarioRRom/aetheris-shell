@@ -51,7 +51,7 @@ Rectangle {
         return new Date(year, month, 1).getDay()
     }
 
-    // Decoraciones
+    // Sombreado
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -63,17 +63,20 @@ Rectangle {
         cached: true
     }
 
+    // Background
     Rectangle {
         anchors.fill: parent
         color: ThemeManager.colors.base
         radius: itemRadius
-    }
+        clip: true
 
-    InnerLine {
-        anchors.fill: parent
-        lineradius: itemRadius
-        linewidth: 1
-        linecolor: ThemeManager.colors.surface0
+        // Decoración
+        InnerLine {
+            anchors.fill: parent
+            lineradius: itemRadius
+            linewidth: 1
+            linecolor: ThemeManager.colors.surface0
+        }
     }
 
     // Calendario

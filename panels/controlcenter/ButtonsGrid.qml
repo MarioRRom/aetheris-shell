@@ -43,7 +43,7 @@ Rectangle {
     implicitHeight: gridLayout.height + (gridMargin * 2)
 
 
-    // Decoraciones
+    // Sombreado
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -55,18 +55,23 @@ Rectangle {
         cached: true
     }
 
+    // Background
     Rectangle {
         anchors.fill: parent
         color: ThemeManager.colors.base
         radius: itemRadius
+        clip: true
+
+        // Decoración
+        InnerLine {
+            anchors.fill: parent
+            lineradius: itemRadius
+            linewidth: 1
+            linecolor: ThemeManager.colors.surface0
+        }
     }
 
-    InnerLine {
-        anchors.fill: parent
-        lineradius: itemRadius
-        linewidth: 1
-        linecolor: ThemeManager.colors.surface0
-    }
+    
 
     // Grid
     GridLayout {

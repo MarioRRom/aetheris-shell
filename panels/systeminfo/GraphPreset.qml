@@ -39,7 +39,7 @@ Rectangle {
     property int porcentaje
     property bool temp
 
-    // Decoraciones
+    // Sombreado
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -51,18 +51,21 @@ Rectangle {
         cached: true
     }
 
+    // Background
     Rectangle {
         id: graphContainer
         anchors.fill: parent
         radius: itemRadius
         color: ThemeManager.colors.base
-    }
-
-    InnerLine {
-        anchors.fill: parent
-        lineradius: itemRadius
-        linewidth: 1
-        linecolor: ThemeManager.colors.surface0
+        clip: true
+        
+        // Decoración
+        InnerLine {
+            anchors.fill: parent
+            lineradius: itemRadius
+            linewidth: 1
+            linecolor: ThemeManager.colors.surface0
+        }
     }
 
     // Graph Preset
