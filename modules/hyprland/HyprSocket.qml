@@ -33,6 +33,10 @@ QtObject {
     // Propiedad pública para saber si Hyprland está activo
     property bool isActive: false
 
+    // FIX: si es numero negativo se devuelve 0
+    property int globalRounding: (Config.global.corners - Config.global.margins)
+    property int calculedRounding: globalRounding > 0 ? globalRounding : 0
+
     // === FUNCIONES PÚBLICAS ===
 
     /**
@@ -139,7 +143,8 @@ QtObject {
         setBorderColors(Config.windows.focusedColor, Config.windows.activeColor)
 
         // Corner Radius, (calculo Automatico para Hug Corners)
-        setRounding(Config.global.corners - Config.global.margins)
+        // FIX: si el calculo da negativo se devuelve 0
+        setRounding(calculedRounding)
 
         // Shadows
         setShadows(Config.shadows.enabled)
