@@ -27,9 +27,12 @@ import QtQuick
 QtObject {
     id: root
 
-    // =========================
-    // CONFIG / STATE
-    // =========================
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |   Config / State    | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     property bool dnd: false            // Do Not Disturb
 
@@ -41,12 +44,27 @@ QtObject {
     readonly property list<QtObject> popups: list.filter(n => n.popup)
     readonly property list<QtObject> history: list.filter(n => !n.popup)
 
+    // Popups Settings
+
+    property int popupAnimDuration: 350
+    property int popupTimeoutLow: 3000
+    property int popupTimeoutNormal: 5000
+    property int popupTimeoutCritical: 0
+
+    property bool expireLock: false // Helper para la cola de Expiraciones
+
+    // Signals
+
     signal newNotification(var notif)
     signal notificationRemoved(var notif)
+    signal notificationExpiring(var notif)
 
-    // =========================
-    // NOTIFICATION SERVER
-    // =========================
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | | Notification Server | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     property NotificationServer server: NotificationServer {
         id: server
@@ -73,50 +91,41 @@ QtObject {
         }
     }
 
-    // =========================
-    // PUBLIC API
-    // =========================
 
-    function close(notif) {
-        if (!notif) return
-        notif.close()
-    }
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |     Public API      | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
-    function expire(notif) {
-        if (!notif) return
-        notif.expire()
-    }
-
-    function activate(notif) {
-        if (!notif) return
-        notif.activate()
-    }
+    function close(notif)    { if (notif) notif.close()    }
+    function expire(notif)   { if (notif) notif.expire()   }
+    function activate(notif) { if (notif) notif.activate() }
 
     function clearAll() {
-        for (const n of list.slice())
-            n.close()
+        for (const n of list.slice()) n.close()
     }
 
-    function toggleDnd() {
-        root.dnd = !root.dnd
-    }
+    function toggleDnd() { root.dnd = !root.dnd }
 
-    // =========================
-    // NOTIFICATION WRAPPER
-    // =========================
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |Notifications Wrapper| |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     component Notif: QtObject {
         id: self
 
-        // --- runtime ---
         property bool popup: true
         property bool closed: false
         property bool shown: false
+        property bool shownPopup: false
+        property bool closeAfterExpire: false
 
-        // --- raw notification ---
         property Notification notification
 
-        // --- mirrored fields (para UI fácil) ---
         property string id
         property string summary
         property string body
@@ -127,21 +136,43 @@ QtObject {
         property bool resident
         property list<var> actions
         property int expireTimeout
+        property real progress: 0
 
-        // =========================
-        // LIFECYCLE
-        // =========================
 
-        readonly property Timer expireTimer: Timer {
+        //  .-------------------------.
+        //  | .---------------------. |
+        //  | |     Lifecycle       | |
+        //  | `---------------------' |
+        //  `-------------------------'
+
+        // Animación de timeout de popup frontend
+        readonly property NumberAnimation progressAnim: NumberAnimation {
+            target: self
+            property: "progress"
+            from: 0
+            to: 1.0
+            duration: expireTimeout
             running: expireTimeout > 0 && popup
-            interval: expireTimeout
-            onTriggered: self.popup = false
+            paused: expireLock
+            onFinished: self.expire()
+        }
+
+        // Delay de salida sincronizado con la animación del popup frontend
+        readonly property Timer expireDelay: Timer {
+            interval: root.popupAnimDuration
+            onTriggered: {
+                self.popup = false
+                root.expireLock = false
+                if (self.closeAfterExpire) {
+                    self.closeAfterExpire = false
+                    self.close()
+                }
+            }
         }
 
         function close() {
             if (closed) return
             closed = true
-
             root.list = root.list.filter(n => n !== self)
             notification?.dismiss()
             root.notificationRemoved(self)
@@ -149,10 +180,24 @@ QtObject {
         }
 
         function expire() {
-            popup = false
+            if (closed) return
+            if (!popup) return
+            if (expireDelay.running) return
+            expireLock = true
+            progressAnim.stop()
+            root.notificationExpiring(self)
+            expireDelay.start()
         }
 
         function activate() {
+            if (closed) return
+            closeAfterExpire = true
+            if (popup) {
+                expire()
+            } else {
+                shown = false
+                expireDelay.start()
+            }
             if (!actions) return
             for (const a of actions) {
                 if (a.identifier === "default") {
@@ -160,17 +205,19 @@ QtObject {
                     break
                 }
             }
-            close()
         }
 
-        // =========================
-        // SYNC CON NOTIFICATION
-        // =========================
+
+        //  .-------------------------.
+        //  | .---------------------. |
+        //  | |    Sync w/ Notif    | |
+        //  | `---------------------' |
+        //  `-------------------------'
 
         readonly property Connections conn: Connections {
             target: self.notification
 
-            function onClosed() { self.close() }
+            function onClosed() { if (!self.expireDelay.running) self.close() }
             function onSummaryChanged() { self.summary = notification.summary }
             function onBodyChanged() { self.body = notification.body }
             function onAppNameChanged() {
@@ -206,9 +253,9 @@ QtObject {
             if (notification.expireTimeout > 0) {
                 expireTimeout = notification.expireTimeout
             } else {
-                if (urgency === 0) expireTimeout = 3000      // Low
-                else if (urgency === 1) expireTimeout = 5000 // Normal
-                else expireTimeout = 0                       // Critical
+                if (urgency === 0)      expireTimeout = root.popupTimeoutLow
+                else if (urgency === 1) expireTimeout = root.popupTimeoutNormal
+                else                    expireTimeout = root.popupTimeoutCritical
             }
 
             actions = notification.actions.map(a => ({

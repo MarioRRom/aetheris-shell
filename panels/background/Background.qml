@@ -31,7 +31,8 @@ Variants {
     id: root
     model: Quickshell.screens
     property bool isActivated: false
-    
+    property QtObject backgroundAnchor: null
+
     LazyLoader {
         active: isActivated
         required property var modelData
@@ -40,6 +41,7 @@ Variants {
             visible: true
             id: bgRoot
             screen: modelData
+            Component.onCompleted: if (!root.backgroundAnchor) root.backgroundAnchor = bgRoot
 
             // Abajo de todo
             aboveWindows: false

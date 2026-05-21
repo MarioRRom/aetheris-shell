@@ -36,10 +36,20 @@ Rectangle {
     // Calculos internos.
     property int rootRadius: itemRadius
     property int rootMargin: 10
-
-    // Ajustes de las notifCards
     property int notifRadius:  rootRadius - rootMargin
     property int internalMargin: 5
+
+    // Ajustes de las notifCards
+    property int cardSize: 80
+    property int cardSpacing: 8
+    property int animDuration: Notifications.popupAnimDuration // Sync con el backend
+
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |  Box Decoraciones   | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     // Sombreado
     RectangularShadow {
@@ -82,6 +92,12 @@ Rectangle {
             Layout.fillHeight: true
             clip: true
 
+            //  .-------------------------.
+            //  | .---------------------. |
+            //  | |   Empty State       | |
+            //  | `---------------------' |
+            //  `-------------------------'
+
             // Estado Sin Notificaciones
             ColumnLayout {
                 anchors.centerIn: parent
@@ -106,6 +122,12 @@ Rectangle {
                 }
             }
 
+            //  .-------------------------.
+            //  | .---------------------. |
+            //  | |  Lista de Notifs    | |
+            //  | `---------------------' |
+            //  `-------------------------'
+
             // Listado de Notificaciones.
             Flickable {
                 anchors.fill: parent
@@ -119,7 +141,7 @@ Rectangle {
                 ColumnLayout {
                     id: notiColumn
                     width: parent.width - rootMargin
-                    spacing: 8
+                    spacing: 0
             
                     // Preset de Notificacion.
                     Repeater {
@@ -129,31 +151,45 @@ Rectangle {
                         delegate: Rectangle {
                             id: notifDelegate
                             Layout.fillWidth: true
-                            Layout.preferredHeight: 80 + (internalMargin * 2)
 
                             color: "transparent"
+                            clip: true
 
                             property var notif: modelData
                             property string iconSource: notif ? (notif.image != "" ? notif.image : notif.appIcon) : ""
 
-                            opacity: notif.shown ? 1 : 0
-                            transform: Translate { id: trans; x: notif.shown ? 0 : -20 }
 
-                            ParallelAnimation {
-                                id: entryAnim
-                                running: false
-                                NumberAnimation { target: notifDelegate; property: "opacity"; to: 1; duration: 300 }
-                                NumberAnimation { target: trans; property: "x"; to: 0; duration: 300; easing.type: Easing.OutQuad }
+                            //  .-------------------------.
+                            //  | .---------------------. |
+                            //  | |     Animaciones     | |
+                            //  | `---------------------' |
+                            //  `-------------------------'
+
+                            opacity: notif.shown ? 1 : 0
+                            Behavior on opacity { NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic } }
+                            
+                            // Animación de entrada/salida via height + opacity juntos
+                            Layout.preferredHeight: notif.shown ? (cardSize + (internalMargin * 2)) : 0
+                            Layout.bottomMargin: notif.shown ? cardSpacing : 0
+
+                            Behavior on Layout.preferredHeight {
+                                NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic }
+                            }
+                            
+                            Behavior on Layout.bottomMargin {
+                                NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic }
+                            }
+
+                            property Timer slideClose: Timer {
+                                interval: animDuration
+                                onTriggered: notif.close()
                             }
 
                             Component.onCompleted: {
                                 if (!notif.shown) {
-                                    entryAnim.start()
                                     notif.shown = true
                                 }
                             }
-
-
 
 
                             //  .-------------------------.
@@ -191,7 +227,7 @@ Rectangle {
                                     anchors.fill: parent
                                     lineradius: notifRadius
                                     linewidth: 1
-                                    linecolor: ThemeManager.colors.surface2
+                                    linecolor: ThemeManager.colors.surface1
                                 }
                             }
 
@@ -210,7 +246,7 @@ Rectangle {
                                 anchors.fill: parent
                                 cursorShape: Qt.PointingHandCursor
                                 hoverEnabled: true
-                                onClicked: Notifications.activate(notif)
+                                onClicked: notif.activate()
                             }
 
                             RowLayout {
@@ -297,7 +333,10 @@ Rectangle {
                                         anchors.fill: parent
                                         cursorShape: Qt.PointingHandCursor
                                         hoverEnabled: true
-                                        onClicked: notif.close()
+                                        onClicked: {
+                                            notif.shown = false
+                                            slideClose.start()
+                                        }
                                     }
 
                                     states: [

@@ -32,8 +32,9 @@ import qs.modules
 
 
 LazyLoader {
-    active: isActivated
+    active: Notifications.popups.length > 0 && isActivated
     property bool isActivated: false
+    property QtObject backgroundAnchor: null
 
 
     //  .-------------------------.
@@ -57,6 +58,12 @@ LazyLoader {
     property int windowMargin: 10 // Margen interno.
     property int itemRadius: cornerRadius - windowMargin
 
+    // Ajustes de las notifCards
+    property int cardSize: 100
+    property int cardCount: 3
+    property int cardSpacing: 5
+    property int animDuration: Notifications.popupAnimDuration // Sync con el backend
+
     
     //  .-------------------------.
     //  | .---------------------. |
@@ -64,65 +71,120 @@ LazyLoader {
     //  | `---------------------' |
     //  `-------------------------'
 
-    component: PanelWindow {
+    component: PopupWindow {
         id: notificationsRoot
-        visible: Notifications.popups.length > 0
+        visible: true
 
-        // Alinear abajo izquierda
-        anchors {
-            right: true
-            bottom: true
-        }
+        // Anclar al Background
+        // Evita flickering al ser ventana tipo popup/transient
+        anchor.window: backgroundAnchor
+        anchor.rect.x: (backgroundAnchor?.width ?? 0) - implicitWidth - (totalMargin - outMargin)
+        anchor.rect.y: (backgroundAnchor?.height ?? 0) - implicitHeight - (totalMargin - outMargin)
 
-        // Separar del borde global.
-        margins {
-            right: totalMargin - outMargin
-            bottom: totalMargin - outMargin
-        }
-
-        // Tamaño dinamico.
-        implicitWidth: 400
-        implicitHeight: notificationsLayout.height + (outMargin * 2)
+        // Tamaño dinamico
+        // Evita cuadrado negro cuando el compositor desactiva las transparencias.
+        implicitWidth: Notifications.popups.length > 0 ? 400 : 0
+        implicitHeight: Notifications.popups.length > 0 ? ((cardSize + cardSpacing) * cardCount) + (outMargin * 2) : 0
 
         color: "transparent"
+
+        // Escuchar señal de expiración para animar salida
+        Connections {
+            target: Notifications
+            function onNotificationExpiring(notif) {
+                for (let i = 0; i < listRepeater.count; i++) {
+                    const item = listRepeater.itemAt(i)
+                    if (item?.notif === notif) { item.animateOut(); break }
+                }
+            }
+        }
 
         // Columna Principal, para encadenar multiples Notificaciones.
         ColumnLayout {
             id: notificationsLayout
-            anchors.top: parent.top
+            anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: outMargin
+            spacing: 0
             
 
             Repeater {
                 id: listRepeater
-                model: Math.min(Notifications.popups.length, 3)
-
+                model: Notifications.popups.slice(0, cardCount + 1).reverse()
 
                 // Contenedor Principal.
                 delegate: Rectangle {
                     id: notificationsContainer
 
-                   property int reverseIndex: (listRepeater.model - 1) - index
-                   property var notif: Notifications.popups[reverseIndex]
-                   property string iconSource: notif ? (notif.image != "" ? notif.image : notif.appIcon) : ""
+                    property var notif: modelData
+                    property string iconSource: notif ? (notif.image !== "" ? notif.image : notif.appIcon) : ""
 
-                    opacity: hoverArea.containsMouse ? 1.0 : (1.0 - (reverseIndex * 0.25))
 
-                    Behavior on opacity { NumberAnimation { duration: 200 } }
+                    //  .-------------------------.
+                    //  | .---------------------. |
+                    //  | |     Animaciones     | |
+                    //  | `---------------------' |
+                    //  `-------------------------'
 
-                    MouseArea {
-                        id: hoverArea
-                        visible: notif.actions > []
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: Notifications.activate(notif)
+                    // Opacidad stack
+                    property real stackOpacity: {
+                        if (!notif.shownPopup) return 0
+                        const fadeIndex = listRepeater.count - 1 - index
+                        if (fadeIndex >= cardCount) return 1.0 - ((cardCount - 1) * 0.25)
+                        if (hoverArea.containsMouse) return 1.0
+                        if (closeArea.containsMouse) return 1.0
+                        return 1.0 - (fadeIndex * 0.25)
+                    }
+
+                    opacity: stackOpacity
+                    Behavior on stackOpacity { NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic } }
+
+                    // Animación de entrada/salida via height + opacity juntos
+                    Layout.preferredHeight: notif.shownPopup ? cardSize : 0
+                    Layout.bottomMargin: notif.shownPopup ? cardSpacing : 0
+
+                    Behavior on Layout.preferredHeight {
+                        NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic }
+                    }
+
+                    Behavior on Layout.bottomMargin {
+                        NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic }
+                    }
+
+                    Component.onCompleted: Qt.callLater(() => {
+                        notif.shownPopup = true
+                        notificationsContainer.stackOpacity = Qt.binding(() => {
+                            if (!notif.shownPopup) return 0
+                            if (hoverArea.containsMouse) return 1.0
+                            if (closeArea.containsMouse) return 1.0
+                            const fadeIndex = listRepeater.count - 1 - index
+                            if (fadeIndex >= cardCount) return 0
+                            return 1.0 - (fadeIndex * 0.25)
+                        })
+
+                        // colapsar height de la ultima cuando se rebasa cardCount
+                        const fadeIndex = listRepeater.count - 1 - index
+                        if (fadeIndex >= cardCount) {
+                            notif.shownPopup = false
+                        }
+                    })
+
+                    function animateOut() {
+                        notif.shownPopup = false
                     }
 
 
+                    // Mouse Actions
+                    MouseArea {
+                        id: hoverArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: notif.actions > [] ? Qt.PointingHandCursor : Qt.ArrowCursor
+                        onClicked: notif.activate()
+                    }
+
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 100
                     color: "transparent"
 
 
@@ -136,11 +198,11 @@ LazyLoader {
                     Loader {
                         anchors.fill: parent
                         active: Config.shadows.enabled
-
-                        sourceComponent:RectangularShadow {
+                        sourceComponent: RectangularShadow {
                             anchors.fill: parent
                             radius: cornerRadius
                             color: Config.shadows.color
+                            opacity: notificationsContainer.opacity
 
                             blur: 3
                             offset: Qt.vector2d(2, 2)
@@ -154,131 +216,154 @@ LazyLoader {
                         anchors.fill: parent
                         radius: cornerRadius
                         color: ThemeManager.colors.mantle
-                    }
+                        clip: true
 
-                    // InnerLine
-                    InnerLine {
-                        anchors.fill: parent
-                        lineradius: cornerRadius
-                        linewidth: 2
-                        linecolor: ThemeManager.colors.surface0
-                    }
-
-
-                    //  .-------------------------.
-                    //  | .---------------------. |
-                    //  | | Estructura de Notif | |
-                    //  | `---------------------' |
-                    //  `-------------------------'
-                    
-                    RowLayout {
-                        anchors.fill: parent
-                        anchors.margins: windowMargin
-                        spacing: windowMargin
-
-
-                        // Imagen o bell
-                        Text {
-                            visible: iconSource == ""
-                            text: "󰂚"
-                            color: ThemeManager.colors.peach
-                            font.family: ThemeManager.fonts.icons
-                            font.pixelSize: (parent.height -10 )
-                        }
-                        MaskedImage {
-                            visible: iconSource != ""
-                            Layout.preferredHeight: parent.height - 10
-                            Layout.preferredWidth: height
-
-                            imageRadius: itemRadius
-                            imageSource: iconSource
+                        // Decoración
+                        InnerLine {
+                            anchors.fill: parent
+                            lineradius: cornerRadius
+                            linewidth: 2
+                            linecolor: ThemeManager.colors.surface0
                         }
 
-                        // Cadenas de Texto
-                        ColumnLayout {
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignVCenter
-                            clip: true
-                            spacing: 0
-                            
-                            // AppName
-                            Text {
-                                text: notif.appName
-                                color: ThemeManager.colors.green
-                                font.family: ThemeManager.fonts.main
-                                font.pixelSize: 12
-                                Layout.fillWidth: true
-                                horizontalAlignment: Text.AlignLeft
-                            }
-
-                            // Title
-                            Text {
-                                text: notif.summary
-                                color: ThemeManager.colors.text
-                                font.family: ThemeManager.fonts.main
-                                font.pixelSize: 18
-                                Layout.fillWidth: true
-                                horizontalAlignment: Text.AlignLeft
-                            }
-
-                            // Content
-                            Text {
-                                text: notif.body
-                                color: ThemeManager.colors.text
-                                font.family: ThemeManager.fonts.main
-                                font.pixelSize: 14
-                                Layout.fillWidth: true
-                                horizontalAlignment: Text.AlignLeft
-                            }
-                        }
-
-                        // Close button.}
+                        // Timeout ProgressBar
                         Rectangle {
-                            id: closeBtn
-                            width: 23
-                            height: width
-                            color: ThemeManager.colors.surface0
-                            radius: 100
-                            Layout.alignment: Qt.AlignTop
+                            anchors.bottom: parent.bottom
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.leftMargin: cornerRadius
+                            anchors.rightMargin: cornerRadius
+                            height: 3
+                            radius: cornerRadius
+                            color: "transparent"
+                            
+                            // Timeout bar
+                            Rectangle {
+                                anchors.left: parent.left
+                                anchors.top: parent.top
+                                anchors.bottom: parent.bottom
+                                width: parent.width * notif.progress
+                                radius: cornerRadius
+                                color: Notifications.expireLock ? ThemeManager.colors.yellow : ThemeManager.colors.red
+                                Behavior on color { ColorAnimation { duration: 150 } }
+                            }
+                        }
+                        //  .-------------------------.
+                        //  | .---------------------. |
+                        //  | | Estructura de Notif | |
+                        //  | `---------------------' |
+                        //  `-------------------------'
+                        
+                        RowLayout {
+                            anchors.fill: parent
+                            anchors.margins: windowMargin
+                            spacing: windowMargin
 
+
+                            // Imagen o bell
                             Text {
-                                anchors.centerIn: parent
-                                text: ""
-                                color: ThemeManager.colors.text
+                                visible: iconSource === ""
+                                text: "󰂚"
+                                color: ThemeManager.colors.peach
                                 font.family: ThemeManager.fonts.icons
-                                font.pixelSize: 16
+                                font.pixelSize: parent.height - 10
                             }
 
-                            MouseArea {
-                                id: closeArea
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                hoverEnabled: true
-                                onClicked: notif.close()
+                            MaskedImage {
+                                visible: iconSource !== ""
+                                Layout.preferredHeight: parent.height - 10
+                                Layout.preferredWidth: height
+
+                                imageRadius: itemRadius
+                                imageSource: iconSource
                             }
 
-                            states: [
-                                State {
-                                    name: "hover"
-                                    when: closeArea.containsMouse && !closeArea.pressed
-                                    PropertyChanges {
-                                        target: closeBtn
-                                        color: ThemeManager.colors.surface1
-                                    }
-                                },
-                                State {
-                                    name: "pressed"
-                                    when: closeArea.pressed
-                                    PropertyChanges {
-                                        target: closeBtn
-                                        color: ThemeManager.colors.red
+                            // Cadenas de Texto
+                            ColumnLayout {
+                                Layout.fillWidth: true
+                                Layout.alignment: Qt.AlignVCenter
+                                clip: true
+                                spacing: 0
+                                
+                                // AppName
+                                Text {
+                                    text: notif.appName
+                                    color: ThemeManager.colors.green
+                                    font.family: ThemeManager.fonts.main
+                                    font.pixelSize: 12
+                                    Layout.fillWidth: true
+                                    horizontalAlignment: Text.AlignLeft
+                                    maximumLineCount: 1
+                                }
+
+                                // Title
+                                Text {
+                                    text: notif.summary
+                                    color: ThemeManager.colors.text
+                                    font.family: ThemeManager.fonts.main
+                                    font.pixelSize: 18
+                                    Layout.fillWidth: true
+                                    horizontalAlignment: Text.AlignLeft
+                                    maximumLineCount: 1
+                                }
+
+                                // Content
+                                Text {
+                                    text: notif.body
+                                    color: ThemeManager.colors.text
+                                    font.family: ThemeManager.fonts.main
+                                    font.pixelSize: 14
+                                    Layout.fillWidth: true
+                                    horizontalAlignment: Text.AlignLeft
+                                    maximumLineCount: 2
+                                }
+                            }
+
+                            // Close button.}
+                            Rectangle {
+                                id: closeBtn
+                                width: 23
+                                height: width
+                                color: ThemeManager.colors.surface0
+                                radius: 100
+                                Layout.alignment: Qt.AlignTop
+
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: ""
+                                    color: ThemeManager.colors.text
+                                    font.family: ThemeManager.fonts.icons
+                                    font.pixelSize: 16
+                                }
+
+                                MouseArea {
+                                    id: closeArea
+                                    anchors.fill: parent
+                                    cursorShape: Qt.PointingHandCursor
+                                    hoverEnabled: true
+                                    onClicked: {
+                                        notif.closeAfterExpire = true
+                                        notif.expire()
                                     }
                                 }
-                            ]
 
-                            transitions: Transition {
-                                ColorAnimation { duration: 250 }
-                            }
+                                states: [
+                                    State {
+                                        name: "hover"
+                                        when: closeArea.containsMouse && !closeArea.pressed
+                                        PropertyChanges { target: closeBtn; color: ThemeManager.colors.surface1 }
+                                    },
+                                    State {
+                                        name: "pressed"
+                                        when: closeArea.pressed
+                                        PropertyChanges { target: closeBtn; color: ThemeManager.colors.red }
+                                    }
+                                ]
+
+                                transitions: Transition {
+                                    ColorAnimation { duration: 250 }
+                                }
+                            }                      
                         }
                     }
                 }

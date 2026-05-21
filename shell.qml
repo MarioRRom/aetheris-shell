@@ -49,6 +49,13 @@ ShellRoot {
     // Obtener el Desktop en Ejecución, para cargar los Sockets.
     property string _session: (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
 
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |    Shell Configs    | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
     // Inicializar Sockets para asegurar que se carguen y apliquen configs
     property bool _initHyprSocket: _session.indexOf("hyprland") !== -1 ? HyprSocket.isActive : false
     property bool _initBspSocket: _session.indexOf("bspwm") !== -1 ? BspSocket.isActive : false
@@ -56,8 +63,16 @@ ShellRoot {
 
     property bool enableBar: true
     property bool enableBackground: true
+    property bool enableActivate: false
     property bool enablePopups: true
     property bool enableNightMode: false
+
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |    Shell Windows    | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     LazyLoader {
         active: enableNightMode
@@ -67,13 +82,15 @@ ShellRoot {
     }
 
     // Quickshell Background
-    Background { isActivated: enableBackground }
+    // DISCLAIMER. all overlays are connected to this element.
+    Background { id: background; isActivated: enableBackground }
 
     // Quickshell Bar
     TopBar { isActivated: enableBar }
 
+    // Active Linux easter egg
     Loader {
-        active: false
+        active: enableActivate
 
         sourceComponent: Activate {
         }
@@ -81,7 +98,7 @@ ShellRoot {
     }
 
     // Popup de Notificaciones.
-    NotificationsPopup { isActivated: enablePopups }
+    NotificationsPopup { isActivated: enablePopups; backgroundAnchor: background.backgroundAnchor }
     
 
     // Fix Stacking para BSPWM
