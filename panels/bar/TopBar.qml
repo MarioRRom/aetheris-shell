@@ -163,6 +163,7 @@ Scope {
                   anchor.window: topBarRoot
                   bar: topBarRoot
                   visible: true
+                  closeWidgets: function() { topBar.closeAllWidgets() }
                 }
               }
             }

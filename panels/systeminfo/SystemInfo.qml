@@ -44,9 +44,11 @@ import qs.themes
 //  `-------------------------'
 
 PopupWindow {
+    id: root
 
     // Config
     property var bar
+    property var closeWidgets: null
 
     // El Radius de la Ventana se Establece desde la Configuración global.
     property int globalCorners: Config.global.corners
@@ -287,6 +289,7 @@ PopupWindow {
                         texto: "Suspend"
                         comando: ["systemctl", "suspend"]
                         hovercolor: ThemeManager.colors.sky
+                        beforeCommand: root.closeWidgets
                     }
                 }
             }

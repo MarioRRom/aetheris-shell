@@ -44,6 +44,7 @@ WrapperMouseArea {
     property var icono
     property var comando
     property var hovercolor
+    property var beforeCommand: null
 
     // Config
     height: alto
@@ -52,7 +53,8 @@ WrapperMouseArea {
 
     // Acciones
     onClicked: {
-        Quickshell.execDetached(comando);
+        if (beforeCommand) beforeCommand()
+        if (comando) Quickshell.execDetached(comando);
     }
 
 
