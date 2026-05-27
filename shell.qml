@@ -30,13 +30,13 @@ import Quickshell.Io
 
 // Globales
 import qs.config
-import qs.panels
-import qs.overlays.notifications
-import qs.panels.background
-import qs.panels.bar
 import qs.modules
-import qs.modules.hyprland
-import qs.modules.bspwm
+import qs.modules.overlays.notifications
+import qs.modules.background
+import qs.modules.bar
+import qs.services
+import qs.services.hyprland
+import qs.services.bspwm
 
 
 //  .-------------------------.

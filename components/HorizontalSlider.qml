@@ -32,7 +32,7 @@ import Quickshell.Widgets
 // Globales
 import qs.config
 import qs.components
-import qs.modules
+import qs.services
 import qs.themes
 
 
