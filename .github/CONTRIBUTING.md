@@ -14,4 +14,4 @@ All contributions are welcome, as long as they have a clear goal and are well ex
   If the PR includes more than one change, highlight the main one and describe the rest in the PR description.
 - Keep the code style consistent.  
   The project aims for clean, readable code, with comments where needed to help others understand it.
-  For detailed coding conventions, architecture practices, and formatting rules, see: [CODING_GUIDELINES.md](.github/CODING_GUIDELINES.md)
+  For detailed coding conventions, architecture practices, and formatting rules, see: [CODING_GUIDELINES.md](CODING_GUIDELINES.md)
