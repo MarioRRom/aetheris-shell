@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -24,37 +24,39 @@ import Quickshell
 import Quickshell.Services.Notifications
 import QtQuick
 
+// Config
+import qs.i18n
+
 QtObject {
     id: root
 
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |   Config / State    | |
+    //  | |   Config & State    | |
     //  | `---------------------' |
     //  `-------------------------'
 
-    property bool dnd: false            // Do Not Disturb
+    property bool dnd: false // Do Not Disturb
 
-    // Lista principal de notificaciones
-    // cada entrada es un objeto wrapper
+    // Main notification list
+    // each entry is a wrapper object
     property list<QtObject> list: []
 
-    // Derivados útiles
+    // Useful derivatives
     readonly property list<QtObject> popups: list.filter(n => n.popup)
     readonly property list<QtObject> history: list.filter(n => !n.popup)
 
-    // Popups Settings
+    // Popup Settings
 
     property int popupAnimDuration: 350
     property int popupTimeoutLow: 3000
     property int popupTimeoutNormal: 5000
     property int popupTimeoutCritical: 0
 
-    property bool expireLock: false // Helper para la cola de Expiraciones
+    property bool expireLock: false // Helper for the expiration queue
 
     // Signals
-
     signal newNotification(var notif)
     signal notificationRemoved(var notif)
     signal notificationExpiring(var notif)
@@ -145,7 +147,7 @@ QtObject {
         //  | `---------------------' |
         //  `-------------------------'
 
-        // Animación de timeout de popup frontend
+        // Frontend popup timeout animation
         readonly property NumberAnimation progressAnim: NumberAnimation {
             target: self
             property: "progress"
@@ -157,7 +159,7 @@ QtObject {
             onFinished: self.expire()
         }
 
-        // Delay de salida sincronizado con la animación del popup frontend
+        // Exit delay synced with frontend popup animation
         readonly property Timer expireDelay: Timer {
             interval: root.popupAnimDuration
             onTriggered: {
@@ -222,7 +224,7 @@ QtObject {
             function onBodyChanged() { self.body = notification.body }
             function onAppNameChanged() {
                 const desktopEntry = (notification.hints || {})["desktop-entry"]
-                self.appName = notification.appName || desktopEntry || "System"
+                self.appName = notification.appName || desktopEntry || LanguageManager.t("notifications.system")
             }
             function onAppIconChanged() { self.appIcon = notification.appIcon }
             function onImageChanged() { self.image = notification.image }
@@ -244,7 +246,7 @@ QtObject {
             summary = notification.summary
             body = notification.body
             const desktopEntry = (notification.hints || {})["desktop-entry"]
-            appName = notification.appName || desktopEntry || "System"
+            appName = notification.appName || desktopEntry || LanguageManager.t("notifications.system")
             appIcon = notification.appIcon
             image = notification.image
             urgency = notification.urgency

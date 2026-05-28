@@ -11,10 +11,12 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
+// A masked image with rounded borders
+
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -34,7 +36,7 @@ Image {
     smooth: false
     fillMode: imageFill
 
-    // Ruta de la Imagen
+    // Image Path
     source: imageSource
 
     layer.enabled: true

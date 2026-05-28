@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -49,7 +49,7 @@ Item {
         sinks: []
     })
     
-    // Mapeo
+    // Mapping
     readonly property var availableSinks: nodesMap.sinks
     readonly property var availableSources: nodesMap.sources
 
@@ -62,35 +62,31 @@ Item {
     readonly property bool muted: !!sink?.audio?.muted
     readonly property string deviceName: sink ? sink.description : "No device"
     
-    // Microfono
+    // Microphone
     readonly property real micVolume: source?.audio?.volume ?? 0.0
     readonly property int micVolumePercent: Math.round(micVolume * 100)
-    readonly property bool micMuted: !!source?.audio?.muted
-
-
-    // Asignamiento de Iconos
-
+    
+    // Icons
     readonly property string icon: {
-        if (muted) return "󰖁"
-        if (volumePercent === 0) return "󰝟"
-        if (volumePercent < 25) return "󰕿"
-        if (volumePercent < 50) return "󰖀"
-        if (volumePercent < 75) return "󰕾"
+        if (muted) return "󰝟"
+        if (volumePercent <= 0) return "󰝟"
+        if (volumePercent <= 33) return "󰕿"
+        if (volumePercent <= 66) return "󰖀"
         return "󰕾"
     }
-
+    
     readonly property string iconMic: {
-        if (micMuted) return "󰍭"
+        if (source?.audio?.muted) return "󰍭"
+        if (micVolumePercent <= 0) return "󰍭"
+        if (micVolumePercent <= 33) return "󰍬"
         return "󰍬"
     }
     
-    // Tracker de Nodos
+    // Node Tracker
     PwObjectTracker {
         objects: [...root.availableSinks, ...root.availableSources]
     }
-    
-    // Funciones de Audio
-
+    // Audio Functions
     function setVolume(vol) {
         if (sink?.ready && sink?.audio) {
             var newVol = Math.max(0.0, Math.min(1.5, vol))
@@ -99,22 +95,22 @@ Item {
     }
     
     function setVolumePercent(percent) { setVolume(percent / 100.0) }
-
+    
     function incrementVolume(stepPercent = 5) {
         if (volumePercent != 100) {
-        setVolumePercent(volumePercent + stepPercent)
+            setVolumePercent(volumePercent + stepPercent)
         }
     }
-
+    
     function decrementVolume(stepPercent = 5) { setVolumePercent(volumePercent - stepPercent) }
     
     function toggleMute() {
-        if (sink?.ready && sink?.audio) {
+        if (sink && sink.ready && sink.audio) {
             sink.audio.muted = !sink.audio.muted
         }
     }
-
-    // Funciones de Microfono.
+    
+    // Microphone Functions
 
     function setVolumeMic(vol) {
         if (source?.ready && source?.audio) {

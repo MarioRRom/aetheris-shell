@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -37,11 +37,11 @@ Variants {
             id: bgRoot
             screen: modelData
 
-            // Abajo de todo
+            // Below everything
             aboveWindows: true
             exclusionMode: ExclusionMode.Ignore
             
-            // Fullscreen en cada monitor
+            // Fullscreen on each monitor
             anchors {
                 top: true
                 bottom: true
@@ -57,7 +57,7 @@ Variants {
                 color: Qt.rgba(1.0, 0.5, 0.3, 0.15)
             }
 
-            // Dimmer (Brillo - Negro con opacidad)
+            // Dimmer (Brightness - Black with opacity)
             Rectangle {
                 anchors.fill: parent
                 color: Qt.rgba(0, 0, 0, 0.15)

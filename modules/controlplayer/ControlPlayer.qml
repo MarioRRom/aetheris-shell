@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -29,6 +29,7 @@ import QtQuick.Effects
 import qs.config
 import qs.components
 import qs.themes
+import qs.i18n
 import qs.services
 
 
@@ -42,25 +43,25 @@ PopupWindow {
     property string currentView: "player"
 
 
-    // El Radius de la Ventana se Establece desde la Configuración global.
+    // Window Radius is set from the global Configuration.
     property int globalCorners: Config.global.corners
     property int globalMargin: Config.global.margins
     property int cornerRadius: globalCorners - globalMargin
     
-    property int windowMargin: 10 // Margen interno.
+    property int windowMargin: 10 // Internal margin.
     property int itemRadius: cornerRadius - windowMargin
 
     implicitWidth: 290
     implicitHeight: currentView === "player" ? 100 : playerList.contentHeight < 100 ? 100 : (playerList.contentHeight + (windowMargin * 2) + 10)
     
     anchor.window: bar
-    anchor.rect.x: globalPos - (width - 200) // 5px por el margin en el Contenedor Principal.
-    anchor.rect.y: bar.height + (globalMargin - 5) //5px por el Margin del Contenedor Principal.
+    anchor.rect.x: globalPos - (width - 200) // 5px for the margin in the Main Container.
+    anchor.rect.y: bar.height + (globalMargin - 5) //5px for the Margin of the Main Container.
     
     color: "transparent"
 
 
-    // Contenedor Principal
+    // Main Container
     Rectangle {
         id: conPlayer
         anchors.fill: parent
@@ -68,7 +69,7 @@ PopupWindow {
         color: "transparent"
         clip: false
         
-        // Sombreado
+        // Shadow
         Loader {
             anchors.fill: parent
             active: Config.shadows.enabled
@@ -85,13 +86,13 @@ PopupWindow {
             }
         }
 
-        // Contenido de la Ventana
+        // Window Content
         Rectangle {
             anchors.fill: parent
             radius: cornerRadius
             color: ThemeManager.colors.mantle
 
-            // Decoración
+            // Decoration
             InnerLine {
                 anchors.fill: parent
                 lineradius: cornerRadius
@@ -99,7 +100,7 @@ PopupWindow {
                 linecolor: ThemeManager.colors.surface0
             }
 
-            // Columna principal (Player)
+            // Main column (Player)
             ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: windowMargin
@@ -317,7 +318,7 @@ PopupWindow {
                 clip: true
                 spacing: 5
 
-                // Asumiendo que Mpris expone una lista de reproductores llamada 'players'
+                // Assuming Mpris exposes a list of players called 'players'
                 model: Mpris.allPlayers
 
                 delegate: Rectangle {
@@ -329,8 +330,8 @@ PopupWindow {
 
                     Text {
                         anchors.centerIn: parent
-                        // Muestra el nombre del reproductor (ej. "Spotify")
-                        text: modelData.identity || "Unknown" 
+                        // Shows the player name (e.g. "Spotify")
+                        text: modelData.identity || LanguageManager.t("weather.unknown") 
                         color: ThemeManager.colors.text
                         font.family: ThemeManager.fonts.main
                         font.bold: true

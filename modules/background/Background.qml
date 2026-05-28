@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -23,18 +23,21 @@ import QtQuick
 import QtQuick.Effects
 import Quickshell
 
-// Global
+// Config
 import qs.config
 import qs.themes
 
 Variants {
     id: root
+
     model: Quickshell.screens
+
     property bool isActivated: false
     property QtObject backgroundAnchor: null
 
     LazyLoader {
         active: isActivated
+
         required property var modelData
 
         component: PanelWindow {
@@ -43,11 +46,11 @@ Variants {
             screen: modelData
             Component.onCompleted: if (!root.backgroundAnchor) root.backgroundAnchor = bgRoot
 
-            // Abajo de todo
+            // Below everything
             aboveWindows: false
             exclusionMode: ExclusionMode.Ignore
             
-            // Fullscreen en cada monitor
+            // Fullscreen on each monitor
             anchors {
                 top: true
                 bottom: true
@@ -70,10 +73,10 @@ Variants {
                 id: backgroundContainer
                 anchors.fill: parent
                 
-                //fix cuando la barra esta maximizada.
+                //fix when the bar is maximized.
                 anchors.topMargin: Config.topBar.state === "maximized" ? Config.topBar.height : 0
 
-                // Bordeado cuando la barra esta maximizada.
+                // Border when the bar is maximized.
                 anchors.leftMargin: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
                 anchors.rightMargin: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
                 anchors.bottomMargin: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
@@ -123,11 +126,12 @@ Variants {
                 //  | |  Background Shadow  | |
                 //  | `---------------------' |
                 //  `-------------------------'
-
+                
+                // Border shadow
                 Loader {
                     id: backgroundShadow
                     anchors.fill: parent 
-                    // Solo cuando la barra esta Maximizada
+                    // Only when the bar is Maximized
                     active: Config.shadows.enabled && Config.topBar.state === "maximized"
 
                     sourceComponent: Rectangle {
@@ -148,15 +152,8 @@ Variants {
                         }
                     }
                 }
-
-
-                //  .-------------------------.
-                //  | .---------------------. |
-                //  | |      Bar Shadow     | |
-                //  | `---------------------' |
-                //  `-------------------------'
                 
-                // Sombra de la barra en float.
+                // Bar shadow in float mode.
                 Loader {
                     id: barShadows
                     anchors.fill: parent

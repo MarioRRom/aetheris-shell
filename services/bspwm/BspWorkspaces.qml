@@ -11,14 +11,14 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-// Workspaces indicator para bspwm usando socket directo
-// Refactorizado para usar BspSocket singleton en lugar de scripts externos
-// Gracias a Catdeal3r por ayudarme. https://github.com/catdeal3r
+// Workspaces indicator for bspwm using direct socket
+// Refactored to use BspSocket singleton instead of external scripts
+// Thanks to Catdeal3r for helping. https://github.com/catdeal3r
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Módulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -26,7 +26,7 @@
 import QtQuick
 import Quickshell
 
-// Globales
+// Config
 import qs.themes
 import qs.services.bspwm
 
@@ -35,22 +35,22 @@ Row {
     id: iconRow
     spacing: 7
     
-    // Propiedad pública: nombre del monitor
+    // Public property: monitor name
     property string monitorName: ""
     
-    // Datos internos
-    property var workspaceNames: []     // Nombres de los workspaces (1, 2, 3...)
-    property var workspaceIds: []       // IDs hexadecimales
-    property var occupiedWorkspaces: [] // Workspaces con ventanas
-    property string focusedWorkspace: "" // Workspace actualmente enfocado
+    // Internal data
+    property var workspaceNames: []     // Workspace names (1, 2, 3...)
+    property var workspaceIds: []       // Hex IDs
+    property var occupiedWorkspaces: [] // Workspaces with windows
+    property string focusedWorkspace: "" // Currently focused workspace
     
-    // Alias para compatibilidad
+    // Alias for compatibility
     readonly property string bspwmName: monitorName
 
     
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |   Layout Visual     | |
+    //  | |   Visual Layout     | |
     //  | `---------------------' |
     //  `-------------------------'
         
@@ -74,55 +74,57 @@ Row {
         }
     }
     
+
     //  .-------------------------.
     //  | .---------------------. |
-    //  | | Conexión de Socket  | |
+    //  | |  Socket Connection  | |
     //  | `---------------------' |
     //  `-------------------------'
     
     Connections {
         target: BspSocket
         
-        // Cuando se actualizan los workspaces
+        // When workspaces are updated
         function onWorkspacesUpdated(monitor) {
             if (monitor !== monitorName) return
             
             var data = BspSocket.workspaceData[monitor]
             if (!data) return
             
-            // Actualizar datos disponibles
+            // Update available data
             if (data.names) workspaceNames = data.names
             if (data.ids) workspaceIds = data.ids
             if (data.occupied) occupiedWorkspaces = data.occupied
             if (data.focused) focusedWorkspace = data.focused
             
-            // Continuar con la siguiente query SOLO después de actualizar
+            // Continue with the next query ONLY after updating
             executeNextQuery()
         }
         
-        // Cuando cambia el desktop enfocado
+        // When focused desktop changes
         function onDesktopFocused(monitorId, desktopId, desktopName) {
-            // Si el desktop pertenece a este monitor, actualizar el foco
+            // If the desktop belongs to this monitor, update focus
             var idx = workspaceIds.indexOf(desktopId)
             if (idx !== -1) {
                 focusedWorkspace = workspaceNames[idx]
             }
         }
         
-        // Cuando cambian los nodos
+        // When nodes change
         function onNodeChanged() {
-            queryStep = 2  // Solo actualizar ocupados
+            queryStep = 2  // Only update occupied
             executeNextQuery()
         }
     }
     
+
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |     Funciones       | |
+    //  | |      Functions      | |
     //  | `---------------------' |
     //  `-------------------------'
     
-    // Cambiar a un workspace
+    // Switch to a workspace
     function switchTo(index) {
         if (index >= 0 && index < workspaceIds.length) {
             BspSocket.switchDesktop(workspaceIds[index])
@@ -131,10 +133,10 @@ Row {
     
 
     
-    // Estado de la query en progreso
+    // Query in progress state
     property int queryStep: 0
     
-    // Query completo de datos del workspace (SECUENCIAL)
+    // Full workspace data query (SEQUENTIAL)
     function queryWorkspaceData() {
         if (monitorName === "") return
         queryStep = 0
@@ -166,19 +168,20 @@ Row {
         queryStep++
     }
     
+
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |   Inicialización    | |
+    //  | |   Initialization    | |
     //  | `---------------------' |
     //  `-------------------------'
     
     Component.onCompleted: {
-        console.log("Bspwm workspaces inicializado para monitor:", monitorName)
+        console.log("Bspwm workspaces initialized for monitor:", monitorName)
         queryWorkspaceData()
 
     }
     
-    // Refrescar cuando cambia el monitor
+    // Refresh when monitor changes
     onMonitorNameChanged: {
         if (monitorName !== "") {
             Qt.callLater(() => {

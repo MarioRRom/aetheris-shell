@@ -11,15 +11,14 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-
-//@ pragma Env QSG_RENDER_LOOP=threaded
-//@ pragma Env QT_QUICK_FLICKABLE_WHEEL_DECELERATION=10000
+//@ pragma Env QT_FFMPEG_DECODING_HW_DEVICE_TYPES=vaapi,vdpau
+//@ pragma Env QT_FFMPEG_ENCODING_HW_DEVICE_TYPES=vaapi,vdpau
 //@ pragma UseQApplication
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -28,8 +27,9 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
-// Globales
+// Config
 import qs.config
+import qs.i18n
 import qs.modules
 import qs.modules.overlays.notifications
 import qs.modules.background
@@ -46,7 +46,7 @@ import qs.services.bspwm
 //  `-------------------------'
 
 ShellRoot {
-    // Obtener el Desktop en Ejecución, para cargar los Sockets.
+    // Get the running Desktop session to load the Sockets.
     property string _session: (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
 
 
@@ -56,7 +56,7 @@ ShellRoot {
     //  | `---------------------' |
     //  `-------------------------'
 
-    // Inicializar Sockets para asegurar que se carguen y apliquen configs
+    // Initialize Sockets to ensure configs are loaded and applied
     property bool _initHyprSocket: _session.indexOf("hyprland") !== -1 ? HyprSocket.isActive : false
     property bool _initBspSocket: _session.indexOf("bspwm") !== -1 ? BspSocket.isActive : false
 
@@ -97,17 +97,23 @@ ShellRoot {
 
     }
 
-    // Popup de Notificaciones.
+    // Notifications Popup.
     NotificationsPopup { isActivated: enablePopups; backgroundAnchor: background.backgroundAnchor }
-    
 
-    // Fix Stacking para BSPWM
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |    X11 Aditional    | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
+    // Fix Stacking for BSPWM
     Process {
         id: fixStacking
         command: ["sh", Qt.resolvedUrl("scripts/fix_stacking.sh").toString().replace("file://", "")]
     }
 
-    // Cargar Picom (X11)
+    // Load Picom (X11)
     Loader {
         active: _session.indexOf("bspwm") !== -1
         sourceComponent: Picom {}

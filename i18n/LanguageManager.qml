@@ -19,26 +19,36 @@
 //  `-------------------------'
 
 // Quickshell
+pragma Singleton
 import QtQuick
-import Quickshell.Widgets
 
 // Config
-import qs.themes
+import qs.config
+import qs.i18n.translations as Translations
 
+QtObject {
+    id: languageManager
 
-// System Info
-WrapperMouseArea{
-    cursorShape: Qt.PointingHandCursor
-    anchors.verticalCenter: parent.verticalCenter
+    // active language
+    property string currentLanguage: Config.global.language
 
-    onClicked: {
-        sysInfoLoader.active = !sysInfoLoader.active
+    // loaded languages
+    readonly property var english: Translations.English {}
+    readonly property var spanish: Translations.Spanish {}
+
+    // current language
+    readonly property var current: {
+        switch(currentLanguage) {
+            case "spanish": return spanish
+            case "english": return english
+            default: return english
+        }
     }
 
-    Text {
-        text: "󰣇"
-        color: ThemeManager.colors.blue
-        font.family: ThemeManager.fonts.icons
-        font.pixelSize: 24
+    // translation with fallback
+    function t(key) {
+        return current.data[key]
+            || english.data[key]
+            || key
     }
 }

@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -22,6 +22,9 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+
+// Config
+import qs.i18n
 
 ShellRoot {
     Variants {
@@ -56,13 +59,13 @@ ShellRoot {
                 id: content
 
                 Text {
-                    text: "Activate Linux"
+                    text: LanguageManager.t("activate.title")
                     color: "#50ffffff"
                     font.pointSize: 22
                 }
 
                 Text {
-                    text: "Go to Settings to activate Linux"
+                    text: LanguageManager.t("activate.subtitle")
                     color: "#50ffffff"
                     font.pointSize: 14
                 }

@@ -14,14 +14,14 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Módulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
 // Quickshell
 import QtQuick
 
-// Globales
+// Config
 import qs.themes
 import qs.services.bspwm
 

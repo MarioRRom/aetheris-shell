@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -23,7 +23,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.themes
 import qs.services
 import qs.services.bspwm

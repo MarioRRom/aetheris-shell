@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -30,47 +30,46 @@ import qs.config
 QtObject {
     id: root
 
-    // Propiedad pública para saber si Hyprland está activo
+    // Public property to know if Hyprland is active
     property bool isActive: false
 
-    // FIX: si es numero negativo se devuelve 0
+    // FIX: if negative number, returns 0
     property int globalRounding: (Config.global.corners - Config.global.margins)
     property int calculedRounding: globalRounding > 0 ? globalRounding : 0
 
-    // === FUNCIONES PÚBLICAS ===
 
-    /**
-     * Envía un comando "keyword" a Hyprland.
-     * @param {string} cmd - El comando completo (ej. "general:gaps_out 20")
-     */
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |  Public Functions   | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
+    // Sends a "keyword" command to Hyprland.
+    // @param {string} cmd - The full command (e.g. "general:gaps_out 20")
     function sendCommand(cmd) {
         if (isActive) {
-            // Usamos el singleton de Hyprland para despachar comandos
-            // Usamos 'exec' para llamar a hyprctl ya que 'keyword' no es un dispatcher directo
+            // Use the Hyprland singleton to dispatch commands
+            // Use 'exec' to call hyprctl since 'keyword' is not a direct dispatcher
             Hyprland.dispatch("exec hyprctl keyword " + cmd)
         }
     }
 
-    /**
-     * Establece los gaps_out (márgenes externos).
-     * Hyprland acepta formato: top,right,bottom,left
-     */
+    // Sets the gaps_out (external margins).
+    // Hyprland accepts format: top,right,bottom,left
     function setGaps(top, right, bottom, left) {
         var gaps = top + "," + right + "," + bottom + "," + left
         sendCommand("general:gaps_out " + gaps)
     }
 
-    /**
-     * Convierte color Hex (#RRGGBB o #AARRGGBB) a formato Hyprland 0xAARRGGBB.
-     * Qt usa #AARRGGBB, que coincide con el formato legacy de Hyprland 0xAARRGGBB.
-     */
+    // Converts Hex color (#RRGGBB or #AARRGGBB) to Hyprland format 0xAARRGGBB.
+    // Qt uses #AARRGGBB, which matches Hyprland's legacy format 0xAARRGGBB.
     function toHyprColor(c) {
         var col = c.toString()
         if (col.startsWith("#")) {
             col = col.substring(1)
         }
 
-        // RRGGBB -> 0xffRRGGBB (Opaco)
+        // RRGGBB -> 0xffRRGGBB (Opaque)
         if (col.length === 6) {
             return "0xff" + col
         }
@@ -124,13 +123,11 @@ QtObject {
         }
     }
 
-    /**
-     * Lee la configuración global y la aplica a Hyprland.
-     */
+    // Reads global config and applies it to Hyprland.
     function updateHyprlandSettings() {
         if (!isActive) return
 
-        // Establecer gaps (con fix del wallborder)
+        // Set gaps (with wallborder fix)
         setGaps(
             Config.global.margins, 
             Config.global.margins + (Config.topBar.state === "maximized" ? Config.global.wallborder : 0), 
@@ -138,12 +135,12 @@ QtObject {
             Config.global.margins + (Config.topBar.state === "maximized" ? Config.global.wallborder : 0)
         )
 
-        // Bordes
+        // Borders
         setBorderSize(Config.windows.borderWidth)
         setBorderColors(Config.windows.focusedColor, Config.windows.activeColor)
 
-        // Corner Radius, (calculo Automatico para Hug Corners)
-        // FIX: si el calculo da negativo se devuelve 0
+        // Corner Radius (automatic calculation for Hug Corners)
+        // FIX: if calculation is negative, returns 0
         setRounding(calculedRounding)
 
         // Shadows
@@ -161,10 +158,8 @@ QtObject {
         setFading(Config.windows.enableFading)
     }
 
-    // === INICIALIZACIÓN ===
-
     Component.onCompleted: {
-        // Verificar si estamos en Hyprland
+        // Check if we are in Hyprland
         var session = (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
         
         if (session.indexOf("hyprland") !== -1) {

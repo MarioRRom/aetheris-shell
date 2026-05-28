@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -35,7 +35,7 @@ Item {
         smooth: false
         fillMode: Image.PreserveAspectCrop
 
-        // Ruta del wallpaper
+        // Wallpaper Path
         source: sourceWallpaper
     }
 
@@ -47,7 +47,7 @@ Item {
         loops: MediaPlayer.Infinite
         fillMode: VideoOutput.PreserveAspectCrop
 
-        // Ruta del video de fondo
+        // Wallpaper Path
         source: sourceWallpaper
     }
 }

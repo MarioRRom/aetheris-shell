@@ -12,7 +12,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -23,7 +23,7 @@ import Quickshell
 import Quickshell.Widgets
 
 
-// Globales
+// Config
 import qs.config
 import qs.themes
 import qs.components
@@ -31,36 +31,36 @@ import qs.components
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Preset de Botones  | |
+//  | |    Button Preset    | |
 //  | `---------------------' |
 //  `-------------------------'
 
 WrapperMouseArea {
     id: button
 
-    // Importar propiedades
-    property int alto
-    property var texto
-    property var icono
-    property var comando
-    property var hovercolor
+    // Import properties
+    property int btnHeight
+    property var btnText
+    property var icon
+    property var command
+    property var hoverColor
     property var beforeCommand: null
 
     // Config
-    height: alto
+    height: btnHeight
     cursorShape: Qt.PointingHandCursor
     hoverEnabled: true
 
     // Acciones
     onClicked: {
         if (beforeCommand) beforeCommand()
-        if (comando) Quickshell.execDetached(comando);
+        if (command) Quickshell.execDetached(command);
     }
 
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |  Diseño de Botones  | |
+    //  | |    Button Layout    | |
     //  | `---------------------' |
     //  `-------------------------'
 
@@ -68,7 +68,7 @@ WrapperMouseArea {
         id: buttonContainer
         color: "transparent"
 
-        // Sombreado
+        // Shadow
         RectangularShadow {
             anchors.fill: parent
             radius: itemRadius
@@ -89,7 +89,7 @@ WrapperMouseArea {
             radius: itemRadius
             clip: true
 
-            // Decoración
+            // Decoration
             InnerLine {
                 anchors.fill: parent
                 lineradius: itemRadius
@@ -97,7 +97,7 @@ WrapperMouseArea {
                 linecolor: ThemeManager.colors.surface0
             }
 
-            // Coloreado para Hover y Pressed
+            // Coloring for Hover and Pressed
             Rectangle {
                 id: colorOverlay
                 anchors.fill: parent
@@ -116,14 +116,14 @@ WrapperMouseArea {
                 }
             }
 
-            // Contenido 
+            // Content 
             Row {
                 spacing: 5
                 anchors.centerIn: parent
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
-                    text: icono
+                    text: icon
                     color: ThemeManager.colors.text
                     font.family: ThemeManager.fonts.icons
                     font.pixelSize: 15
@@ -131,7 +131,7 @@ WrapperMouseArea {
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
-                    text: texto
+                    text: btnText
                     color: ThemeManager.colors.text
                     font.family: ThemeManager.fonts.main
                     font.pixelSize: 15
@@ -146,8 +146,8 @@ WrapperMouseArea {
             when: button.containsMouse && !button.pressed
             PropertyChanges {
                 target: colorOverlay
-                color: hovercolor
-                opacity: 0.3 // Opacidad para el hover (30%)
+                color: hoverColor
+                opacity: 0.3 // Hover opacity (30%)
             }
             },
             State {
@@ -155,7 +155,7 @@ WrapperMouseArea {
             when: button.pressed
             PropertyChanges {
                 target: colorOverlay
-                color: hovercolor
+                color: hoverColor
                 opacity: 0.8
             }
             }

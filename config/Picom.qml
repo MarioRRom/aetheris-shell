@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -22,7 +22,7 @@
 import QtQuick
 import Quickshell.Io
 
-// Globales
+// Config
 import qs.config
 
 
@@ -46,16 +46,16 @@ QtObject {
     //  | `---------------------' |
     //  `-------------------------'
 
-    // Función para modificar una línea específica manteniendo el formato
-    // file: Archivo .conf
-    // line: Número de línea a modificar
-    // key: Clave para verificar (y mantener indentación/formato)
-    // value: Nuevo valor
+    // Function to modify a specific line while preserving formatting
+    // file: .conf file
+    // line: Line number to modify
+    // key: Key to verify (and keep indentation/format)
+    // value: New value
     function setConfig(file, line, key, value) {
         var filePath = Qt.resolvedUrl(picomDir + file).toString().replace("file://", "")
         
         // sed -i 'Ns/^\(\s*key\s*=\s*\)[^;]*/\1value/' file
-        // Busca en la línea 'line', si coincide con 'key = ...', reemplaza el valor conservando lo previo.
+        // Search line 'line', if it matches 'key = ...', replace value preserving the previous part.
         var cmd = "sed -i '" + line + "s/^\\(\\s*" + key + "\\s*=\\s*\\)[^;]*/\\1" + value + "/' " + filePath
 
         var proc = Qt.createQmlObject('import Quickshell.Io; Process {}', root)
@@ -64,7 +64,12 @@ QtObject {
         proc.onExited.connect(() => proc.destroy())
     }
 
-    // --- Funciones Específicas ---
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | | Specific Functions  | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     // Blur ON/OFF
     function setBlur(value) {
@@ -96,7 +101,7 @@ QtObject {
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | | Cargar QML Settings | |
+    //  | |  Load QML Settings  | |
     //  | `---------------------' |
     //  `-------------------------'
 
@@ -113,23 +118,22 @@ QtObject {
     //  | `---------------------' |
     //  `-------------------------'
 
-    // Matar el proceso de Picom si esta en Ejecución.
+    // Kill the Picom process if it is running.
     property Process killPicom: Process {
         command: ["killall", "-q", "picom"]
         onExited: startPicom.running = true
     }
 
-    // Arrancar Picom con el archivo de configuración.
+    // Start Picom with the configuration file.
     property Process startPicom: Process {
         command: ["picom", "--config", picomFile.toString().replace("file://", "")]
         
-        // Logs para depuración en la consola de Quickshell
+        // Logs for debugging in the Quickshell console
         stdout: SplitParser { onRead: data => console.log("[Picom]: " + data) }
         stderr: SplitParser { onRead: data => console.error("[Picom Error]: " + data) }
     }
 
     Component.onCompleted: {
-        console.log("[Picom]: Gestionando ciclo de vida.")
         killPicom.running = true
         updatePicomSettings()
     }

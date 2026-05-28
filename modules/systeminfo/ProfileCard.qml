@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -23,9 +23,10 @@ import QtQuick
 import QtQuick.Effects
 import Quickshell
 
-// Global
+// Config
 import qs.components
 import qs.themes
+import qs.i18n
 import qs.services
 
 
@@ -44,7 +45,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         spacing: 14
 
-        // Profile Photo //
+        // Profile Photo
         MaskedImage {
             width: 80
             height: 80
@@ -53,7 +54,7 @@ Item {
             imageSource: "file:///home/mario/.face"
         }
 
-        // User Info //
+        // User Info
         Column {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 1
@@ -65,7 +66,7 @@ Item {
                 font.pixelSize: 23
             }
             Text {
-                text: "welcome to " + SystemStatus.distro
+                text: LanguageManager.t("profilecard.welcome") + SystemStatus.distro
                 color: ThemeManager.colors.subtext1
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 14

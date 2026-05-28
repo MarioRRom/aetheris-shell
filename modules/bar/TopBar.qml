@@ -11,16 +11,15 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-
-// IRMINSUL: El eje del mundo.
-// La estructura superior que sostiene la red de información. 
-// Actúa como la rama principal desde donde cuelgan los frutos 
-// del conocimiento (Akasha) y las leyes de la realidad (Khemia).
+// IRMINSUL: The axis of the world.
+// The upper structure that holds the information network. 
+// Acts as the main branch from which the fruits 
+// of knowledge Akasha and the laws of reality Khemia hang.
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -29,7 +28,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
-// Globales
+// Config
 import qs.components
 import qs.config
 import qs.themes
@@ -45,7 +44,7 @@ import qs.modules.controlplayer
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |Crear Barra Superior | |
+//  | |   Create Top Bar    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -53,7 +52,7 @@ Scope {
   id: topBar
 
 
-  // IPC Handler(para atajos de teclado) //
+  // IPC Handler(for keyboard shortcuts)
   signal closeAllWidgets()
   IpcHandler {
     target: "bar"
@@ -62,7 +61,7 @@ Scope {
     }
   }
 
-  property string panelState: Config.topBar.state // "maximized" o "float"
+  property string panelState: Config.topBar.state // "maximized" or "float"
   property bool isActivated: false
 
   Variants {
@@ -82,12 +81,12 @@ Scope {
 
         //  .-------------------------.
         //  | .---------------------. |
-        //  | | Estilo de la Barra  | |
+        //  | |      Bar Style      | |
         //  | `---------------------' |
         //  `-------------------------'
       
-        // el sombreado y los Hug Corners
-        // se encuentran en el Background.qml
+        // the shadow and Hug Corners
+        // are in Background.qml
 
         anchors {
           top: true
@@ -103,7 +102,7 @@ Scope {
 
         //  .-------------------------.
         //  | .---------------------. |
-        //  | |Contenido de la Barra| |
+        //  | |     Bar Content     | |
         //  | `---------------------' |
         //  `-------------------------'
 
@@ -113,7 +112,7 @@ Scope {
           property int cornerRadius: 0
 
 
-          // Background de la Barra //
+          // Background
           Rectangle {
             id: barBackground
             anchors.fill: parent
@@ -121,14 +120,14 @@ Scope {
             radius: topBarContent.cornerRadius
           }
 
-          // Irminsul Animation //
+          // Akasha Animation
           AkashaPulse {
             id: irmiPulse
             anchors.fill: parent
 
           }
 
-          // Maximized State //
+          // Maximized State
           anchors {
             left: parent.left
             right: parent.right
@@ -136,9 +135,10 @@ Scope {
             bottom: undefined
           }
 
+
           //  .-------------------------.
           //  | .---------------------. |
-          //  | | Elementos Izquierda | |
+          //  | |    Left Elements    | |
           //  | `---------------------' |
           //  `-------------------------'
 
@@ -151,10 +151,9 @@ Scope {
 
             spacing: 5
 
-            // Euthymia (System Info) //
+            // System Info
             SysInfo {
-              // Mouse Actions //         
-              // Loader para Optimización //
+              // LazyLoader for Optimization
               LazyLoader {
                 id: sysInfoLoader
                 active: false 
@@ -168,13 +167,12 @@ Scope {
               }
             }
 
-            // Workspaces Indicator //
+            // Workspaces Indicator
             Workspaces {}
 
-            // Media Player Info //
+            // Media Player Info 
             PlayerInfo {
-              // Mouse Actions //
-              // LazyLoader para Optimización
+              // LazyLoader for Optimization
               LazyLoader {
                 id: conPlayerLoader
                 active: false 
@@ -190,14 +188,13 @@ Scope {
 
           //  .-------------------------.
           //  | .---------------------. |
-          //  | | Elementos Centrales | |
+          //  | |   Center Elements   | |
           //  | `---------------------' |
           //  `-------------------------'
 
-          // Center Panel Toggle Button //
+          // Clock and weather
           CenterPanel {
-            // Mouse Actions //
-            // Loader para Optimización //
+            // Loader for Optimization
             LazyLoader {
               id: akashaLoader
               active: false
@@ -210,9 +207,10 @@ Scope {
             }
           }
 
+
           //  .-------------------------.
           //  | .---------------------. |
-          //  | |  Elementos Derecha  | |
+          //  | |   Right Elements    | |
           //  | `---------------------' |
           //  `-------------------------'
 
@@ -225,19 +223,18 @@ Scope {
 
             spacing: 5
 
-            // System Usage //
+            // System Usage
             SysUsage {}
 
-            // System Tray //
+            // System Tray
             SystemTray {
               anchors.verticalCenter: parent.verticalCenter
-              bar: topBarRoot  // Referencia al PanelWindow
+              bar: topBarRoot  // PanelWindow reference
             }
             
-            // Control Center //
+            // Control Center
             StatusIndicators {
-              // Mouse Actions //
-              // Loader para Optimización //
+              // LazyLoader for Optimization
               LazyLoader {
                 id: controlCenterLoader
                 active: false
@@ -250,11 +247,11 @@ Scope {
               }
             }
 
-            // Windows Stacking //
+            // Windows Stacking
             WorkLayout {}
           }
 
-          // IPC Handler(para atajos de teclado) //
+          // IPC Handler(for keyboard shortcuts)
           Connections {
             target: topBar
 

@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Módulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -23,7 +23,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 
-// Globales
+// Config
 import qs.themes
 
 
@@ -31,10 +31,10 @@ Row {
     id: iconRow
     spacing: 7
 
-    // Propiedad pública: nombre del monitor
+    // Public property: monitor name
     property string monitorName: ""
 
-    // Datos internos
+    // Internal data
     property var workspaceNames: []
     property var occupiedWorkspaces: []
     property string focusedWorkspace: ""
@@ -42,7 +42,7 @@ Row {
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |   Layout Visual     | |
+    //  | |    Visual Layout    | |
     //  | `---------------------' |
     //  `-------------------------'
 
@@ -89,14 +89,14 @@ Row {
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | | Conexión a Hyprland | |
+    //  | | Hyprland Connection | |
     //  | `---------------------' |
     //  `-------------------------'
 
     Connections {
         target: Hyprland
         
-        // Cuando se actualizan los workspaces
+        // When workspaces are updated
         function onRawEvent(event) {
             if (!Hyprland.workspaces) return
 
@@ -126,7 +126,7 @@ Row {
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |   Inicialización    | |
+    //  | |   Initialization    | |
     //  | `---------------------' |
     //  `-------------------------'
 

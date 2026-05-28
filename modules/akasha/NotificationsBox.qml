@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -23,35 +23,37 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 
-// Globales
+// Config
 import qs.config
 import qs.components
+import qs.i18n
 import qs.services
 import qs.themes
 
 Rectangle {
     id: notiRoot
+
     color: "transparent"
 
-    // Calculos internos.
+    // Internal calculations.
     property int rootRadius: itemRadius
     property int rootMargin: 10
     property int notifRadius:  rootRadius - rootMargin
     property int internalMargin: 5
 
-    // Ajustes de las notifCards
+    // notifCards Settings
     property int cardSize: 80
     property int cardSpacing: 8
-    property int animDuration: Notifications.popupAnimDuration // Sync con el backend
+    property int animDuration: Notifications.popupAnimDuration // Sync with the backend
 
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |  Box Decoraciones   | |
+    //  | |   Box Decorations   | |
     //  | `---------------------' |
     //  `-------------------------'
 
-    // Sombreado
+    // Shadow
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -70,7 +72,7 @@ Rectangle {
         radius: itemRadius
         clip: true
 
-        // Decoración
+        // Decoration
         InnerLine {
             anchors.fill: parent
             lineradius: itemRadius
@@ -86,19 +88,20 @@ Rectangle {
         anchors.leftMargin: rootMargin
         anchors.bottomMargin: rootMargin
 
-        // Lista de Notificaciones
+        // Notification List
         Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
 
+
             //  .-------------------------.
             //  | .---------------------. |
-            //  | |   Empty State       | |
+            //  | |     Empty State     | |
             //  | `---------------------' |
             //  `-------------------------'
 
-            // Estado Sin Notificaciones
+            // Empty Notifications State
             ColumnLayout {
                 anchors.centerIn: parent
                 spacing: 5
@@ -114,7 +117,7 @@ Rectangle {
                     Layout.alignment: Qt.AlignHCenter
                 }
                 Text {
-                    text: "Sin Notificaciones"
+                    text: LanguageManager.t("akasha.noNotifications")
                     font.pixelSize: 20
                     color: ThemeManager.colors.surface2
                     font.family: ThemeManager.fonts.main
@@ -122,13 +125,14 @@ Rectangle {
                 }
             }
 
+
             //  .-------------------------.
             //  | .---------------------. |
-            //  | |  Lista de Notifs    | |
+            //  | |  Notification List  | |
             //  | `---------------------' |
             //  `-------------------------'
 
-            // Listado de Notificaciones.
+            // Notification listing.
             Flickable {
                 anchors.fill: parent
                 contentHeight: notiColumn.implicitHeight
@@ -143,7 +147,7 @@ Rectangle {
                     width: parent.width - rootMargin
                     spacing: 0
             
-                    // Preset de Notificacion.
+                    // Notification preset.
                     Repeater {
                         id: listRepeater
                         model: Notifications.history
@@ -161,14 +165,14 @@ Rectangle {
 
                             //  .-------------------------.
                             //  | .---------------------. |
-                            //  | |     Animaciones     | |
+                            //  | |     Animations      | |
                             //  | `---------------------' |
                             //  `-------------------------'
 
                             opacity: notif.shown ? 1 : 0
                             Behavior on opacity { NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic } }
                             
-                            // Animación de entrada/salida via height + opacity juntos
+                            // Entry/exit animation via height + opacity together
                             Layout.preferredHeight: notif.shown ? (cardSize + (internalMargin * 2)) : 0
                             Layout.bottomMargin: notif.shown ? cardSpacing : 0
 
@@ -194,11 +198,11 @@ Rectangle {
 
                             //  .-------------------------.
                             //  | .---------------------. |
-                            //  | |    Decoraciones     | |
+                            //  | |     Decorations     | |
                             //  | `---------------------' |
                             //  `-------------------------'
 
-                            // Sombreado
+                            // Shadow
                             Loader {
                                 anchors.fill: parent
                                 active: Config.shadows.enabled
@@ -222,7 +226,7 @@ Rectangle {
                                 color: ThemeManager.colors.surface0
                                 clip: true
 
-                                // Decoración
+                                // Decoration
                                 InnerLine {
                                     anchors.fill: parent
                                     lineradius: notifRadius
@@ -232,14 +236,13 @@ Rectangle {
                             }
 
 
-
                             //  .-------------------------.
                             //  | .---------------------. |
-                            //  | | Estructura de Notif | |
+                            //  | |   Notif Structure   | |
                             //  | `---------------------' |
                             //  `-------------------------'
                             
-                            // Mouse Area para accionar la notificacion.
+                            // Mouse Area to trigger the notification.
                             MouseArea {
                                 id: hoverArea
                                 visible: notif.actions > []
@@ -253,7 +256,7 @@ Rectangle {
                                 anchors.fill: parent
                                 anchors.margins: internalMargin
 
-                                // Imagen o bell
+                                // Image or bell
                                 Text {
                                     visible: iconSource == ""
                                     text: "󰂚"
@@ -270,7 +273,7 @@ Rectangle {
                                     imageSource: iconSource
                                 }
 
-                                // Cadenas de Texto
+                                // Text strings
                                 ColumnLayout {
                                     Layout.fillWidth: true
                                     Layout.alignment: Qt.AlignVCenter
@@ -311,7 +314,7 @@ Rectangle {
                                     }
                                 }
 
-                                // Close button.}
+                                // Close button.
                                 Rectangle {
                                     id: closeBtn
                                     width: 23

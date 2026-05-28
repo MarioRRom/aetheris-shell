@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -26,9 +26,10 @@ import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
+import qs.i18n
 import qs.services
 import qs.themes
 
@@ -52,7 +53,7 @@ ColumnLayout {
         }
         
         Text { 
-            text: "Internet"
+            text: LanguageManager.t("networkmenu.internet")
             color: ThemeManager.colors.text
             font.family: ThemeManager.fonts.main
             font.bold: true
@@ -87,7 +88,7 @@ ColumnLayout {
         }
     }
 
-    // Ethernet Card (visible solo si hay cable)
+    // Ethernet Card (visible only if a network cable is present)
     Rectangle {
         Layout.fillWidth: true
         implicitHeight: ethernetContent.implicitHeight + 20
@@ -95,7 +96,7 @@ ColumnLayout {
         color: ThemeManager.colors.base
         radius: itemRadius
 
-        // Animación al expandir/contraer
+        // Expand/collapse animation
         Behavior on implicitHeight {
             NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
         }
@@ -117,7 +118,7 @@ ColumnLayout {
             }
 
             Text {
-                text: "Ethernet " + Network.wiredSpeed + " Mbps"
+                text: LanguageManager.t("controlcenter.ethernet") + Network.wiredSpeed + " Mbps"
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 14
                 font.bold: false
@@ -135,33 +136,33 @@ ColumnLayout {
         color: ThemeManager.colors.base
         radius: itemRadius
 
-        // Wifi Desactivado
+        // WiFi Disabled
         Text {
             opacity: !Network.wifiEnabled ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 300 } }
             visible: opacity > 0
 
             anchors.centerIn: parent
-            text: "Wi-Fi Desactivado"
+            text: LanguageManager.t("networkmenu.wifiDisabled")
             color: ThemeManager.colors.subtext0
             font.family: ThemeManager.fonts.main
             font.pixelSize: 15
         }
 
-        // No hay redes disponibles
+        // No networks available
         Text {
             opacity: Network.wifiEnabled && Network.networkList.length === 0 ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 300 } }
             visible: opacity > 0
 
             anchors.centerIn: parent
-            text: "No hay redes disponibles"
+            text: LanguageManager.t("networkmenu.noNetworks")
             color: ThemeManager.colors.subtext0
             font.family: ThemeManager.fonts.main
             font.pixelSize: 15
         }
         
-        // Lista de Redes
+        // Network list
         Flickable {
             anchors.fill: parent
             anchors.margins: 5
@@ -177,10 +178,10 @@ ColumnLayout {
                 width: parent.width
                 spacing: 8
 
-                // Variables para la UI
+                // Variables for UI
                 property string expandedNetwork: ""
 
-                // Preset Network Cards
+                // Network Cards preset
                 Repeater {
                     model: Network.networkList
 
@@ -190,7 +191,7 @@ ColumnLayout {
                         implicitHeight: cardContent.implicitHeight + 16
                         clip: true
 
-                        // Animación al expandir/contraer
+                        // Expand/collapse animation
                         Behavior on implicitHeight {
                             NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
                         }
@@ -198,10 +199,10 @@ ColumnLayout {
                         color: ThemeManager.colors.surface0
                         radius: itemRadius - 5
 
-                        // Consultar contraseña al Usuario
+                        // Ask user for password
                         property bool awaitingPassword: false
 
-                        // Escuchar connectionFailed de esta red específica
+                        // Listen for connectionFailed from this specific network
                         Connections {
                             target: modelData
                             function onConnectionFailed(reason) {
@@ -210,7 +211,7 @@ ColumnLayout {
                             }
                         }
 
-                        // Contenido de la card
+                        // Card content
                         ColumnLayout {
                             id: cardContent
                             anchors {
@@ -221,7 +222,7 @@ ColumnLayout {
                             }
                             spacing: 8
 
-                            // Nombre de la red y señal
+                            // Network name and signal
                             WrapperMouseArea {
                                 Layout.fillWidth: true
                                 onClicked: {
@@ -305,7 +306,7 @@ ColumnLayout {
                                             MouseArea {
                                                 anchors.fill: parent
                                                 cursorShape: Qt.IBeamCursor
-                                                acceptedButtons: Qt.NoButton  // importante: no consumir clicks para que el TextInput siga funcionando
+                                                acceptedButtons: Qt.NoButton  // important: don't consume clicks so TextInput keeps working
                                             }
                                         }
 
@@ -330,7 +331,7 @@ ColumnLayout {
                                     spacing: 10
 
                                     Text {
-                                        text: "Conectar"
+                                        text: LanguageManager.t("networkmenu.connect")
                                         font.family: ThemeManager.fonts.main
                                         font.pixelSize: 12
                                         color: passwordInput.text.length > 0 ? ThemeManager.colors.green : ThemeManager.colors.overlay0
@@ -347,7 +348,7 @@ ColumnLayout {
                                     }
 
                                     Text {
-                                        text: "Cancelar"
+                                        text: LanguageManager.t("networkmenu.cancel")
                                         font.family: ThemeManager.fonts.main
                                         font.pixelSize: 12
                                         color: ThemeManager.colors.subtext0
@@ -370,7 +371,7 @@ ColumnLayout {
                                 visible: networkColumn.expandedNetwork === modelData.name && !networkCard.awaitingPassword
 
                                 Text {
-                                    text: Network.activeNetwork === modelData ? "Desconectar" : "Conectar"
+                                    text: Network.activeNetwork === modelData ? LanguageManager.t("networkmenu.disconnect") : LanguageManager.t("networkmenu.connect")
                                     font.family: ThemeManager.fonts.main
                                     color: Network.activeNetwork === modelData ? ThemeManager.colors.red : ThemeManager.colors.green
                                     font.pixelSize: 12
@@ -390,7 +391,7 @@ ColumnLayout {
 
                                 Text {
                                     visible: modelData.known
-                                    text: "Olvidar"
+                                    text: LanguageManager.t("networkmenu.forget")
                                     font.family: ThemeManager.fonts.main
                                     color: ThemeManager.colors.subtext0
                                     font.pixelSize: 12
@@ -408,7 +409,7 @@ ColumnLayout {
         }
     }
     
-    // Activar Scanner al Mostrar el Menu, Desactivarlo al Ocultar
+    // Enable Scanner on Menu Show, Disable on Hide
     onVisibleChanged: {
         if (visible) Network.enableScan()
         else Network.disableScan()

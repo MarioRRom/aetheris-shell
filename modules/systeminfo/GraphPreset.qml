@@ -11,9 +11,10 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
+
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -22,7 +23,7 @@ import QtQuick
 import QtQuick.Effects
 import QtQuick.Layouts
 
-// Globales
+// Config
 import qs.config
 import qs.components
 import qs.themes
@@ -32,14 +33,14 @@ Rectangle {
     anchors.fill: parent
     color: "transparent"
 
-    // Variables
-    property var cabecera
-    property var acento
-    property var icono
-    property int porcentaje
+    // Properties
+    property var header
+    property var accent
+    property var icon
+    property int percentage
     property bool temp
 
-    // Sombreado
+    // Shadow
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -59,7 +60,7 @@ Rectangle {
         color: ThemeManager.colors.base
         clip: true
         
-        // Decoración
+        // Decoration
         InnerLine {
             anchors.fill: parent
             lineradius: itemRadius
@@ -74,16 +75,16 @@ Rectangle {
         anchors.margins: 8
         spacing: 12
 
-        // Cabecera
+        // Header
         Text {
-            text: cabecera
+            text: header
             color: ThemeManager.colors.subtext1
             font.family: ThemeManager.fonts.main
             font.pixelSize: 14
             Layout.alignment: Qt.AlignTop
         }
 
-        // Gráfico y Porcentaje
+        // Graph and Percentage
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -99,22 +100,22 @@ Rectangle {
                     anchors.centerIn: parent
                     width: parent.height
                     height: parent.height
-                    value: porcentaje / 100
-                    foregroundColor: acento
+                    value: percentage / 100
+                    foregroundColor: accent
                     strokeWidth: 10
                 }
 
                 Text {
                     anchors.centerIn: parent
-                    text: icono
+                    text: icon
                     color: ThemeManager.colors.text
                     font.family: ThemeManager.fonts.icons
                     font.pixelSize: parent.height - 35
                 }
             }
 
-            Text { // Porcentaje
-                text: porcentaje + (temp ? "°C" : "%")
+            Text { // Percentage
+                text: percentage + (temp ? "°C" : "%")
                 color: ThemeManager.colors.subtext1
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 12

@@ -14,16 +14,17 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
 // Quickshell
 import QtQuick
 
-// Globales
+// Config
 import qs.services
 import qs.themes
+
 Item {
     id: player
     visible: Mpris.status
@@ -31,7 +32,7 @@ Item {
     width: 190
     height: parent.height
     
-    // Mouse Actions //
+    // Mouse Actions
     MouseArea {
         id: playerArea
         anchors.fill: parent
@@ -57,12 +58,12 @@ Item {
 
     
 
-    // Media Player Status //
+    // Media Player Status
     Row {
         anchors.fill: parent
         spacing: 5
 
-        // Media Player Status Icon //
+        // Media Player Status Icon
         Text {
             id: statusIcon
             anchors.verticalCenter: parent.verticalCenter
@@ -74,7 +75,7 @@ Item {
             Behavior on color { ColorAnimation { duration: 200 } }
         }
 
-        // Music Title //
+        // Music Title
         Rectangle {
             id: playerTitleArea
             anchors.verticalCenter: parent.verticalCenter

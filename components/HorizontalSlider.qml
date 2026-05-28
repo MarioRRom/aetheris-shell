@@ -11,13 +11,13 @@
 //                https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-// HorizontalSlider: Componente de slider horizontal personalizable
-// con barra de progreso en gradiente y interacción de mouse.
+// HorizontalSlider: Customizable horizontal slider component
+// with gradient progress bar and mouse interaction.
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -29,7 +29,7 @@ import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
 import qs.services
@@ -39,7 +39,7 @@ import qs.themes
 Rectangle {
     id: horizontalSlider
 
-    // Aspecto del Slider
+    // Slider Aspect
     property real sliderHeight: 19
     property color accent: ThemeManager.colors.green
     property color gradient: ThemeManager.colors.teal
@@ -53,11 +53,11 @@ Rectangle {
     property int cursor: Qt.PointingHandCursor
     property int cursorShape: mouseEnabled ? cursor : Qt.ArrowCursor
 
-    // Funciones de Slider
+    // Slider Functions
      property real value: 50
     property var updateCommand: null
 
-    // Comportamiento del Slider
+    // Slider Behavior
     property bool updateOnDrag: true
     property bool updateOnRelease: false
     property bool updateOnPress: true
@@ -67,7 +67,7 @@ Rectangle {
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |    Fondo Slider     | |
+    //  | |  Slider Background  | |
     //  | `---------------------' |
     //  `-------------------------'
 
@@ -83,7 +83,7 @@ Rectangle {
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |    Barra Slider     | |
+    //  | |     Slider Bar      | |
     //  | `---------------------' |
     //  `-------------------------'
 

@@ -11,16 +11,15 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-
-// AKASHA: La terminal de la sabiduría absoluta. 
-// Centraliza la recepción de datos y notificaciones externas. 
-// Transforma el flujo de información cruda en conocimiento procesable 
-// para el usuario, operando como la red neuronal de Sumeru.
+// AKASHA: The terminal of absolute wisdom. 
+// Centralizes the reception of data and external notifications. 
+// Transforms the flow of raw information into actionable knowledge 
+// for the user, operating as Sumeru's neural network.
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -31,16 +30,17 @@ import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
+import qs.i18n
 import qs.services
 import qs.themes
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |   Ventana Akasha    | |
+//  | |    Akasha Window    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -49,23 +49,23 @@ PopupWindow {
     // Config
     property var bar
 
-    // El Radius de la Ventana se Establece desde la Configuración global.
+    // Window Radius is set from the global Configuration.
     property int globalCorners: Config.global.corners
     property int globalMargin: Config.global.margins
     property int cornerRadius: globalCorners - globalMargin
     
-    property int windowMargin: 10 // Margen interno.
+    property int windowMargin: 10 // Internal margin.
     property int itemRadius: cornerRadius - windowMargin
 
 
     implicitWidth: 680
     implicitHeight: akaContainer.implicitHeight + (windowMargin * 2) + 10
     anchor.window: bar
-    anchor.rect.x: (bar.width - width) / 2 // Centrado en la Barra.
-    anchor.rect.y: bar.height + (globalMargin - 5) // 5px por el Margin del Contenedor Principal.
+    anchor.rect.x: (bar.width - width) / 2 // Centered on the Bar.
+    anchor.rect.y: bar.height + (globalMargin - 5) // 5px for the Margin of the Main Container.
     color: "transparent"
 
-    // Contenedor Principal
+    // Main Container
     Rectangle {
         id: akaRoot
         anchors.fill: parent
@@ -74,7 +74,7 @@ PopupWindow {
         clip: false
 
 
-        // Sombreado
+        // Shadow
         Loader {
             anchors.fill: parent
             active: Config.shadows.enabled
@@ -91,14 +91,14 @@ PopupWindow {
             }
         }
 
-        // Contenido de la Ventana
+        // Window Content
         Rectangle {
         anchors.fill: parent
         radius: cornerRadius
         color: ThemeManager.colors.mantle
         clip: true
 
-            // Decoración
+            // Decoration
             InnerLine {
                 anchors.fill: parent
                 lineradius: cornerRadius
@@ -106,7 +106,7 @@ PopupWindow {
                 linecolor: ThemeManager.colors.surface0
             }
 
-            // Row principal
+            // Main row
             RowLayout {
                 id: akaContainer
                 anchors.top: parent.top
@@ -115,9 +115,10 @@ PopupWindow {
                 anchors.margins: windowMargin
                 spacing: windowMargin
 
+
                 //  .-------------------------.
                 //  | .---------------------. |
-                //  | |   Bloque Izquierdo  | |
+                //  | |     Left Block      | |
                 //  | `---------------------' |
                 //  `-------------------------'
 
@@ -126,19 +127,19 @@ PopupWindow {
                     Layout.preferredWidth: 320
                     spacing: 10
 
-                    // Caja de Notificaciones
+                    // Notification Box
                     NotificationsBox {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                     }
 
-                    // Footer (Switch y Botón)
+                    // Footer (Switch and Button)
                     RowLayout {
                         Layout.fillWidth: true
                         height: 40
                         spacing: 10
 
-                        // Switch No Molestar
+                        // Do Not Disturb Switch
                         RowLayout {
                             spacing: 10
                             SimpleSwitch {
@@ -148,7 +149,7 @@ PopupWindow {
                             }
 
                             Text {
-                                text: "No Molestar";
+                                text: LanguageManager.t("akasha.dnd");
                                 color: ThemeManager.colors.text;
                                 font.family: ThemeManager.fonts.main
                             }
@@ -156,7 +157,7 @@ PopupWindow {
 
                         Item { Layout.fillWidth: true }
 
-                        // Botón Limpiar
+                        // Clear Button
                         Rectangle {
                             width: 80; height: 35
                             color: "transparent"
@@ -164,11 +165,11 @@ PopupWindow {
 
                             //  .-------------------------.
                             //  | .---------------------. |
-                            //  | |    Decoraciones     | |
+                            //  | |     Decorations     | |
                             //  | `---------------------' |
                             //  `-------------------------'
 
-                            // Sombreado
+                            // Shadow
                             Loader {
                                 anchors.fill: parent
                                 active: Config.shadows.enabled
@@ -193,7 +194,7 @@ PopupWindow {
                                 color: ThemeManager.colors.base
                                 clip: true
 
-                                // Decoración
+                                // Decoration
                                 InnerLine {
                                     anchors.fill: parent
                                     lineradius: itemRadius
@@ -205,7 +206,7 @@ PopupWindow {
                             // Button Content
                             Text {
                                 anchors.centerIn: parent
-                                text: "Limpiar"
+                                text: LanguageManager.t("akasha.clear")
                                 color: ThemeManager.colors.text
                                 font.family: ThemeManager.fonts.main
                             }
@@ -244,19 +245,20 @@ PopupWindow {
                     }
                 }
 
+
                 //  .-------------------------.
                 //  | .---------------------. |
-                //  | |    Bloque Derecho   | |
+                //  | |     Right Block     | |
                 //  | `---------------------' |
                 //  `-------------------------'
-                // Reloj, Calendario, Clima
 
+                // Clock, Calendar, Weather
                 ColumnLayout {
                     Layout.alignment: Qt.AlignTop
                     Layout.preferredWidth: 320
                     spacing: 10
 
-                    // Fecha y Hora
+                    // Date and Time
                     ColumnLayout {
                         Layout.fillWidth: true
                         Layout.topMargin: -15
@@ -280,16 +282,14 @@ PopupWindow {
                         }
                     }
 
-                    // Calendario
+                    // Calendar
                     CalendarBox {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 240
                     }
 
                     // Tarjeta de Clima
-                    WeatherCard {
-
-                    }
+                    WeatherCard {}
                 }
             }
         }

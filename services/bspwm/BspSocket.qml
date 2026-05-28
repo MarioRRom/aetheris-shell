@@ -11,13 +11,13 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-// Esta es mi propuesta de Socket para Bspwm. 
-// Obtiene los Workspaces y estados por monitor, tambien el layout.
+// This is my Socket proposal for Bspwm. 
+// Gets Workspaces and states per monitor, also the layout.
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -27,16 +27,16 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
-// Global
+// Config
 import qs.config
 
 QtObject {
     id: root
 
-    // Propiedad pública para que los widgets sepan si BSPWM está activo
+    // Public property so widgets know if BSPWM is active
     property bool isActive: false
 
-    // Socket de bspwm (para comandos)
+    // bspwm socket (for commands)
     property Socket socket: Socket {
         id: bspwmSocket
         
@@ -48,12 +48,12 @@ QtObject {
         
         connected: false
         
-        // Buffer para acumular la respuesta completa
+        // Buffer to accumulate the complete response
         property string responseBuffer: ""
         
         parser: SplitParser {
             onRead: (message) => {
-                // Acumular en buffer (la respuesta puede venir en chunks)
+                // Accumulate in buffer (response may come in chunks)
                 bspwmSocket.responseBuffer += message
             }
         }
@@ -66,7 +66,7 @@ QtObject {
                     root.handleMessage(responseBuffer)
                 }
 
-                // Resetear estado
+                // Reset state
                 processingCommand = false
                 currentQueryType = ""
                 Qt.callLater(() => {
@@ -76,17 +76,17 @@ QtObject {
         }
 
         onError: (error) => {
-            // Error 1 = PeerClosedError (normal, bspwm cierra después de responder)
-            // Otros errores se ignoran silenciosamente
+            // Error 1 = PeerClosedError (normal, bspwm closes after responding)
+            // Other errors are silently ignored
         }
     }
 
-    // Socket dedicado para eventos (subscribe)
+    // Socket dedicated for events (subscribe)
     property Socket eventSocket: Socket {
         id: bspwmEventSocket
         
         path: bspwmSocket.path
-        connected: false  // Activar manualmente cuando se necesite
+        connected: false  // Activate manually when needed
         
         parser: SplitParser {
             onRead: (message) => {
@@ -96,7 +96,7 @@ QtObject {
 
         onConnectedChanged: {
             if (connected) {
-                // Suscribirse a eventos
+                // Subscribe to events
                 Qt.callLater(() => {
                     subscribeToEvents()
                 })
@@ -104,21 +104,27 @@ QtObject {
         }
     }
 
-    // Suscribirse a eventos (mantiene conexión abierta)
+    // Subscribe to events (keeps connection open)
     function subscribeToEvents() {
         if (!bspwmEventSocket.connected) return
         
         var cmd = "subscribe desktop_focus desktop_layout node_add node_remove node_transfer"
         var args = cmd.split(" ")
         
-        // Protocolo bspwm: arg1\0arg2\0arg3\0
+        // bspwm protocol: arg1\0arg2\0arg3\0
         for (var i = 0; i < args.length; i++) {
             bspwmEventSocket.write(args[i] + "\0")
         }
         bspwmEventSocket.flush()
     }
 
-    // === ESTADO INTERNO ===
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |   Internal State    | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
     property var workspaceData: ({})
     property var layoutData: ({})
     property var monitorData: ({})
@@ -133,66 +139,57 @@ QtObject {
     property string activeBorderColor: ""
     property string focusedBorderColor: ""
     
-    // Cola de comandos con tipo
+    // Command queue with type
     property var commandQueue: []
     property bool processingCommand: false
     property string currentQueryType: ""
     
-    // === FUNCIONES PÚBLICAS ===
 
-    /**
-     * Consulta los nombres de los workspaces de un monitor específico.
-     * @param {string} monitor - Nombre del monitor (ej. "HDMI-A-0")
-     */
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |  Public Functions   | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
+    // Queries workspace names of a specific monitor.
+    // @param {string} monitor - Monitor name (e.g. "HDMI-A-0")
     function queryWorkspaces(monitor) {
         sendCommand("query -D -m " + monitor + " --names", "workspaces:" + monitor)
     }
 
-    /**
-     * Consulta los IDs hexadecimales de los workspaces de un monitor.
-     * @param {string} monitor - Nombre del monitor
-     */
+    // Queries hex IDs of workspaces on a monitor.
+    // @param {string} monitor - Monitor name
     function queryWorkspaceIds(monitor) {
         sendCommand("query -D -m " + monitor, "workspace_ids:" + monitor)
     }
 
-    /**
-     * Consulta los workspaces ocupados (con ventanas) de un monitor.
-     * @param {string} monitor - Nombre del monitor
-     */
+    // Queries occupied workspaces (with windows) on a monitor.
+    // @param {string} monitor - Monitor name
     function queryOccupiedWorkspaces(monitor) {
         sendCommand("query -D -m " + monitor + " -d .occupied --names", "occupied:" + monitor)
     }
 
-    /**
-     * Consulta el workspace enfocado de un monitor.
-     * @param {string} monitor - Nombre del monitor
-     */
+    // Queries the focused workspace on a monitor.
+    // @param {string} monitor - Monitor name
     function queryFocusedWorkspace(monitor) {
         sendCommand("query -D -m " + monitor + " -d focused --names", "focused:" + monitor)
     }
 
-    /**
-     * Cambia el foco al desktop especificado por ID.
-     * @param {string} desktopId - ID hexadecimal del desktop (ej. "0x00200012")
-     */
+    // Switches focus to the desktop specified by ID.
+    // @param {string} desktopId - Hex ID of the desktop (e.g. "0x00200012")
     function switchDesktop(desktopId) {
         sendCommand("desktop " + desktopId + " -f", "")
     }
 
-    /**
-     * Alterna el layout del desktop actual (tiled <-> monocle).
-     */
+    // Toggles the layout of the current desktop (tiled <-> monocle).
     function toggleLayout() {
         sendCommand("desktop -l next", "")
         // Re-query layout after toggle
         Qt.callLater(() => queryLayout(), 100)
     }
 
-    /**
-     * Consulta el layout del desktop especificado o del enfocado.
-     * @param {string} [desktop] - ID del desktop (opcional, por defecto enfocado)
-     */
+    // Queries the layout of the specified desktop or the focused one.
+    // @param {string} [desktop] - Desktop ID (optional, defaults to focused)
     function queryLayout(desktop) {
         if (desktop) {
             sendCommand("query -T -d " + desktop, "layout")
@@ -201,101 +198,84 @@ QtObject {
         }
     }
 
-    /**
-     * Establece el window_gap global.
-     * @param {int} gap - Tamaño del gap en píxeles
-     */
+    // Sets the global window_gap.
+    // @param {int} gap - Gap size in pixels
     function setWindowGap(gap) {
         sendCommand("config window_gap " + gap, "")
         windowGap = gap
     }
 
-    /**
-     * Establece el top_padding global.
-     * @param {int} padding - Tamaño del padding superior en píxeles
-     */
+    // Sets the global top_padding.
+    // @param {int} padding - Top padding size in pixels
     function setTopPadding(padding) {
         sendCommand("config top_padding " + padding, "")
         topPadding = padding
     }
 
-    /**
-     * Establece el bottom_padding global.
-     * @param {int} padding - Tamaño del padding inferior en píxeles
-     */
+    // Sets the global bottom_padding.
+    // @param {int} padding - Bottom padding size in pixels
     function setBottomPadding(padding) {
         sendCommand("config bottom_padding " + padding, "")
         bottomPadding = padding
     }
 
-    /**
-     * Establece el left_padding global.
-     * @param {int} padding - Tamaño del padding izquierdo en píxeles
-     */
+    // Sets the global left_padding.
+    // @param {int} padding - Left padding size in pixels
     function setLeftPadding(padding) {
         sendCommand("config left_padding " + padding, "")
         leftPadding = padding
     }
 
-    /**
-     * Establece el right_padding global.
-     * @param {int} padding - Tamaño del padding derecho en píxeles
-     */
+    // Sets the global right_padding.
+    // @param {int} padding - Right padding size in pixels
     function setRightPadding(padding) {
         sendCommand("config right_padding " + padding, "")
         rightPadding = padding
     }
 
-    /**
-     * Establece el border_width global.
-     * @param {int} width - Grosor del borde en píxeles
-     */
+    // Sets the global border_width.
+    // @param {int} width - Border width in pixels
     function setBorderWidth(width) {
         sendCommand("config border_width " + width, "")
         borderWidth = width
     }
 
-    /**
-     * Establece el active_border_color global.
-     * @param {string} color - Color en formato hex (ej. "#RRGGBB")
-     */
+    // Sets the global active_border_color.
+    // @param {string} color - Color in hex format (e.g. "#RRGGBB")
     function setActiveBorderColor(color) {
         sendCommand("config active_border_color " + color, "")
         activeBorderColor = color
     }
 
-    /**
-     * Establece el focused_border_color global.
-     * @param {string} color - Color en formato hex (ej. "#RRGGBB")
-     */
+    // Sets the global focused_border_color.
+    // @param {string} color - Color in hex format (e.g. "#RRGGBB")
     function setFocusedBorderColor(color) {
         sendCommand("config focused_border_color " + color, "")
         focusedBorderColor = color
     }
 
-    /**
-     * Consulta la lista de monitores disponibles.
-     */
+    // Queries the list of available monitors.
     function queryMonitors() {
         sendCommand("query -M", "monitor_ids")
     }
 
-    // === FUNCIONES INTERNAS ===
 
-    /**
-     * Envía un comando al socket de bspwm con tipo para tracking.
-     * @param {string} cmd - Comando bspwm (ej. "query -D -m HDMI-A-0 --names")
-     * @param {string} type - Tipo de query para manejar respuesta (ej. "workspaces:HDMI-A-0")
-     */
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | | Internal Functions  | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
+    // Sends a command to the bspwm socket with a type for tracking.
+    // @param {string} cmd - bspwm command (e.g. "query -D -m HDMI-A-0 --names")
+    // @param {string} type - Query type for response handling (e.g. "workspaces:HDMI-A-0")
     function sendCommand(cmd, type) {
         commandQueue.push({cmd: cmd, type: type})
         processQueue()
     }
 
-    /**
-     * Procesa la cola de comandos de forma secuencial.
-     * Maneja reconexión automática si el socket no está conectado.
-     */
+    // Processes the command queue sequentially.
+    // Handles automatic reconnection if the socket is not connected.
     function processQueue() {
         if (processingCommand || commandQueue.length === 0) {
             return
@@ -322,16 +302,14 @@ QtObject {
         }
     }
     
-    /**
-     * Escribe el comando al socket usando el protocolo de bspwm.
-     * Formato: arg1\0arg2\0arg3\0 (null-terminated strings)
-     * @param {string} cmd - Comando a enviar
-     */
+    // Writes the command to the socket using the bspwm protocol.
+    // Format: arg1\0arg2\0arg3\0 (null-terminated strings)
+    // @param {string} cmd - Command to send
     function writeCommand(cmd) {
-        // Protocolo bspwm: arg1\0arg2\0arg3\0
+        // bspwm protocol: arg1\0arg2\0arg3\0
         var args = cmd.split(" ")
 
-        // Construir mensaje completo
+        // Build complete message
         var message = ""
         for (var i = 0; i < args.length; i++) {
             message += args[i] + "\0"
@@ -341,34 +319,30 @@ QtObject {
         bspwmSocket.flush()
     }
 
-    /**
-     * Maneja mensajes entrantes del socket principal.
-     * @param {string} message - Mensaje recibido
-     */
+    // Handles incoming messages from the main socket.
+    // @param {string} message - Received message
     function handleMessage(message) {
         message = message.trim()
 
         if (message === "") return
 
-        // Si empieza con "Unknown" es un error
+        // If it starts with "Unknown" it's an error
         if (message.startsWith("Unknown")) {
             return
         }
 
-        // Respuestas a queries
+        // Query responses
         handleQueryResponse(message)
     }
 
-    /**
-     * Maneja eventos del socket de suscripción.
-     * @param {string} message - Evento recibido
-     */
+    // Handles events from the subscription socket.
+    // @param {string} message - Received event
     function handleEvent(message) {
         message = message.trim()
 
         if (message === "") return
 
-        // Eventos de suscripción (formato: event_name data)
+        // Subscription events (format: event_name data)
         if (message.startsWith("desktop_focus")) {
             handleDesktopFocus(message)
         } else if (message.startsWith("desktop_layout")) {
@@ -382,13 +356,11 @@ QtObject {
         }
     }
 
-    /**
-     * Maneja respuestas a queries basadas en el tipo actual.
-     * @param {string} message - Respuesta del query
-     */
+    // Handles query responses based on the current type.
+    // @param {string} message - Query response
     function handleQueryResponse(message) {
         if (currentQueryType === "") {
-            // Respuesta no esperada o evento
+            // Unexpected response or event
             return
         }
 
@@ -423,7 +395,7 @@ QtObject {
                 var layout = json.userLayout || "tiled"
                 layoutChanged(layout, currentDesktop || "focused")
             } catch (e) {
-                // Ignorar errores de parsing
+                // Ignore parsing errors
             }
         } else if (queryType === "monitor_ids") {
             var ids = message.split("\n").filter(l => l.trim() !== "")
@@ -441,14 +413,17 @@ QtObject {
         currentQueryType = ""
     }
 
-    // === MANEJADORES DE EVENTOS ===
 
-    /**
-     * Maneja evento de cambio de foco de desktop.
-     * @param {string} message - Mensaje del evento
-     */
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |   Event Handlers    | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
+    // Handles desktop focus change event.
+    // @param {string} message - Event message
     function handleDesktopFocus(message) {
-        // Formato: desktop_focus <monitor_id> <desktop_id> <desktop_name>
+        // Format: desktop_focus <monitor_id> <desktop_id> <desktop_name>
         var parts = message.split(" ")
         if (parts.length >= 3) {
             var monitorId = parts[1]
@@ -458,12 +433,10 @@ QtObject {
         }
     }
 
-    /**
-     * Maneja evento de cambio de layout de desktop.
-     * @param {string} message - Mensaje del evento
-     */
+    // Handles desktop layout change event.
+    // @param {string} message - Event message
     function handleDesktopLayout(message) {
-        // Formato: desktop_layout <monitor_id> <desktop_id> <layout>
+        // Format: desktop_layout <monitor_id> <desktop_id> <layout>
         var parts = message.split(" ")
         if (parts.length >= 4) {
             var monitorId = parts[1]
@@ -473,34 +446,34 @@ QtObject {
         }
     }
 
-    /**
-     * Maneja evento de adición de nodo (ventana).
-     * @param {string} message - Mensaje del evento
-     */
+    // Handles node add (window) event.
+    // @param {string} message - Event message
     function handleNodeAdd(message) {
-        // Formato: node_add <monitor_id> <desktop_id> <node_id>
+        // Format: node_add <monitor_id> <desktop_id> <node_id>
         nodeChanged()
     }
 
-    /**
-     * Maneja evento de remoción de nodo (ventana).
-     * @param {string} message - Mensaje del evento
-     */
+    // Handles node remove (window) event.
+    // @param {string} message - Event message
     function handleNodeRemove(message) {
-        // Formato: node_remove <monitor_id> <desktop_id> <node_id>
+        // Format: node_remove <monitor_id> <desktop_id> <node_id>
         nodeChanged()
     }
 
-    /**
-     * Maneja evento de transferencia de nodo entre desktops/monitores.
-     * @param {string} message - Mensaje del evento
-     */
+    // Handles node transfer event between desktops/monitors.
+    // @param {string} message - Event message
     function handleNodeTransfer(message) {
-        // Formato: node_transfer <src_monitor> <src_desktop> <src_node> <dst_monitor> <dst_desktop> <dst_node>
+        // Format: node_transfer <src_monitor> <src_desktop> <src_node> <dst_monitor> <dst_desktop> <dst_node>
         nodeChanged()
     }
 
-    // === SEÑALES ===
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |       Signals       | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
     signal workspacesUpdated(string monitor)
     signal layoutChanged(string layout, string type)
     signal desktopFocused(string monitorId, string desktopId, string desktopName)
@@ -508,12 +481,17 @@ QtObject {
     signal nodeChanged()
 
 
-    // === CONFIGURACION INTERNA ===
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |   Internal Config   | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
     function updateBspwmSettings() {
         // Gap
         setWindowGap(Config.global.margins)
         
-        // Padding (para el WallBorder)
+        // Padding (for WallBorder)
         if (Config.topBar.state === "maximized") {
             setTopPadding(Config.topBar.height)
             setBottomPadding(Config.global.wallborder)
@@ -526,26 +504,26 @@ QtObject {
             setRightPadding(0)
         }
 
-        // Bordeado
+        // Border
         setBorderWidth(Config.windows.borderWidth)
         setActiveBorderColor(Config.windows.activeColor)
         setFocusedBorderColor(Config.windows.focusedColor)
     }
 
     Component.onCompleted: {
-        // Verificar si estamos en bspwm
+        // Check if we are in bspwm
         var session = (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
         if (session !== "bspwm") return
 
         isActive = true
 
-        // Query monitores al inicio
+        // Query monitors at startup
         queryMonitors()
 
-        // Establecer Configuracion Interna
+        // Set Internal Configuration
         updateBspwmSettings()
 
-        // Activar socket de eventos para updates en tiempo real
+        // Activate event socket for real-time updates
         Qt.callLater(() => {
             bspwmEventSocket.connected = true
         })

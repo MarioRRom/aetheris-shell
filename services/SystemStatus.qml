@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -24,15 +24,21 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
+// Config
+import qs.i18n
+
 Item {
     id: root
     
-    // ---------------------------------------------------------
-    // Información Estática (Usuario y Distro)
-    // ---------------------------------------------------------
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | | Static Information  | |
+    //  | `---------------------' |
+    //  `-------------------------'
     
-    property string username: "User"
-    property string distro: "Linux"
+    property string username: LanguageManager.t("systemstatus.user")
+    property string distro: LanguageManager.t("systemstatus.distro")
     property string desktop: (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
 
     Process {
@@ -53,11 +59,14 @@ Item {
         }
     }
 
-    // ---------------------------------------------------------
-    // Información Dinámica (Uptime, Disco, Temp) - Polling
-    // ---------------------------------------------------------
 
-    property string uptime: "..."
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | | Dynamic Information | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
+    property string uptime: LanguageManager.t("weather.loading")
     property int diskUsage: 0
     property int temperature: 0
 
@@ -71,7 +80,7 @@ Item {
         }
     }
 
-    // Disco (Root)
+    // Disk (Root)
     Process {
         id: procDisk
         command: ["bash", "-c", "df / --output=pcent | tail -1 | tr -d '% \n'"]
@@ -81,22 +90,22 @@ Item {
         }
     }
 
-    // Temperatura (Busca la máxima entre sensores disponibles)
+    // Temperature (Finds the max among available sensors)
     Process {
         id: procTemp
-        // Reutilizamos la lógica de tu script: busca en rutas comunes, ordena descendente y toma el mayor.
+        // Reuses your script's logic: searches common paths, sorts descending, takes the highest.
         command: ["bash", "-c", "cat /sys/class/thermal/thermal_zone*/temp /sys/class/hwmon/hwmon*/temp*_input 2>/dev/null | sort -nr | head -n1"]
         running: false
         stdout: SplitParser {
             onRead: data => {
                 const val = parseInt(data)
-                // Verificamos que sea un número válido antes de asignar
+                // Verify it's a valid number before assigning
                 if (!isNaN(val)) root.temperature = Math.round(val / 1000)
             }
         }
     }
 
-    // Timer para actualizar procesos lentos (1 minuto)
+    // Timer for updating slow processes (1 minute)
     Timer {
         interval: 60000
         running: true
@@ -108,7 +117,7 @@ Item {
         }
     }
 
-    // Timer para temperatura (2 segundos)
+    // Temperature timer (2 seconds)
     Timer {
         interval: 2000
         running: true
@@ -117,11 +126,14 @@ Item {
         onTriggered: procTemp.running = true
     }
 
-    // ---------------------------------------------------------
-    // Información en Tiempo Real (CPU y RAM) - SystemInformation
-    // ---------------------------------------------------------
 
-    // Helper para formato de bytes (ej: 16.0 GB)
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |Real-Time Information| |
+    //  | `---------------------' |
+    //  `-------------------------'
+
+    // Helper for byte formatting (e.g.: 16.0 GB)
     function formatBytes(bytes) {
         const sizes = ['B', 'KB', 'MB', 'GB', 'TB']
         if (bytes === 0) return '0 B'

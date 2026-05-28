@@ -14,14 +14,14 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
 // Quickshell
 import QtQuick
 
-// Globales
+// Config
 import qs.services
 import qs.services.bspwm
 import qs.services.hyprland

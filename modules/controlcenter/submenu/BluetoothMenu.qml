@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -26,9 +26,10 @@ import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
+import qs.i18n
 import qs.services
 import qs.themes
 
@@ -52,7 +53,7 @@ ColumnLayout {
         }
         
         Text { 
-            text: "Bluetooth"
+            text: LanguageManager.t("bluetoothmenu.bluetooth")
             color: ThemeManager.colors.text
             font.family: ThemeManager.fonts.main
             font.bold: true
@@ -70,7 +71,7 @@ ColumnLayout {
 
         Text {
             anchors.centerIn: parent
-            text: "Lista de dispositivos..."
+            text: LanguageManager.t("bluetoothmenu.deviceList")
             color: ThemeManager.colors.subtext0
             font.family: ThemeManager.fonts.main
         }

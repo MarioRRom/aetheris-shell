@@ -10,15 +10,21 @@
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
+
+// A animation for the bar based on Akasha logo.
+
+
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
+
 // Quickshell
 import QtQuick
 import QtQuick.Effects
-// Globales
+
+// Config
 import qs.themes
 
 Item {
@@ -26,7 +32,7 @@ Item {
     anchors.fill: parent
     
     property real targetX: 0
-    property int wavesPerSide: 14  // Cuántas ondas por cada lado
+    property int wavesPerSide: 14  // How many waves per side
     property int animDelay: 14
     property var image: "../assets/akasha.svg"
     property real imageOpacity: 0.8
@@ -57,7 +63,7 @@ Item {
         resetAnim.restart()
     }
     
-    // Imagen central (centrada en el punto del click)
+    // Central image (centered at click point)
     Item {
         id: centerItem
         anchors.fill: parent
@@ -69,7 +75,7 @@ Item {
         
         Image {
             id: centerImg
-            // Centro de la imagen alineado con targetX
+            // Image center aligned with targetX
             x: pulseRoot.targetX - (pulseRoot.height- 2)
             y: 0
             width: pulseRoot.height
@@ -97,7 +103,7 @@ Item {
         }
     }
     
-    // Ondas hacia la izquierda
+    // Waves to the left
     Repeater {
         id: leftRepeater
         model: wavesPerSide
@@ -112,7 +118,7 @@ Item {
             
             Image {
                 id: waveImg
-                // Centro de imagen central - medio ancho - (index+1) * ancho completo
+                // Center of central image - half width - (index+1) * full width
                 x: pulseRoot.targetX - (pulseRoot.height - 2) - ((index + 1) * pulseRoot.height)
                 y: 0
                 width: pulseRoot.height
@@ -145,7 +151,7 @@ Item {
         }
     }
     
-    // Ondas hacia la derecha
+    // Waves to the right
     Repeater {
         id: rightRepeater
         model: wavesPerSide
@@ -160,7 +166,7 @@ Item {
             
             Image {
                 id: waveImg
-                // Centro de imagen central + medio ancho + (index) * ancho completo
+                // Center of central image + half width + (index) * full width
                 x: pulseRoot.targetX + (index * pulseRoot.height)
                 y: 0
                 width: pulseRoot.height

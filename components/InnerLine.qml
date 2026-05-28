@@ -11,10 +11,12 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
+// A decorative line for use inside rectangles
+
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -22,7 +24,7 @@
 import QtQuick
 import QtQuick.Effects
 
-// Globales
+// Config
 import qs.themes
 
 Item {

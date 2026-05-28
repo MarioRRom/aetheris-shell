@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -24,7 +24,7 @@ import QtQuick
 import QtQuick.Effects
 import QtQuick.Layouts
 
-// Globales
+// Config
 import qs.config
 import qs.components
 import qs.themes
@@ -54,15 +54,15 @@ LazyLoader {
     property int totalMargin: topBarState === "maximized" ? wallborder + globalMargin : globalMargin
 
     // notifications panel settings
-    property int outMargin: 5 // Margen externo para el Sombreado.
-    property int windowMargin: 10 // Margen interno.
+    property int outMargin: 5 // External margin for the Shadow.
+    property int windowMargin: 10 // Internal margin.
     property int itemRadius: cornerRadius - windowMargin
 
-    // Ajustes de las notifCards
+    // Notification card settings
     property int cardSize: 100
     property int cardCount: 3
     property int cardSpacing: 5
-    property int animDuration: Notifications.popupAnimDuration // Sync con el backend
+    property int animDuration: Notifications.popupAnimDuration // Sync with the backend
 
     
     //  .-------------------------.
@@ -75,20 +75,20 @@ LazyLoader {
         id: notificationsRoot
         visible: true
 
-        // Anclar al Background
-        // Evita flickering al ser ventana tipo popup/transient
+        // Pin to Background
+        // Prevents flickering as popup/transient window type
         anchor.window: backgroundAnchor
         anchor.rect.x: (backgroundAnchor?.width ?? 0) - implicitWidth - (totalMargin - outMargin)
         anchor.rect.y: (backgroundAnchor?.height ?? 0) - implicitHeight - (totalMargin - outMargin)
 
-        // Tamaño dinamico
-        // Evita cuadrado negro cuando el compositor desactiva las transparencias.
+        // Dynamic size
+        // Prevents black square when compositor disables transparency.
         implicitWidth: Notifications.popups.length > 0 ? 400 : 0
         implicitHeight: Notifications.popups.length > 0 ? ((cardSize + cardSpacing) * cardCount) + (outMargin * 2) : 0
 
         color: "transparent"
 
-        // Escuchar señal de expiración para animar salida
+        // Listen for expiration signal to animate exit
         Connections {
             target: Notifications
             function onNotificationExpiring(notif) {
@@ -99,7 +99,7 @@ LazyLoader {
             }
         }
 
-        // Columna Principal, para encadenar multiples Notificaciones.
+        // Main Column, to chain multiple Notifications.
         ColumnLayout {
             id: notificationsLayout
             anchors.bottom: parent.bottom
@@ -113,7 +113,7 @@ LazyLoader {
                 id: listRepeater
                 model: Notifications.popups.slice(0, cardCount + 1).reverse()
 
-                // Contenedor Principal.
+                // Main Container.
                 delegate: Rectangle {
                     id: notificationsContainer
 
@@ -123,11 +123,11 @@ LazyLoader {
 
                     //  .-------------------------.
                     //  | .---------------------. |
-                    //  | |     Animaciones     | |
+                    //  | |     Animactions     | |
                     //  | `---------------------' |
                     //  `-------------------------'
 
-                    // Opacidad stack
+                    // Stack opacity
                     property real stackOpacity: {
                         if (!notif.shownPopup) return 0
                         const fadeIndex = listRepeater.count - 1 - index
@@ -140,7 +140,7 @@ LazyLoader {
                     opacity: stackOpacity
                     Behavior on stackOpacity { NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic } }
 
-                    // Animación de entrada/salida via height + opacity juntos
+                    // Entry/exit animation via height + opacity together
                     Layout.preferredHeight: notif.shownPopup ? cardSize : 0
                     Layout.bottomMargin: notif.shownPopup ? cardSpacing : 0
 
@@ -163,7 +163,7 @@ LazyLoader {
                             return 1.0 - (fadeIndex * 0.25)
                         })
 
-                        // colapsar height de la ultima cuando se rebasa cardCount
+                        // collapse height of the last one when cardCount is exceeded
                         const fadeIndex = listRepeater.count - 1 - index
                         if (fadeIndex >= cardCount) {
                             notif.shownPopup = false
@@ -190,11 +190,11 @@ LazyLoader {
 
                     //  .-------------------------.
                     //  | .---------------------. |
-                    //  | |    Decoraciones     | |
+                    //  | |    Decorations      | |
                     //  | `---------------------' |
                     //  `-------------------------'
 
-                    // Sombreado
+                    // Shadow
                     Loader {
                         anchors.fill: parent
                         active: Config.shadows.enabled
@@ -218,7 +218,7 @@ LazyLoader {
                         color: ThemeManager.colors.mantle
                         clip: true
 
-                        // Decoración
+                        // Decoration
                         InnerLine {
                             anchors.fill: parent
                             lineradius: cornerRadius
@@ -250,7 +250,7 @@ LazyLoader {
                         }
                         //  .-------------------------.
                         //  | .---------------------. |
-                        //  | | Estructura de Notif | |
+                        //  | |   Notif Structure   | |
                         //  | `---------------------' |
                         //  `-------------------------'
                         
@@ -260,7 +260,7 @@ LazyLoader {
                             spacing: windowMargin
 
 
-                            // Imagen o bell
+                            // Image or bell
                             Text {
                                 visible: iconSource === ""
                                 text: "󰂚"
@@ -278,7 +278,7 @@ LazyLoader {
                                 imageSource: iconSource
                             }
 
-                            // Cadenas de Texto
+                            // Text strings
                             ColumnLayout {
                                 Layout.fillWidth: true
                                 Layout.alignment: Qt.AlignVCenter
@@ -319,7 +319,7 @@ LazyLoader {
                                 }
                             }
 
-                            // Close button.}
+                            // Close button.
                             Rectangle {
                                 id: closeBtn
                                 width: 23

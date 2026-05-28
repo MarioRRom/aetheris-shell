@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -22,7 +22,7 @@
 import QtQuick
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.themes
 import qs.services
 
@@ -74,6 +74,7 @@ WrapperMouseArea{
             leftPadding: 10
             rightPadding: 10
             
+            // Networking
             Text {
                 text: Network.statusIcon
                 color: ThemeManager.colors.mauve
@@ -81,6 +82,8 @@ WrapperMouseArea{
                 font.pixelSize: 16
                 anchors.verticalCenter: parent.verticalCenter
             }
+
+            // Audio
             Text {
                 text: Pipewire.icon
                 color: Pipewire.muted? ThemeManager.colors.red : ThemeManager.colors.green
@@ -88,7 +91,8 @@ WrapperMouseArea{
                 font.pixelSize: 16
                 anchors.verticalCenter: parent.verticalCenter
             }
-
+            
+            // Battery
             Text {
                 text: "󰁹"
                 color: ThemeManager.colors.peach

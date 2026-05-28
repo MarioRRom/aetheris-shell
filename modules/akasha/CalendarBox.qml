@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -23,25 +23,50 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 
-// Globales
+// Config
 import qs.config
 import qs.components
+import qs.i18n
 import qs.services
 import qs.themes
 
 Rectangle {
     id: root
+
     Layout.fillWidth: true
     Layout.fillHeight: true
+
     color: "transparent"
     
-    // Lógica del Calendario
+    // Calendar Logic
     property date currentDate: new Date()
     property int currentYear: currentDate.getFullYear()
     property int currentMonth: currentDate.getMonth()
     
-    property var months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
-    property var days: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
+    property var months: [
+        LanguageManager.t("calendar.january"),
+        LanguageManager.t("calendar.february"),
+        LanguageManager.t("calendar.march"),
+        LanguageManager.t("calendar.april"),
+        LanguageManager.t("calendar.may"),
+        LanguageManager.t("calendar.june"),
+        LanguageManager.t("calendar.july"),
+        LanguageManager.t("calendar.august"),
+        LanguageManager.t("calendar.september"),
+        LanguageManager.t("calendar.october"),
+        LanguageManager.t("calendar.november"),
+        LanguageManager.t("calendar.december")
+    ]
+
+    property var days: [
+        LanguageManager.t("calendar.sun"),
+        LanguageManager.t("calendar.mon"),
+        LanguageManager.t("calendar.tue"),
+        LanguageManager.t("calendar.wed"),
+        LanguageManager.t("calendar.thu"),
+        LanguageManager.t("calendar.fri"),
+        LanguageManager.t("calendar.sat")
+    ]
 
     function getDaysInMonth(month, year) {
         return new Date(year, month + 1, 0).getDate()
@@ -51,7 +76,7 @@ Rectangle {
         return new Date(year, month, 1).getDay()
     }
 
-    // Sombreado
+    // Shadow
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -70,7 +95,7 @@ Rectangle {
         radius: itemRadius
         clip: true
 
-        // Decoración
+        // Decoration
         InnerLine {
             anchors.fill: parent
             lineradius: itemRadius
@@ -79,7 +104,7 @@ Rectangle {
         }
     }
 
-    // Calendario
+    // Calendar
     ColumnLayout {
         anchors.fill: parent
         anchors.leftMargin: 10
@@ -88,7 +113,7 @@ Rectangle {
         anchors.bottomMargin: 5
         spacing: 5
 
-        // Cabecera: Mes Año y Controles
+        // Header: Month Year and Controls
         RowLayout {
             Layout.fillWidth: true
             
@@ -104,7 +129,7 @@ Rectangle {
             RowLayout {
                 spacing: 15
                 
-                // Botón Anterior
+                // Previous Button
                 Text {
                     text: "◀"
                     color: ThemeManager.colors.yellow
@@ -123,7 +148,7 @@ Rectangle {
                     }
                 }
 
-                // Botón Siguiente
+                // Next Button
                 Text {
                     text: "▶"
                     color: ThemeManager.colors.yellow
@@ -144,7 +169,7 @@ Rectangle {
             }
         }
 
-        // Días de la semana
+        // Days of the week
         RowLayout {
             Layout.fillWidth: true
             spacing: 0
@@ -164,7 +189,7 @@ Rectangle {
             }
         }
 
-        // Rejilla de Días
+        // Day Grid
         GridLayout {
             columns: 7
             rows: 6
@@ -174,27 +199,27 @@ Rectangle {
             Layout.fillHeight: true
 
             Repeater {
-                model: 42 // 6 filas * 7 columnas para cubrir cualquier mes
+                model: 42 // 6 rows * 7 columns to cover any month
                 
                 delegate: Item {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
-                    // --- Cálculos ---
+                    // Calculations
                     property int daysInCurrentMonth: root.getDaysInMonth(root.currentMonth, root.currentYear)
                     property int dayOffset: root.getFirstDayOffset(root.currentMonth, root.currentYear)
 
-                    // Mes anterior
+                    // Previous month
                     property int prevMonth: root.currentMonth === 0 ? 11 : root.currentMonth - 1
                     property int prevMonthYear: root.currentMonth === 0 ? root.currentYear - 1 : root.currentYear
                     property int daysInPrevMonth: root.getDaysInMonth(prevMonth, prevMonthYear)
 
-                    // --- Estado de la Celda ---
+                    // Cell State
                     property bool isPrevMonthDay: index < dayOffset
                     property bool isNextMonthDay: index >= dayOffset + daysInCurrentMonth
                     property bool isCurrentMonthDay: !isPrevMonthDay && !isNextMonthDay
 
-                    // --- Número del Día ---
+                    // Day Number
                     property int dayNumber: {
                         if (isPrevMonthDay) {
                             return daysInPrevMonth - (dayOffset - 1 - index);
@@ -205,7 +230,7 @@ Rectangle {
                         }
                     }
 
-                    // --- Comprobación de "Hoy" ---
+                    // Today Check
                     property bool isToday: {
                         let today = new Date();
                         return isCurrentMonthDay &&
@@ -227,7 +252,7 @@ Rectangle {
                             color: {
                                 if (isToday) return ThemeManager.colors.base;
                                 if (isCurrentMonthDay) return ThemeManager.colors.text;
-                                return ThemeManager.colors.surface2; // Color para días de otros meses
+                                return ThemeManager.colors.surface2; // Color for other months' days
                             }
                             font.family: ThemeManager.fonts.main
                             font.pixelSize: 14

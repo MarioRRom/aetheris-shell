@@ -14,10 +14,9 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
-
 
 // Quickshell
 pragma Singleton
@@ -25,26 +24,27 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
-// Globales
+// Config
 import qs.themes
+import qs.i18n
 
 QtObject {
     id: weatherManager
     
-    // Configuración
+    // Configuration
     property string units: "metric"
     
-    // Datos del clima
-    property string temperature: "N/A"
-    property string description: "Cargando..."
-    property string location: "Unknown"
+    // Climate data
+    property string temperature: LanguageManager.t("weather.na")
+    property string description: LanguageManager.t("weather.loading")
+    property string location: LanguageManager.t("weather.unknown")
     property string windSpeed: "0 m/s"
     property string humidity: "0%"
     property string icon: "?"
     property string color: "#F28FAD"
     property string backgroundImage: "rain.png"
     
-    // Timer de actualización (15 minutos)
+    // Update timer (15 minutes)
     property Timer updateTimer: Timer {
         interval: 900000
         running: true
@@ -56,7 +56,7 @@ QtObject {
         fetchLocation()
     }
     
-    // Obtener ubicación para mas Precisión
+    // Get location for more Precision
     function fetchLocation() {
         var url = "http://ip-api.com/json"
         
@@ -80,7 +80,7 @@ QtObject {
         xhr.send()
     }
     
-    // Obtener clima desde la wttr.in
+    // Get weather from wttr.in
     function fetchWeather(lat, lon, city) {
         var url = "https://wttr.in/" + lat + "," + lon + "?format=j1"
         var xhr = new XMLHttpRequest()
@@ -102,7 +102,7 @@ QtObject {
         xhr.send()
     }
     
-    // Procesar datos del clima
+    // Process weather data
     function processWeatherData(data, cityName) {
         var current = data.current_condition[0]
         var astronomy = data.weather[0].astronomy[0]
@@ -113,7 +113,7 @@ QtObject {
         var desc = current.weatherDesc[0].value
         var code = current.weatherCode
         
-        // Calcular si es de día o de noche
+        // Calculate if it's day or night
         var now = new Date()
         var currentMins = now.getHours() * 60 + now.getMinutes()
         var isDay = currentMins >= parseTime(astronomy.sunrise) && currentMins < parseTime(astronomy.sunset)
@@ -132,7 +132,7 @@ QtObject {
         backgroundImage = iconData.bg
     }
     
-    // Asignar iconos, colores y fondo
+    // Assign icons, colors and background
     function getIconData(weatherCode, isDay) {
         var code = parseInt(weatherCode)
         
@@ -165,9 +165,9 @@ QtObject {
     }
     
     function setErrorState() {
-        temperature = "N/A"
-        description = "Error en API"
-        location = "Unknown"
+        temperature = LanguageManager.t("weather.na")
+        description = LanguageManager.t("weather.apiError")
+        location = LanguageManager.t("weather.unknown")
         windSpeed = "0 m/s"
         humidity = "0%"
         icon = "?"

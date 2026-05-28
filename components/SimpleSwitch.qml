@@ -11,10 +11,12 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
+// Preset of a simple Switch, for true/false cases.
+
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Módulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -22,10 +24,7 @@
 import QtQuick
 import qs.themes
 
-
-// Preset de un simple Switch, para casos true/false.
-
-// Rectangle principal
+// Main Rectangle
 Rectangle {
 
     // Config
@@ -40,7 +39,7 @@ Rectangle {
 
     Behavior on color { ColorAnimation { duration: 250 } }
 
-    // Circulo Interior
+    // Internal Circle
     Rectangle {
         width: parent.height - 4
         height: parent.height - 4

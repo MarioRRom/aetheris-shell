@@ -11,16 +11,15 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-
-// KHEMIA: El arte de la transmutación primordial. 
-// Interfaz diseñada para alterar las variables del entorno. 
-// No solo ajusta parámetros; transmuta la realidad física del escritorio 
-// desafiando las leyes predeterminadas del sistema.
+// KHEMIA: The art of primordial transmutation. 
+// Interface designed to alter environment variables. 
+// It doesn't just adjust parameters; it transmutes the physical reality of the desktop 
+// defying the system's predetermined laws.
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -32,17 +31,17 @@ import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
 import qs.services
 import qs.themes
-import qs.modules.controlcenter.submenu // Importar Submenus
+import qs.modules.controlcenter.submenu // Import Submenus
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |Ventana ControlCenter| |
+//  | |ControlCenter Window | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -51,27 +50,27 @@ PopupWindow {
 
     // Config
     property var bar
-    property string currentView: "main" // Variable para cambiar de vista.
+    property string currentView: "main" // Variable to change view.
 
-    // El Radius de la Ventana se Establece desde la Configuración global.
+    // Window Radius is set from the global Configuration.
     property int globalCorners: Config.global.corners
     property int globalMargin: Config.global.margins
     property int globalWallborder: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
     property int cornerRadius: globalCorners - globalMargin
     
-    property int windowMargin: 10 // Margen interno.
+    property int windowMargin: 10 // Internal margin.
     property int itemRadius: cornerRadius - windowMargin
 
     implicitWidth: 310
     implicitHeight: (root.currentView === "main" ? mainLayout.implicitHeight : 428) + (windowMargin * 2) + 10
     
     anchor.window: bar
-    anchor.rect.x: (bar.width - width) - ((globalMargin + globalWallborder) - 5) // 5px por el margin en el Contenedor Principal.
-    anchor.rect.y: bar.height + (globalMargin - 5) //5px por el Margin del Contenedor Principal.
+    anchor.rect.x: (bar.width - width) - ((globalMargin + globalWallborder) - 5) // 5px for the margin in the Main Container.
+    anchor.rect.y: bar.height + (globalMargin - 5) //5px for the Margin of the Main Container.
     
     color: "transparent"
 
-    // Contenedor Principal
+    // Main Container
     Rectangle {
         id: ccRoot
         anchors.fill: parent
@@ -79,7 +78,7 @@ PopupWindow {
         color: "transparent"
         clip: false
 
-        // Sombreado
+        // Shadow
         Loader {
             anchors.fill: parent
             active: Config.shadows.enabled
@@ -96,14 +95,14 @@ PopupWindow {
             }
         }
 
-        // Contenido de la ventana
+        // Window content
         Rectangle {
             anchors.fill: parent
             radius: cornerRadius
             color: ThemeManager.colors.mantle
             clip: true
 
-            // Decoración
+            // Decoration
             InnerLine {
                 anchors.fill: parent
                 lineradius: cornerRadius
@@ -111,7 +110,7 @@ PopupWindow {
                 linecolor: ThemeManager.colors.surface0
             }
 
-            // Columna principal
+            // Main column
             ColumnLayout {
                 id: mainLayout
                 visible: root.currentView === "main"
@@ -122,7 +121,7 @@ PopupWindow {
                 spacing: windowMargin
 
 
-                // Primera Linea
+                // First Line
                 RowLayout {
                     spacing: windowMargin
                     Layout.fillWidth: true
@@ -153,13 +152,14 @@ PopupWindow {
 
                 //  .-------------------------.
                 //  | .---------------------. |
-                //  | |   Grid de Botones   | |
+                //  | |    Buttons Grid     | |
                 //  | `---------------------' |
                 //  `-------------------------'
             
                 ButtonsGrid {
                     Layout.fillWidth: true
                 }
+
 
                 //  .-------------------------.
                 //  | .---------------------. |
@@ -189,6 +189,7 @@ PopupWindow {
                     gradient: ThemeManager.colors.maroon
                 }
             }
+
 
             //  .-------------------------.
             //  | .---------------------. |

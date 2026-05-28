@@ -14,14 +14,14 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
 // Quickshell
 import QtQuick
 
-// Globales
+// Config
 import qs.themes
 import qs.services
 
@@ -32,7 +32,7 @@ Row {
 
     spacing: 5
 
-    // Cpu Icon //
+    // Cpu Icon
     Text {
         text: ""
         color: ThemeManager.colors.red
@@ -41,7 +41,7 @@ Row {
         anchors.verticalCenter: parent.verticalCenter
     }
 
-    //Cpu Usage //
+    //Cpu Usage
     Text {
         text: SystemStatus.cpuUsagePercent + "%"
         color: ThemeManager.colors.text
@@ -50,7 +50,7 @@ Row {
         anchors.verticalCenter: parent.verticalCenter
     }
 
-    // Ram Icon //
+    // Ram Icon
     Text {
         text: ""
         color: ThemeManager.colors.yellow
@@ -59,7 +59,7 @@ Row {
         anchors.verticalCenter: parent.verticalCenter
     }
 
-    // Ram Usage //
+    // Ram Usage
     Text {
         text: SystemStatus.ramUsagePercent + "%"
         color: ThemeManager.colors.text

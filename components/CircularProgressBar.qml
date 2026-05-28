@@ -11,10 +11,12 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
+// A rounded progress bar.
+
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -22,30 +24,30 @@
 import QtQuick
 import QtQuick.Shapes
 
-// Globales
+// Config
 import qs.themes
 
 Shape {
     id: root
 
     // Variables
-    property real value: 0.0 // El valor del progreso, de 0.0 a 1.0
+    property real value: 0.0 // Progress value, from 0.0 to 1.0
     property color foregroundColor: ThemeManager.colors.blue
     property color backgroundColor: ThemeManager.colors.surface0
     property int strokeWidth: 8
-    property int startAngle: -90 // -90 grados es la parte superior del círculo
+    property int startAngle: -90 // -90 degrees is the top of the circle
 
-    // Propiedades Internas
+    // Internal Properties
     readonly property real size: Math.min(width, height)
     readonly property real radius: (size - strokeWidth) / 2
-    // Asegura que el valor sea al menos un poco visible para evitar glitches
+    // Ensures the value is at least slightly visible to avoid glitches
     readonly property real vValue: value > 0.001 ? value : 0.001
 
-    // Usar el renderizador de curvas para bordes redondeados suaves
+    // Use curve renderer for smooth rounded borders
     preferredRendererType: Shape.CurveRenderer
     asynchronous: true
 
-    // Anillo de Fondo
+    // Background Ring
     ShapePath {
         fillColor: "transparent"
         strokeColor: root.backgroundColor
@@ -61,7 +63,7 @@ Shape {
         }
     }
 
-    // Anillo de Progreso
+    // Progress Ring
     ShapePath {
         fillColor: "transparent"
         strokeColor: root.foregroundColor
@@ -76,7 +78,7 @@ Shape {
             centerX: root.size / 2
             centerY: root.size / 2
 
-            // Animación de Actualizaciones
+            // Update Animation
             Behavior on sweepAngle { NumberAnimation { duration: 350 } }
         }
 

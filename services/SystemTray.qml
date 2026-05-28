@@ -14,10 +14,9 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
-
 
 // Quickshell
 import QtQuick
@@ -29,7 +28,7 @@ Row {
     id: systray
     spacing: 6
     
-    property var bar // Referencia de la Barra
+    property var bar // Bar reference
     
     Repeater {
         model: SystemTray.items
@@ -66,7 +65,7 @@ Row {
                     if (mouse.button === Qt.LeftButton) {
                         modelData.activate()
                     } else if (mouse.button === Qt.RightButton && modelData.hasMenu) {
-                        // Calcular posición justo antes de abrir
+                        // Calculate position just before opening
                         var globalPos = sysItem.mapToItem(systray.bar.contentItem, 0, 0)
                         menuAnchor.anchor.rect.x = globalPos.x
                         menuAnchor.anchor.rect.y = systray.bar.height
@@ -79,7 +78,7 @@ Row {
                 id: menuAnchor
                 menu: sysItem.modelData.menu
                 anchor.window: systray.bar
-                // Se actualizan en el onClick
+                // Updated in onClick
             }
         }
     }

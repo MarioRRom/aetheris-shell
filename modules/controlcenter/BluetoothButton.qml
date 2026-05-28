@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -26,9 +26,10 @@ import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
+import qs.i18n
 import qs.services
 import qs.themes
 
@@ -40,14 +41,14 @@ import qs.themes
 //  `-------------------------'
 
 Rectangle {
-    property bool actived: false
+    property bool isActive: false
 
 
     Layout.fillWidth: true
     Layout.preferredHeight: 62
     color: "transparent" // active is true
 
-    // Cambiar de Vista
+    // Change View
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
@@ -63,16 +64,16 @@ Rectangle {
         gradient: Gradient {
             GradientStop {
                 position: 0.0
-                color: actived ? ThemeManager.colors.sapphire : ThemeManager.colors.surface0
+                color: isActive ? ThemeManager.colors.sapphire : ThemeManager.colors.surface0
             }
             GradientStop { 
                 position: 1.0
-                color: actived ? ThemeManager.colors.sapphire : ThemeManager.colors.surface1
+                color: isActive ? ThemeManager.colors.sapphire : ThemeManager.colors.surface1
             }
         }
     }
     
-    // Contenido
+    // Content
     RowLayout {
         anchors.centerIn: parent
         width: parent.width - 30
@@ -82,7 +83,7 @@ Rectangle {
             text: "󰂲"
             font.family: ThemeManager.fonts.icons
             font.pixelSize: 28
-            color: actived ? ThemeManager.colors.mantle : ThemeManager.colors.text
+            color: isActive ? ThemeManager.colors.mantle : ThemeManager.colors.text
             Layout.alignment: Qt.AlignVCenter
         }
         
@@ -91,18 +92,18 @@ Rectangle {
             spacing: 0
             
             Text {
-                text: "Bluetooth"
+                text: LanguageManager.t("controlcenter.bluetooth")
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 16
                 font.bold: false
-                color: actived ? ThemeManager.colors.mantle : ThemeManager.colors.text
+                color: isActive ? ThemeManager.colors.mantle : ThemeManager.colors.text
             }
 
             Text {
-                text: "Desactivado"
+                text: LanguageManager.t("bluetoothmenu.disabled")
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 10
-                color: actived ? ThemeManager.colors.mantle : ThemeManager.colors.text
+                color: isActive ? ThemeManager.colors.mantle : ThemeManager.colors.text
             }
         }
     }

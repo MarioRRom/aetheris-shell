@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -22,7 +22,7 @@
 import QtQuick
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.services
 import qs.themes
 
@@ -38,7 +38,7 @@ WrapperMouseArea {
     onClicked: {
         akashaLoader.active = !akashaLoader.active
 
-        // Irminsul Animation //
+        // Irminsul Animation
         let gx = centerPanelArea.mapToItem(topBarRoot.contentItem, 0, 0).x
         let centroX = gx + (centerPanelArea.width / 2) 
         irmiPulse.trigger(centroX)
@@ -80,7 +80,7 @@ WrapperMouseArea {
             leftPadding: 10
             rightPadding: 10
 
-            // Notifications Indicator //
+            // Notifications Indicator
             Text {
                 visible: Notifications.history.length > 0
                 text: "󰧞"
@@ -90,7 +90,7 @@ WrapperMouseArea {
                 font.pixelSize: 20
             }
 
-            // System Time //
+            // System Time
             Text {
                 text: SystemTime.timeFormat
                 color: ThemeManager.colors.text
@@ -100,7 +100,7 @@ WrapperMouseArea {
             }
 
 
-            // Weather Info //
+            // Weather Info
             Text {
                 text: Weather.icon
                 color: Weather.color

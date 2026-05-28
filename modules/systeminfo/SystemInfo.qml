@@ -12,14 +12,14 @@
 //===========================================================================
 
 // EUTHYMIA: El plano de la conciencia eterna. 
-// Monitorea la integridad del hardware y el flujo de energía. 
-// Un estado de equilibrio donde el uso de recursos y la potencia 
-// se mantienen en una constante inmutable, libre de la erosión del sistema.
+// Monitors hardware integrity and energy flow. 
+// Like the alchemical opus, system variables 
+// remain in an immutable constant, free from the erosion of the system.
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -30,16 +30,17 @@ import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
+import qs.i18n
 import qs.services
 import qs.themes
 
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | | Ventana SystemInfo  | |
+//  | |  SystemInfo Window  | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -50,24 +51,24 @@ PopupWindow {
     property var bar
     property var closeWidgets: null
 
-    // El Radius de la Ventana se Establece desde la Configuración global.
+    // Window Radius is set from the global Configuration.
     property int globalCorners: Config.global.corners
     property int globalMargin: Config.global.margins
     property int globalWallborder: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
     property int cornerRadius: globalCorners - globalMargin
     
-    property int windowMargin: 10 // Margen interno.
+    property int windowMargin: 10 // Internal margin.
     property int itemRadius: cornerRadius - windowMargin
 
 
     implicitWidth: 310
     implicitHeight: sysContainer.implicitHeight + (windowMargin * 2) + 10
     anchor.window: bar
-    anchor.rect.x: globalWallborder + (globalMargin - 5) // 5px por el margin en el Contenedor Principal.
-    anchor.rect.y: bar.height + (globalMargin - 5) // 5px por el Margin del Contenedor Principal.
+    anchor.rect.x: globalWallborder + (globalMargin - 5) // 5px for the margin in the Main Container.
+    anchor.rect.y: bar.height + (globalMargin - 5) // 5px for the Margin of the Main Container.
     color: "transparent"
 
-    // Contenedor Principal
+    // Main Container
     Rectangle {
         id: sysRoot
         anchors.fill: parent
@@ -75,7 +76,7 @@ PopupWindow {
         color: "transparent"
         clip: false
 
-        // Sombreado
+        // Shadow
         Loader {
             anchors.fill: parent
             active: Config.shadows.enabled
@@ -92,14 +93,14 @@ PopupWindow {
             }
         }
 
-        // Contenido de la Ventana
+        // Window Content
         Rectangle {
         anchors.fill: parent
         radius: cornerRadius
         color: ThemeManager.colors.mantle
         clip: true
 
-            // Decoración
+            // Decoration
             InnerLine {
                 anchors.fill: parent
                 lineradius: cornerRadius
@@ -107,7 +108,7 @@ PopupWindow {
                 linecolor: ThemeManager.colors.surface0
             }
 
-            // Columna principal
+            // Main column
             ColumnLayout {
                 id: sysContainer
                 anchors.top: parent.top
@@ -128,7 +129,7 @@ PopupWindow {
                     height: 96
                     color: "transparent"
 
-                    // Sombreado
+                    // Shadow
                     RectangularShadow {
                         anchors.fill: parent
                         radius: itemRadius
@@ -140,7 +141,7 @@ PopupWindow {
                         cached: true
                     }
 
-                    // Contenido
+                    // Content
                     Rectangle {
                         anchors.fill: parent
                         color: ThemeManager.colors.base
@@ -152,7 +153,7 @@ PopupWindow {
                             anchors.margins: 8
                         }
                         
-                        // Decoración
+                        // Decoration
                         InnerLine {
                             anchors.fill: parent
                             lineradius: itemRadius
@@ -164,7 +165,7 @@ PopupWindow {
 
                 //  .-------------------------.
                 //  | .---------------------. |
-                //  | |  Graficos del Syst  | |
+                //  | |    System Graphs    | |
                 //  | `---------------------' |
                 //  `-------------------------'
 
@@ -172,7 +173,7 @@ PopupWindow {
                     spacing: windowMargin
                     Layout.fillWidth: true
 
-                    // Uso de CPU
+                    // CPU usage
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 105
@@ -180,14 +181,14 @@ PopupWindow {
 
                         GraphPreset {
                             anchors.fill: parent
-                            cabecera: "CPU:"
-                            acento: ThemeManager.colors.red
-                            icono: ""
-                            porcentaje: SystemStatus.cpuUsagePercent
+                            header: LanguageManager.t("systeminfo.cpu")
+                            accent: ThemeManager.colors.red
+                            icon: ""
+                            percentage: SystemStatus.cpuUsagePercent
                         }
                     }
 
-                    // Uso de RAM
+                    // RAM usage
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 105
@@ -195,10 +196,10 @@ PopupWindow {
 
                         GraphPreset {
                             anchors.fill: parent
-                            cabecera: "RAM:"
-                            acento: ThemeManager.colors.yellow
-                            icono: ""
-                            porcentaje: SystemStatus.ramUsagePercent
+                            header: LanguageManager.t("systeminfo.ram")
+                            accent: ThemeManager.colors.yellow
+                            icon: ""
+                            percentage: SystemStatus.ramUsagePercent
                         }
                     }
                 }
@@ -206,7 +207,7 @@ PopupWindow {
                 RowLayout {
                     spacing: windowMargin
 
-                    // Uso de Disco
+                    // Disk usage
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 105
@@ -214,14 +215,14 @@ PopupWindow {
 
                         GraphPreset {
                             anchors.fill: parent
-                            cabecera: "DSK:"
-                            acento: ThemeManager.colors.green
-                            icono: ""
-                            porcentaje: SystemStatus.diskUsage
+                            header: LanguageManager.t("systeminfo.dsk")
+                            accent: ThemeManager.colors.green
+                            icon: ""
+                            percentage: SystemStatus.diskUsage
                         }
                     }
 
-                    // Temperatura
+                    // Temperature
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 105
@@ -229,10 +230,10 @@ PopupWindow {
 
                         GraphPreset {
                             anchors.fill: parent
-                            cabecera: "TMP:"
-                            acento: ThemeManager.colors.mauve
-                            icono: ""
-                            porcentaje: SystemStatus.temperature
+                            header: LanguageManager.t("systeminfo.tmp")
+                            accent: ThemeManager.colors.mauve
+                            icon: ""
+                            percentage: SystemStatus.temperature
                             temp: true
                         }
                     }
@@ -240,55 +241,55 @@ PopupWindow {
 
                 //  .-------------------------.
                 //  | .---------------------. |
-                //  | |  Botónes de Power   | |
+                //  | |   Power Buttons     | |
                 //  | `---------------------' |
                 //  `-------------------------'
 
                 RowLayout {
                     spacing: windowMargin
 
-                    // Cerrar Sesión
+                    // Logout
                     ButtonsPreset {
                         Layout.fillWidth: true
-                        alto: 41
-                        icono: "󰗽"
-                        texto: "Logout"
-                        comando: ["bspc", "quit"]
-                        hovercolor: ThemeManager.colors.mauve
+                        btnHeight: 41
+                        icon: "󰗽"
+                        btnText: LanguageManager.t("systeminfo.logout")
+                        command: ["bspc", "quit"]
+                        hoverColor: ThemeManager.colors.mauve
                     }
 
-                    // Apagar
+                    // Shutdown
                     ButtonsPreset {
                         Layout.fillWidth: true
-                        alto: 41
-                        icono: "⏻"
-                        texto: "Shutdown"
-                        comando: ["systemctl", "poweroff"]
-                        hovercolor: ThemeManager.colors.red
+                        btnHeight: 41
+                        icon: "⏻"
+                        btnText: LanguageManager.t("systeminfo.shutdown")
+                        command: ["systemctl", "poweroff"]
+                        hoverColor: ThemeManager.colors.red
                     }
                 }
 
                 RowLayout {
                     spacing: windowMargin
 
-                    // Reiniciar
+                    // Reboot
                     ButtonsPreset {
                         Layout.fillWidth: true
-                        alto: 41
-                        icono: ""
-                        texto: "Reboot"
-                        comando: ["systemctl", "reboot"]
-                        hovercolor: ThemeManager.colors.peach
+                        btnHeight: 41
+                        icon: ""
+                        btnText: LanguageManager.t("systeminfo.reboot")
+                        command: ["systemctl", "reboot"]
+                        hoverColor: ThemeManager.colors.peach
                     }
 
-                    // Suspender
+                    // Suspend
                     ButtonsPreset {
                         Layout.fillWidth: true
-                        alto: 41
-                        icono: ""
-                        texto: "Suspend"
-                        comando: ["systemctl", "suspend"]
-                        hovercolor: ThemeManager.colors.sky
+                        btnHeight: 41
+                        icon: ""
+                        btnText: LanguageManager.t("systeminfo.suspend")
+                        command: ["systemctl", "suspend"]
+                        hoverColor: ThemeManager.colors.sky
                         beforeCommand: root.closeWidgets
                     }
                 }

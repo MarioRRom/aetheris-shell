@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -53,14 +53,20 @@ Rectangle {
         anchors.fill: parent
         spacing: 5
 
-        // Album Cover //
+
+        //  .-------------------------.
+        //  | .---------------------. |
+        //  | |     Album Cover     | |
+        //  | `---------------------' |
+        //  `-------------------------'
+
         Rectangle {
             id: albumCover
             width: 85
             height: 85
             color: "transparent"
 
-            // Sombreado
+            // Shadow
             RectangularShadow {
                 visible: Config.shadows.enabled
                 anchors.fill: parent
@@ -84,7 +90,13 @@ Rectangle {
             }
         }
         
-        // Album Info //
+
+        //  .-------------------------.
+        //  | .---------------------. |
+        //  | |     Album Info      | |
+        //  | `---------------------' |
+        //  `-------------------------'
+
         Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -100,7 +112,7 @@ Rectangle {
                 color: Qt.rgba(baseColor.r, baseColor.g, baseColor.b, 0.8)
             }
 
-            // Sombreado
+            // Shadow
             Rectangle {
                 visible: Config.shadows.enabled
                 anchors.fill: parent
@@ -119,7 +131,6 @@ Rectangle {
             }
 
             ColumnLayout {
-                //anchors.verticalCenter: parent.verticalCenter
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.right: parent.right

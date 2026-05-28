@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Módulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -23,7 +23,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 
-// Globales
+// Config
 import qs.themes
 
 Text {

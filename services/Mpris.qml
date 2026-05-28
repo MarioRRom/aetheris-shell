@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -23,6 +23,9 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Services.Mpris
+
+// Config
+import qs.i18n
 
 
 //  .-------------------------.
@@ -34,27 +37,28 @@ import Quickshell.Services.Mpris
 QtObject {
     id: mediaPlayer
     
-    // Acceso al reproductor activo (o nulo si no hay ninguno)
+    // Access to the active player (or null if none)
     readonly property var activePlayer: selectedPlayer ?? (Mpris.players.values[0] ?? null)
     readonly property var casseteImg: Qt.resolvedUrl("../assets/cassette.png")
 
+
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |    Player Activo    | |
+    //  | |    Active Player    | |
     //  | `---------------------' |
     //  `-------------------------'
 
-    // Obtención de Metadatos (Wiki: trackArtist > trackArtists)
-    property string title: activePlayer?.trackTitle || "No Title"
-    property string artist: activePlayer?.trackArtist || "No Artist"
+    // Metadata retrieval (Wiki: trackArtist > trackArtists)
+    property string title: activePlayer?.trackTitle || LanguageManager.t("mpris.noTitle")
+    property string artist: activePlayer?.trackArtist || LanguageManager.t("mpris.noArtist")
     property string artUrl: activePlayer?.trackArtUrl || casseteImg
-    property string player: activePlayer?.identity ?? "No Player"
+    property string player: activePlayer?.identity ?? LanguageManager.t("mpris.noPlayer")
     
-    // Estados del Reproductor Activo
+    // Active Player States
     readonly property bool status: Mpris.players.values.length > 0
     readonly property bool isPaused: activePlayer?.playbackState === MprisPlaybackState.Paused
 
-    // Capacidades y Estados de Control (Wiki: canSeek, positionSupported)
+    // Control Capabilities and States (Wiki: canSeek, positionSupported)
     readonly property bool canTogglePlaying: activePlayer?.canTogglePlaying ?? false
     readonly property bool canGoNext: activePlayer?.canGoNext ?? false
     readonly property bool canGoPrevious: activePlayer?.canGoPrevious ?? false
@@ -70,11 +74,11 @@ QtObject {
     readonly property bool canVolume: activePlayer?.volumeSupported ?? false
     property real volume: activePlayer?.volume ?? 1.0
 
-    // Tiempos del Reproductor Activo
+    // Active Player Times
     property real position: 0
     property real duration: 0
 
-    // Actualizador de posición (Wiki: Timer + positionChanged())
+    // Position updater (Wiki: Timer + positionChanged())
     property var progressTimer: Timer {
         interval: 1000
         repeat: true
@@ -91,7 +95,7 @@ QtObject {
         target: mediaPlayer.activePlayer
         ignoreUnknownSignals: true 
 
-        // Wiki: postTrackChanged es más seguro para info actualizada
+        // Wiki: postTrackChanged is safer for updated info
         function onPostTrackChanged() {
             if (mediaPlayer.activePlayer) {
                 mediaPlayer.duration = mediaPlayer.activePlayer.length;
@@ -112,24 +116,25 @@ QtObject {
         }
     }
 
+
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |    Otros Players    | |
+    //  | |    Other Players    | |
     //  | `---------------------' |
     //  `-------------------------'
 
-    // Propiedad para forzar un reproductor específico
+    // Property to force a specific player
     property var selectedPlayer: null
     onSelectedPlayerChanged: {
-        // Sincronizar datos cuando cambia el reproductor
+        // Sync data when player changes
         syncActivePlayerData();
     }
 
-    // Lista de todos los reproductores
+    // List of all players
     readonly property var allPlayers: Mpris.players.values
     property int lastPlayerCount: 0
 
-    // Lógica de gestión de reproductores y auto-cambio
+    // Player management and auto-switch logic
     property var playerConnections: Connections {
         target: Mpris.players
         function onValuesChanged() {
@@ -152,7 +157,7 @@ QtObject {
 
             mediaPlayer.lastPlayerCount = currentCount;
             
-            // Sincronización al cambiar de player
+            // Sync when player changes
             if (mediaPlayer.activePlayer) {
                 mediaPlayer.duration = mediaPlayer.activePlayer.length;
                 mediaPlayer.position = mediaPlayer.activePlayer.position;
@@ -161,9 +166,10 @@ QtObject {
         }
     }
 
+
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |   Funcionalidades   | |
+    //  | |   Functionalities   | |
     //  | `---------------------' |
     //  `-------------------------'
 
@@ -183,7 +189,7 @@ QtObject {
     }
     
     function playpause() {
-        // Wiki: togglePlaying() es más directo que play/pause manual
+        // Wiki: togglePlaying() is more direct than manual play/pause
         if (activePlayer && canTogglePlaying) activePlayer.togglePlaying();
     }
 
@@ -208,7 +214,7 @@ QtObject {
         }
     }
 
-    // Nueva función para alterar el tiempo (Seek)
+    // function to change time (Seek)
     function setPosition(ratio) {
         if (activePlayer && canSeek && positionSupported) {
             let newPos = ratio * duration;

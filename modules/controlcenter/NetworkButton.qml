@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -26,9 +26,10 @@ import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
+import qs.i18n
 import qs.services
 import qs.themes
 
@@ -47,7 +48,7 @@ Rectangle {
     Layout.preferredHeight: 62
     color: "transparent" // active is true
 
-    // Cambiar de Vista
+    // Change View
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
@@ -71,7 +72,7 @@ Rectangle {
         }
     }
     
-    // Contenido
+    // Content
     RowLayout {
         anchors.centerIn: parent
         width: parent.width - 30
@@ -90,7 +91,7 @@ Rectangle {
             spacing: 0
             
             Text {
-                text: "Internet"
+                text: LanguageManager.t("controlcenter.network")
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 16
                 font.bold: false

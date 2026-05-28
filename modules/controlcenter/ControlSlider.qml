@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -26,7 +26,7 @@ import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
 import qs.services
@@ -48,7 +48,7 @@ Rectangle {
     Layout.fillWidth: true
     Layout.preferredHeight: 50
 
-    // Sombreado
+    // Shadow
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -67,7 +67,7 @@ Rectangle {
         radius: itemRadius
         clip: true
 
-        // Decoración
+        // Decoration
         InnerLine {
             anchors.fill: parent
             lineradius: itemRadius

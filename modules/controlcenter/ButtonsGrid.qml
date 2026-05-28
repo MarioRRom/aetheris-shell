@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -26,7 +26,7 @@ import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
 import qs.services
@@ -43,7 +43,7 @@ Rectangle {
     implicitHeight: gridLayout.height + (gridMargin * 2)
 
 
-    // Sombreado
+    // Shadow
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -62,7 +62,7 @@ Rectangle {
         radius: itemRadius
         clip: true
 
-        // Decoración
+        // Decoration
         InnerLine {
             anchors.fill: parent
             lineradius: itemRadius
@@ -81,14 +81,14 @@ Rectangle {
         anchors.right: parent.right
         anchors.margins: gridMargin
 
-        // Configuracion del grid.
+        // Grid configuration.
         columns: 4
         rows: 3
         columnSpacing: gridMargin
         rowSpacing: gridMargin
 
 
-        // No Molestar
+        // Do Not Disturb
         WrapperMouseArea {
             Layout.fillWidth: true
             Layout.preferredHeight: itemHeight
@@ -114,7 +114,7 @@ Rectangle {
             }
         }
 
-        // Modo Noche
+        // Night Mode
         WrapperMouseArea {
             Layout.fillWidth: true
             Layout.preferredHeight: itemHeight
@@ -122,7 +122,7 @@ Rectangle {
             visible: true
 
             onClicked: {
-                Quickshell.execDetached(["notify-send", "Modo Noche", "funciona"])
+                Quickshell.execDetached(["notify-send", "Night Mode", "funciona"])
             }
 
             Rectangle {
@@ -138,7 +138,7 @@ Rectangle {
             }
         }
 
-        // Modo Avión
+        // Airplane Mode
         WrapperMouseArea {
             Layout.fillWidth: true
             Layout.preferredHeight: itemHeight
@@ -146,7 +146,7 @@ Rectangle {
             visible: true
 
             onClicked: {
-                Quickshell.execDetached(["notify-send", "Modo Avión", "funciona"])
+                Quickshell.execDetached(["notify-send", "Airplane Mode", "funciona"])
             }
 
             Rectangle {
@@ -186,7 +186,7 @@ Rectangle {
             }
         }
 
-        // Modo Ahorro de Energia
+        // Power Saving Mode
         WrapperMouseArea {
             Layout.fillWidth: true
             Layout.preferredHeight: itemHeight
@@ -194,7 +194,7 @@ Rectangle {
             visible: true
 
             onClicked: {
-                Quickshell.execDetached(["notify-send", "Ahorro de Energia", "funciona"])
+                Quickshell.execDetached(["notify-send", "Power Saving", "funciona"])
             }
 
             Rectangle {

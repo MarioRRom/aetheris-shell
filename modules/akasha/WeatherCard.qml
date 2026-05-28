@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -25,7 +25,7 @@ import QtQuick.Effects
 import Qt5Compat.GraphicalEffects
 import Quickshell.Widgets
 
-// Globales
+// Config
 import qs.config
 import qs.components
 import qs.services
@@ -33,16 +33,17 @@ import qs.themes
 
 Rectangle {
     Layout.fillWidth: true
+    
     height: 139
     color: "transparent"
 
-    // Definimos la ruta de los backgrounds
+    // Background assets path
     readonly property string assetsPath: "../../assets/weather/"
 
-    // Margenes internos de la card
+    // Internal card margins
     property int infoMargins: 10
 
-    // Sombreado
+    // Shadow
     RectangularShadow {
         anchors.fill: parent
         radius: itemRadius
@@ -55,7 +56,7 @@ Rectangle {
     }
     
     
-    // Imagen de Fondo con Máscara de Opacidad
+    // Background Image with Opacity Mask
     Image {
         anchors.fill: parent
         source: assetsPath + Weather.backgroundImage
@@ -74,7 +75,7 @@ Rectangle {
         }
     }
 
-    // Contenido
+    // Content
     Item {
         id: container
         anchors.fill: parent

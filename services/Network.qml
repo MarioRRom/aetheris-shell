@@ -14,7 +14,7 @@
 
 //  .-------------------------.
 //  | .---------------------. |
-//  | |  Importar Modulos   | |
+//  | |   Import Modules    | |
 //  | `---------------------' |
 //  `-------------------------'
 
@@ -23,6 +23,9 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Networking
+
+// Config
+import qs.i18n
 
 QtObject {
     id: root
@@ -34,13 +37,13 @@ QtObject {
     // | `---------------------' |
     // `-------------------------'
     
-    // Conectividad (Portal, Limited, Unknown, Full, None )
+    // Connectivity (Portal, Limited, Unknown, Full, None)
     readonly property var connectivity: Networking.connectivity
 
-    // Estado del Wi-Fi por Hardware.
+    // Wi-Fi hardware state.
     readonly property bool wifiHardwareEnabled: Networking.wifiHardwareEnabled
 
-    // Estado del Wi-Fi por Software.
+    // Wi-Fi software state.
     readonly property bool wifiEnabled: Networking.wifiEnabled
 
 
@@ -50,18 +53,19 @@ QtObject {
     // | `---------------------' |
     // `-------------------------'
 
-    // cable conectado (si hay alguno).
+    // cable connected (if any).
     readonly property WiredDevice wiredDevice: {
         for (const dev of Networking.devices.values)
             if (dev.type === DeviceType.Wired) return dev as WiredDevice
         return null
     }
 
-    // Estado de conexion a la red Cableada.
+    // Wired network connection state.
     readonly property bool wiredConnected: wiredDevice?.connected ?? false
 
-    // Velocidad de la Conexión.
+    // Connection speed.
     readonly property int wiredSpeed: wiredDevice?.linkSpeed ?? 0
+
 
     // .-------------------------.
     // | .---------------------. |
@@ -69,10 +73,10 @@ QtObject {
     // | `---------------------' |
     // `-------------------------'
 
-    // Lista de redes disponibles.
+    // List of available networks.
     readonly property var networkList: wifiDevice?.networks.values ?? []
 
-    // El adaptador Wi-Fi activo (si hay alguno).
+    // Active Wi-Fi adapter (if any).
     readonly property WifiDevice wifiDevice: {
         const devList = Networking.devices.values
         for (const dev of devList) {
@@ -82,7 +86,7 @@ QtObject {
         return null
     }
 
-    // Estado de conexión a la red Wi-Fi.
+    // Wi-Fi connection state.
     readonly property bool wifiConnected: wifiDevice?.connected ?? false
 
 
@@ -92,10 +96,10 @@ QtObject {
     // | `---------------------' |
     // `-------------------------'
 
-    // La red Wi-Fi actualmente conectada (si hay alguna).
+    // The currently connected Wi-Fi network (if any).
     readonly property WifiNetwork activeNetwork: networkList.find(n => n.connected) ?? null
     
-    // Propiedades convenientes para mostrar en la UI.
+    // Convenient properties for displaying in the UI.
     readonly property string ssid:           activeNetwork?.name           ?? ""
 
 
@@ -117,19 +121,19 @@ QtObject {
     // | `---------------------' |
     // `-------------------------'
 
-    // Activar/Desactivar wifi (Software)
+    // Enable/Disable wifi (Software)
     function toggleWifi()                   { Networking.wifiEnabled = !Networking.wifiEnabled }
 
-    // Conectar a una red
+    // Connect to a network
     function connectToNetwork(network, password = "") {
         if (!network) return
         password ? network.connectWithPsk(password) : network.connect()
     }
 
-    // Desconectar de una red
+    // Disconnect from a network
     function disconnectFromNetwork(network) { if (network) network.disconnect() }
 
-    // Olvidar una red
+    // Forget a network
     function forgetNetwork(network)         { if (network) network.forget()      }
 
 
@@ -139,7 +143,7 @@ QtObject {
     // | `---------------------' |
     // `-------------------------'
 
-    // Intensidad de señal Wifi
+    // Wifi signal strength
     function signalIcon(network) {
         if (!network) return "󰤭"  // wifi-strength-off-outline
         const s = network.signalStrength
@@ -149,7 +153,7 @@ QtObject {
         return "󰤟"                // wifi-strength-1
     }
     
-    // Intensidad de señal Wifi (Protegido)
+    // Wifi signal strength (Secured)
     function signalIconLocked(network) {
         if (!network) return "󰤭"  // wifi-strength-off-outline
         const s = network.signalStrength
@@ -159,12 +163,12 @@ QtObject {
         return "󰤡"  
     }
 
-    // verificar si esta Protegida
+    // check if it's Secured
     function isSecured(network) {
         return !!network && network.security !== WifiSecurityType.Open
     }
 
-    // Icono de estado de Red
+    // Network status icon
     readonly property string statusIcon: {
         if (wiredConnected) return "󰈀"
         if (!wifiHardwareEnabled) return "󰤮"
@@ -175,14 +179,14 @@ QtObject {
         return signalIcon(activeNetwork)
     }
 
-    // Texto descriptivo de estado de red
+    // Descriptive network status text
     readonly property string statusText: {
-        if (wiredConnected)                               return "Ethernet"
-        if (!wifiHardwareEnabled)                         return "Wi-Fi bloqueado (hardware)"
-        if (!wifiEnabled)                                 return "Wi-Fi desactivado"
-        if (!wifiConnected)                               return "Desconectado"
-        if (connectivity === NetworkConnectivity.Portal)  return "Portal cautivo"
-        if (connectivity === NetworkConnectivity.Limited) return "Sin internet"
+        if (wiredConnected)                               return LanguageManager.t("network.ethernet")
+        if (!wifiHardwareEnabled)                         return LanguageManager.t("network.wifiBlocked")
+        if (!wifiEnabled)                                 return LanguageManager.t("network.wifiDisabled")
+        if (!wifiConnected)                               return LanguageManager.t("network.disconnected")
+        if (connectivity === NetworkConnectivity.Portal)  return LanguageManager.t("network.captivePortal")
+        if (connectivity === NetworkConnectivity.Limited) return LanguageManager.t("network.noInternet")
         return ssid
     }
 }
