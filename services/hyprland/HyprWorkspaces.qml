@@ -20,7 +20,6 @@
 
 // Quickshell
 import QtQuick
-import Quickshell
 import Quickshell.Hyprland
 
 // Config
@@ -93,44 +92,7 @@ Row {
     //  | `---------------------' |
     //  `-------------------------'
 
-    Connections {
-        target: Hyprland
-        
-        // When workspaces are updated
-        function onRawEvent(event) {
-            if (!Hyprland.workspaces) return
-
-            let wsList = []
-            let occList = []
-            let focused = null
-
-            for (let ws of Hyprland.workspaces.values) {
-                if (!ws || !ws.monitor || !ws.monitor.name) continue
-                if (ws.monitor.name !== monitorName) continue
-
-                wsList.push(ws.name)
-
-                if (ws.occupied)
-                    occList.push(ws.name)
-
-                if (ws.focused)
-                    focused = ws.name
-            }
-
-            workspaceNames = wsList
-            occupiedWorkspaces = occList
-            focusedWorkspace = focused ?? ""
-        }
-    }
-
-
-    //  .-------------------------.
-    //  | .---------------------. |
-    //  | |   Initialization    | |
-    //  | `---------------------' |
-    //  `-------------------------'
-
-    Component.onCompleted: {
+    function refreshWorkspaces() {
         if (!Hyprland.workspaces) return
 
         let wsList = []
@@ -154,4 +116,11 @@ Row {
         occupiedWorkspaces = occList
         focusedWorkspace = focused ?? ""
     }
+
+    Connections {
+        target: Hyprland
+        function onRawEvent(event) { refreshWorkspaces() }
+    }
+
+    Component.onCompleted: refreshWorkspaces()
 }

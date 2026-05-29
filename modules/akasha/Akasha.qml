@@ -6,14 +6,14 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-// AKASHA: The terminal of absolute wisdom. 
-// Centralizes the reception of data and external notifications. 
-// Transforms the flow of raw information into actionable knowledge 
+// AKASHA: The terminal of absolute wisdom.
+// Centralizes the reception of data and external notifications.
+// Transforms the flow of raw information into actionable knowledge
 // for the user, operating as Sumeru's neural network.
 
 
@@ -28,7 +28,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
-import Quickshell.Widgets
 
 // Config
 import qs.config
@@ -53,7 +52,7 @@ PopupWindow {
     property int globalCorners: Config.global.corners
     property int globalMargin: Config.global.margins
     property int cornerRadius: globalCorners - globalMargin
-    
+
     property int windowMargin: 10 // Internal margin.
     property int itemRadius: cornerRadius - windowMargin
 
@@ -273,7 +272,7 @@ PopupWindow {
                             horizontalAlignment: Text.AlignHCenter
                         }
                         Text {
-                            text: Qt.formatDate(new Date(), "dddd")
+                            text: SystemTime.dayName
                             font.pixelSize: 35
                             color: ThemeManager.colors.green
                             font.family: ThemeManager.fonts.main
@@ -288,7 +287,7 @@ PopupWindow {
                         Layout.preferredHeight: 240
                     }
 
-                    // Tarjeta de Clima
+                    // Weather Card
                     WeatherCard {}
                 }
             }

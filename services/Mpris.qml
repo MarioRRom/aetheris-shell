@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -21,7 +21,6 @@
 // Quickshell
 pragma Singleton
 import QtQuick
-import Quickshell
 import Quickshell.Services.Mpris
 
 // Config
@@ -36,7 +35,7 @@ import qs.i18n
 
 QtObject {
     id: mediaPlayer
-    
+
     // Access to the active player (or null if none)
     readonly property var activePlayer: selectedPlayer ?? (Mpris.players.values[0] ?? null)
     readonly property var casseteImg: Qt.resolvedUrl("../assets/cassette.png")
@@ -49,11 +48,11 @@ QtObject {
     //  `-------------------------'
 
     // Metadata retrieval (Wiki: trackArtist > trackArtists)
-    property string title: activePlayer?.trackTitle || LanguageManager.t("mpris.noTitle")
-    property string artist: activePlayer?.trackArtist || LanguageManager.t("mpris.noArtist")
-    property string artUrl: activePlayer?.trackArtUrl || casseteImg
-    property string player: activePlayer?.identity ?? LanguageManager.t("mpris.noPlayer")
-    
+    readonly property string title: activePlayer?.trackTitle || LanguageManager.t("mpris.noTitle")
+    readonly property string artist: activePlayer?.trackArtist || LanguageManager.t("mpris.noArtist")
+    readonly property string artUrl: activePlayer?.trackArtUrl || casseteImg
+    readonly property string player: activePlayer?.identity ?? LanguageManager.t("mpris.noPlayer")
+
     // Active Player States
     readonly property bool status: Mpris.players.values.length > 0
     readonly property bool isPaused: activePlayer?.playbackState === MprisPlaybackState.Paused
@@ -93,7 +92,7 @@ QtObject {
 
     property var activePlayerConnections: Connections {
         target: mediaPlayer.activePlayer
-        ignoreUnknownSignals: true 
+        ignoreUnknownSignals: true
 
         // Wiki: postTrackChanged is safer for updated info
         function onPostTrackChanged() {
@@ -144,7 +143,7 @@ QtObject {
             if (currentCount > mediaPlayer.lastPlayerCount) {
                 mediaPlayer.selectedPlayer = currentPlayers[currentCount - 1];
             }
-            
+
             if (mediaPlayer.selectedPlayer !== null) {
                 let exists = false;
                 for (let i = 0; i < currentCount; i++) {
@@ -156,7 +155,7 @@ QtObject {
             }
 
             mediaPlayer.lastPlayerCount = currentCount;
-            
+
             // Sync when player changes
             if (mediaPlayer.activePlayer) {
                 mediaPlayer.duration = mediaPlayer.activePlayer.length;
@@ -187,7 +186,7 @@ QtObject {
         const seconds = Math.floor(totalSeconds % 60);
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
-    
+
     function playpause() {
         // Wiki: togglePlaying() is more direct than manual play/pause
         if (activePlayer && canTogglePlaying) activePlayer.togglePlaying();
@@ -223,7 +222,7 @@ QtObject {
         }
     }
 
-    function selectPlayer(player) { 
+    function selectPlayer(player) {
         selectedPlayer = player;
         syncActivePlayerData();
     }

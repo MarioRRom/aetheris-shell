@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -22,14 +22,10 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
-import Qt5Compat.GraphicalEffects
-import Quickshell
-import Quickshell.Widgets
 
 // Config
 import qs.config
 import qs.components
-import qs.services
 import qs.themes
 
 
@@ -59,7 +55,7 @@ Rectangle {
         spread: 0.0
         cached: true
     }
-    
+
     // Background
     Rectangle {
         anchors.fill: parent
@@ -75,7 +71,7 @@ Rectangle {
             linecolor: ThemeManager.colors.surface0
         }
     }
-    
+
     // Slider
     RowLayout {
         anchors.fill: parent
@@ -109,7 +105,7 @@ Rectangle {
             font.family: ThemeManager.fonts.icons
             font.pixelSize: 20
             color: ThemeManager.colors.text
-            Layout.alignment: Qt.AlignVCenter 
+            Layout.alignment: Qt.AlignVCenter
         }
     }
 }

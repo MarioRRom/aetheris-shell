@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -21,14 +21,8 @@
 // Quickshell
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Effects
-import Qt5Compat.GraphicalEffects
-import Quickshell
-import Quickshell.Widgets
 
 // Config
-import qs.config
-import qs.components
 import qs.i18n
 import qs.services
 import qs.themes
@@ -54,7 +48,7 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
         onClicked: root.currentView = "internet"
     }
-    
+
     // Background
     Rectangle {
         anchors.fill: parent
@@ -65,13 +59,13 @@ Rectangle {
                 position: 0.0
                 color: active ? ThemeManager.colors.mauve : ThemeManager.colors.surface0
             }
-            GradientStop { 
+            GradientStop {
                 position: 1.0
                 color: active ? ThemeManager.colors.pink : ThemeManager.colors.surface1
             }
         }
     }
-    
+
     // Content
     RowLayout {
         anchors.centerIn: parent
@@ -85,11 +79,11 @@ Rectangle {
             color: active ? ThemeManager.colors.mantle : ThemeManager.colors.text
             Layout.alignment: Qt.AlignVCenter
         }
-        
+
         ColumnLayout {
             Layout.alignment: Qt.AlignVCenter
             spacing: 0
-            
+
             Text {
                 text: LanguageManager.t("controlcenter.network")
                 font.family: ThemeManager.fonts.main

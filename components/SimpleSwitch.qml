@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -22,6 +22,8 @@
 
 // Quickshell
 import QtQuick
+
+// Config
 import qs.themes
 
 // Main Rectangle
@@ -32,8 +34,8 @@ Rectangle {
     property bool status: false
     property var action
 
-    width: size 
-    height: size / 2 
+    width: size
+    height: size / 2
     radius: size
     color: status ? ThemeManager.colors.sky : ThemeManager.colors.surface1
 

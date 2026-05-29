@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -27,7 +27,6 @@ import QtQuick.Effects
 import qs.config
 import qs.components
 import qs.i18n
-import qs.services
 import qs.themes
 
 Rectangle {
@@ -37,12 +36,12 @@ Rectangle {
     Layout.fillHeight: true
 
     color: "transparent"
-    
+
     // Calendar Logic
     property date currentDate: new Date()
     property int currentYear: currentDate.getFullYear()
     property int currentMonth: currentDate.getMonth()
-    
+
     property var months: [
         LanguageManager.t("calendar.january"),
         LanguageManager.t("calendar.february"),
@@ -71,7 +70,7 @@ Rectangle {
     function getDaysInMonth(month, year) {
         return new Date(year, month + 1, 0).getDate()
     }
-    
+
     function getFirstDayOffset(month, year) {
         return new Date(year, month, 1).getDay()
     }
@@ -116,7 +115,7 @@ Rectangle {
         // Header: Month Year and Controls
         RowLayout {
             Layout.fillWidth: true
-            
+
             Text {
                 text: root.months[root.currentMonth] + " " + root.currentYear
                 color: ThemeManager.colors.green
@@ -128,7 +127,7 @@ Rectangle {
 
             RowLayout {
                 spacing: 15
-                
+
                 // Previous Button
                 Text {
                     text: "◀"
@@ -200,7 +199,7 @@ Rectangle {
 
             Repeater {
                 model: 42 // 6 rows * 7 columns to cover any month
-                
+
                 delegate: Item {
                     Layout.fillWidth: true
                     Layout.fillHeight: true

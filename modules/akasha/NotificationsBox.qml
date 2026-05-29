@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -64,7 +64,7 @@ Rectangle {
         spread: 0.0
         cached: true
     }
-    
+
     // Background
     Rectangle {
         anchors.fill: parent
@@ -80,7 +80,7 @@ Rectangle {
             linecolor: ThemeManager.colors.surface0
         }
     }
-    
+
     // Notification Box
     ColumnLayout {
         anchors.fill: parent
@@ -109,7 +109,7 @@ Rectangle {
                 visible: opacity > 0
                 Behavior on opacity { NumberAnimation { duration: 300 } }
 
-                Text { 
+                Text {
                     text: "󰂚"
                     font.family: ThemeManager.fonts.icons
                     font.pixelSize: 100
@@ -140,18 +140,18 @@ Rectangle {
                 opacity: Notifications.history.length > 0 ? 1 : 0
                 visible: opacity > 0
                 Behavior on opacity { NumberAnimation { duration: 300 } }
-                
-                
+
+
                 ColumnLayout {
                     id: notiColumn
                     width: parent.width - rootMargin
                     spacing: 0
-            
+
                     // Notification preset.
                     Repeater {
                         id: listRepeater
                         model: Notifications.history
-                    
+
                         delegate: Rectangle {
                             id: notifDelegate
                             Layout.fillWidth: true
@@ -171,7 +171,7 @@ Rectangle {
 
                             opacity: notif.shown ? 1 : 0
                             Behavior on opacity { NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic } }
-                            
+
                             // Entry/exit animation via height + opacity together
                             Layout.preferredHeight: notif.shown ? (cardSize + (internalMargin * 2)) : 0
                             Layout.bottomMargin: notif.shown ? cardSpacing : 0
@@ -179,7 +179,7 @@ Rectangle {
                             Behavior on Layout.preferredHeight {
                                 NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic }
                             }
-                            
+
                             Behavior on Layout.bottomMargin {
                                 NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic }
                             }
@@ -241,7 +241,7 @@ Rectangle {
                             //  | |   Notif Structure   | |
                             //  | `---------------------' |
                             //  `-------------------------'
-                            
+
                             // Mouse Area to trigger the notification.
                             MouseArea {
                                 id: hoverArea
@@ -279,7 +279,7 @@ Rectangle {
                                     Layout.alignment: Qt.AlignVCenter
                                     clip: true
                                     spacing: 0
-                                    
+
                                     // AppName
                                     Text {
                                         text: notif.appName

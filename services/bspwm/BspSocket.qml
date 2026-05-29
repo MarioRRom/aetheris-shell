@@ -6,12 +6,12 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-// This is my Socket proposal for Bspwm. 
+// This is my Socket proposal for Bspwm.
 // Gets Workspaces and states per monitor, also the layout.
 
 
@@ -29,6 +29,7 @@ import Quickshell.Io
 
 // Config
 import qs.config
+import qs.services
 
 QtObject {
     id: root
@@ -39,22 +40,22 @@ QtObject {
     // bspwm socket (for commands)
     property Socket socket: Socket {
         id: bspwmSocket
-        
+
         path: {
             var display = Quickshell.env("DISPLAY") || ":0"
             var displayNum = display.replace(":", "").split(".")[0]
             return "/tmp/bspwm_" + displayNum + "_0-socket"
         }
-        
+
         connected: false
-        
+
         // Buffer to accumulate the complete response
         property string responseBuffer: ""
-        
+
         parser: SplitParser {
             onRead: (message) => {
                 // Accumulate in buffer (response may come in chunks)
-                bspwmSocket.responseBuffer += message
+                bspwmSocket.responseBuffer += message + "\n"
             }
         }
 
@@ -84,10 +85,10 @@ QtObject {
     // Socket dedicated for events (subscribe)
     property Socket eventSocket: Socket {
         id: bspwmEventSocket
-        
+
         path: bspwmSocket.path
         connected: false  // Activate manually when needed
-        
+
         parser: SplitParser {
             onRead: (message) => {
                 root.handleEvent(message)
@@ -107,10 +108,10 @@ QtObject {
     // Subscribe to events (keeps connection open)
     function subscribeToEvents() {
         if (!bspwmEventSocket.connected) return
-        
+
         var cmd = "subscribe desktop_focus desktop_layout node_add node_remove node_transfer"
         var args = cmd.split(" ")
-        
+
         // bspwm protocol: arg1\0arg2\0arg3\0
         for (var i = 0; i < args.length; i++) {
             bspwmEventSocket.write(args[i] + "\0")
@@ -138,12 +139,12 @@ QtObject {
     property int borderWidth: 0
     property string activeBorderColor: ""
     property string focusedBorderColor: ""
-    
+
     // Command queue with type
     property var commandQueue: []
     property bool processingCommand: false
     property string currentQueryType: ""
-    
+
 
     //  .-------------------------.
     //  | .---------------------. |
@@ -301,7 +302,7 @@ QtObject {
             writeCommand(item.cmd)
         }
     }
-    
+
     // Writes the command to the socket using the bspwm protocol.
     // Format: arg1\0arg2\0arg3\0 (null-terminated strings)
     // @param {string} cmd - Command to send
@@ -369,7 +370,7 @@ QtObject {
         var monitor = parts[1] || ""
 
         if (queryType === "workspaces") {
-            var names = message.split("").filter(n => n.trim() !== "")
+            var names = message.split("\n").filter(n => n.trim() !== "")
             if (!workspaceData[monitor]) workspaceData[monitor] = {}
             workspaceData[monitor].names = names
             workspacesUpdated(monitor)
@@ -380,7 +381,7 @@ QtObject {
             workspaceData[monitor].ids = ids
             workspacesUpdated(monitor)
         } else if (queryType === "occupied") {
-            var occupied = message.split("").filter(o => o.trim() !== "")
+            var occupied = message.split("\n").filter(o => o.trim() !== "")
             if (!workspaceData[monitor]) workspaceData[monitor] = {}
             workspaceData[monitor].occupied = occupied
             workspacesUpdated(monitor)
@@ -490,7 +491,7 @@ QtObject {
     function updateBspwmSettings() {
         // Gap
         setWindowGap(Config.global.margins)
-        
+
         // Padding (for WallBorder)
         if (Config.topBar.state === "maximized") {
             setTopPadding(Config.topBar.height)
@@ -506,14 +507,14 @@ QtObject {
 
         // Border
         setBorderWidth(Config.windows.borderWidth)
-        setActiveBorderColor(Config.windows.activeColor)
-        setFocusedBorderColor(Config.windows.focusedColor)
+        // NOTE: bspwm's active_border_color = UNFOCUSED windows (inverted semantics vs Hyprland)
+        setActiveBorderColor(Config.windows.unfocusedBorderColor)
+        setFocusedBorderColor(Config.windows.focusedBorderColor)
     }
 
     Component.onCompleted: {
         // Check if we are in bspwm
-        var session = (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
-        if (session !== "bspwm") return
+        if (SystemStatus.desktop !== "bspwm") return
 
         isActive = true
 

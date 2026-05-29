@@ -6,14 +6,14 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
 // IRMINSUL: The axis of the world.
-// The upper structure that holds the information network. 
-// Acts as the main branch from which the fruits 
+// The upper structure that holds the information network.
+// Acts as the main branch from which the fruits
 // of knowledge Akasha and the laws of reality Khemia hang.
 
 
@@ -33,9 +33,9 @@ import qs.components
 import qs.config
 import qs.themes
 import qs.services
-import qs.modules.bar.elements
 
-// Menus
+// Modules
+import qs.modules.bar.elements
 import qs.modules.systeminfo
 import qs.modules.akasha
 import qs.modules.controlcenter
@@ -70,10 +70,10 @@ Scope {
     LazyLoader {
       id: topBarLoader
       active: isActivated
-      
+
       required property var modelData
 
-      
+
       component: PanelWindow {
         id: topBarRoot
         screen: topBarLoader.modelData
@@ -84,7 +84,7 @@ Scope {
         //  | |      Bar Style      | |
         //  | `---------------------' |
         //  `-------------------------'
-      
+
         // the shadow and Hug Corners
         // are in Background.qml
 
@@ -93,7 +93,7 @@ Scope {
           left: true
           right: true
         }
-        
+
         implicitHeight: Config.topBar.height
         aboveWindows: false
 
@@ -156,7 +156,7 @@ Scope {
               // LazyLoader for Optimization
               LazyLoader {
                 id: sysInfoLoader
-                active: false 
+                active: false
 
                 component: SystemInfo {
                   anchor.window: topBarRoot
@@ -170,12 +170,12 @@ Scope {
             // Workspaces Indicator
             Workspaces {}
 
-            // Media Player Info 
+            // Media Player Info
             PlayerInfo {
               // LazyLoader for Optimization
               LazyLoader {
                 id: conPlayerLoader
-                active: false 
+                active: false
 
                 component: ControlPlayer {
                   anchor.window: topBarRoot
@@ -231,7 +231,7 @@ Scope {
               anchors.verticalCenter: parent.verticalCenter
               bar: topBarRoot  // PanelWindow reference
             }
-            
+
             // Control Center
             StatusIndicators {
               // LazyLoader for Optimization

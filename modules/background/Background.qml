@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -49,7 +49,7 @@ Variants {
             // Below everything
             aboveWindows: false
             exclusionMode: ExclusionMode.Ignore
-            
+
             // Fullscreen on each monitor
             anchors {
                 top: true
@@ -57,12 +57,12 @@ Variants {
                 left: true
                 right: true
             }
-            
+
             color: ThemeManager.colors.mantle
 
             mask: Region {}
-            
-            
+
+
             //  .-------------------------.
             //  | .---------------------. |
             //  | |     Background      | |
@@ -72,7 +72,7 @@ Variants {
             Item {
                 id: backgroundContainer
                 anchors.fill: parent
-                
+
                 //fix when the bar is maximized.
                 anchors.topMargin: Config.topBar.state === "maximized" ? Config.topBar.height : 0
 
@@ -80,7 +80,7 @@ Variants {
                 anchors.leftMargin: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
                 anchors.rightMargin: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
                 anchors.bottomMargin: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
-                
+
                 // Hug Corners
                 layer.enabled: Config.topBar.state === "maximized" && Config.topBar.hug
                 layer.effect: MultiEffect {
@@ -89,7 +89,7 @@ Variants {
                     maskSpreadAtMin: 1.0
                     maskSource: ShaderEffectSource {
                         sourceItem: Rectangle {
-                            width: backgroundContainer.width 
+                            width: backgroundContainer.width
                             height: backgroundContainer.height
                             y: 40
                             radius: Config.global.corners
@@ -103,7 +103,7 @@ Variants {
                 //  | |      Wallpaper      | |
                 //  | `---------------------' |
                 //  `-------------------------'
-                
+
                 Wallpaper {
                     id: wallpaper
                     anchors.fill: parent
@@ -126,11 +126,11 @@ Variants {
                 //  | |  Background Shadow  | |
                 //  | `---------------------' |
                 //  `-------------------------'
-                
+
                 // Border shadow
                 Loader {
                     id: backgroundShadow
-                    anchors.fill: parent 
+                    anchors.fill: parent
                     // Only when the bar is Maximized
                     active: Config.shadows.enabled && Config.topBar.state === "maximized"
 
@@ -139,7 +139,7 @@ Variants {
                         anchors.margins: -10
                         color: "transparent"
 
-                        // Shadow Config 
+                        // Shadow Config
                         border.color: Config.shadows.color
                         border.width: 15
                         radius: Config.topBar.hug ? (Config.global.corners + 12) : 0
@@ -152,7 +152,7 @@ Variants {
                         }
                     }
                 }
-                
+
                 // Bar shadow in float mode.
                 Loader {
                     id: barShadows
@@ -171,7 +171,7 @@ Variants {
                                 leftMargin: Math.round(modelData.width * 0.02)
                                 rightMargin: Math.round(modelData.width * 0.02)
                             }
-                            
+
                             height: Config.topBar.height
                             radius: Config.global.corners
                             color: Config.shadows.color

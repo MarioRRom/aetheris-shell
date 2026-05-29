@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -47,17 +47,17 @@ PopupWindow {
     property int globalCorners: Config.global.corners
     property int globalMargin: Config.global.margins
     property int cornerRadius: globalCorners - globalMargin
-    
+
     property int windowMargin: 10 // Internal margin.
     property int itemRadius: cornerRadius - windowMargin
 
     implicitWidth: 290
     implicitHeight: currentView === "player" ? 100 : playerList.contentHeight < 100 ? 100 : (playerList.contentHeight + (windowMargin * 2) + 10)
-    
+
     anchor.window: bar
     anchor.rect.x: globalPos - (width - 200) // 5px for the margin in the Main Container.
     anchor.rect.y: bar.height + (globalMargin - 5) //5px for the Margin of the Main Container.
-    
+
     color: "transparent"
 
 
@@ -68,7 +68,7 @@ PopupWindow {
         anchors.margins: 5
         color: "transparent"
         clip: false
-        
+
         // Shadow
         Loader {
             anchors.fill: parent
@@ -108,7 +108,7 @@ PopupWindow {
                 visible: currentView === "player"
 
 
-                // Control de Tiempo y Volumen
+                // Time and Volume Controls
                 ColumnLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
@@ -176,7 +176,7 @@ PopupWindow {
                     }
                 }
 
-                
+
                 // Fix Spacing
                 Rectangle {
                     Layout.fillHeight: true
@@ -185,7 +185,7 @@ PopupWindow {
 
                 // Music Control
                 GridLayout{
-                    Layout.alignment: Qt.AlignHCenter || Qt.AlignBottom
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                     Layout.margins: -5
                     columns: 7
 
@@ -195,7 +195,7 @@ PopupWindow {
                         onClicked: {
                             currentView = "listplayers"
                         }
-                        
+
                         Text{
                             text: ""
                             color: ThemeManager.colors.text
@@ -210,7 +210,7 @@ PopupWindow {
                         onClicked: {
                             Mpris.shuffle()
                         }
-                        
+
                         Text{
                             text: Mpris.isShuffled ? "󰒝" : "󰒞"
                             color: Mpris.canShuffle ? (Mpris.isShuffled ? ThemeManager.colors.mauve : ThemeManager.colors.text) : ThemeManager.colors.overlay0
@@ -220,14 +220,14 @@ PopupWindow {
                             Behavior on color { ColorAnimation { duration: 200 } }
                         }
                     }
-                    
+
                     // Previous
                     WrapperMouseArea {
                         cursorShape: Mpris.canGoPrevious ? Qt.PointingHandCursor : Qt.ArrowCursor
                         onClicked: {
                             Mpris.previous()
                         }
-                        
+
                         Text{
                             text: "󰙣"
                             color: Mpris.canGoPrevious ? ThemeManager.colors.text : ThemeManager.colors.overlay0
@@ -244,7 +244,7 @@ PopupWindow {
                         onClicked: {
                             Mpris.playpause()
                         }
-                        
+
                         Text{
                             text: Mpris.isPaused ? "" : ""
                             color: Mpris.canTogglePlaying ? (Mpris.isPaused ? ThemeManager.colors.yellow : ThemeManager.colors.text) : ThemeManager.colors.overlay0
@@ -261,7 +261,7 @@ PopupWindow {
                         onClicked: {
                             Mpris.next()
                         }
-                        
+
                         Text{
                             text: "󰙡"
                             color: Mpris.canGoNext ? ThemeManager.colors.text : ThemeManager.colors.overlay0
@@ -278,7 +278,7 @@ PopupWindow {
                         onClicked: {
                             Mpris.repeat()
                         }
-                        
+
                         Text{
                             text: Mpris.isRepeating === 0 ? "󰑗" : (Mpris.isRepeating === 1 ? "󰑘" : "󰑖")
                             color: Mpris.canRepeat ? (Mpris.isRepeating === 0 ? ThemeManager.colors.text : ThemeManager.colors.pink) : ThemeManager.colors.overlay0
@@ -296,7 +296,7 @@ PopupWindow {
                         onClicked: {
                             volumeControl = !volumeControl
                         }
-                        
+
                         Text{
                             text: "󰕾"
                             color: Mpris.canVolume ? (volumeControl ? ThemeManager.colors.green : ThemeManager.colors.text) : ThemeManager.colors.overlay0
@@ -331,7 +331,7 @@ PopupWindow {
                     Text {
                         anchors.centerIn: parent
                         // Shows the player name (e.g. "Spotify")
-                        text: modelData.identity || LanguageManager.t("weather.unknown") 
+                        text: modelData.identity || LanguageManager.t("weather.unknown")
                         color: ThemeManager.colors.text
                         font.family: ThemeManager.fonts.main
                         font.bold: true

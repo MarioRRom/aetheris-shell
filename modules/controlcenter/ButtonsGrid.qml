@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -22,11 +22,8 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
-import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
-
-// Config
 import qs.config
 import qs.components
 import qs.services
@@ -71,7 +68,7 @@ Rectangle {
         }
     }
 
-    
+
 
     // Grid
     GridLayout {
@@ -122,7 +119,7 @@ Rectangle {
             visible: true
 
             onClicked: {
-                Quickshell.execDetached(["notify-send", "Night Mode", "funciona"])
+                Quickshell.execDetached(["notify-send", "Night Mode", "works"])
             }
 
             Rectangle {
@@ -146,7 +143,7 @@ Rectangle {
             visible: true
 
             onClicked: {
-                Quickshell.execDetached(["notify-send", "Airplane Mode", "funciona"])
+                Quickshell.execDetached(["notify-send", "Airplane Mode", "works"])
             }
 
             Rectangle {
@@ -170,7 +167,7 @@ Rectangle {
             visible: true
 
             onClicked: {
-                Quickshell.execDetached(["notify-send", "Screenshot", "funciona"])
+                Quickshell.execDetached(["notify-send", "Screenshot", "works"])
             }
 
             Rectangle {
@@ -194,7 +191,7 @@ Rectangle {
             visible: true
 
             onClicked: {
-                Quickshell.execDetached(["notify-send", "Power Saving", "funciona"])
+                Quickshell.execDetached(["notify-send", "Power Saving", "works"])
             }
 
             Rectangle {

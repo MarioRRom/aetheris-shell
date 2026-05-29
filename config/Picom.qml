@@ -53,10 +53,13 @@ QtObject {
     // value: New value
     function setConfig(file, line, key, value) {
         var filePath = Qt.resolvedUrl(picomDir + file).toString().replace("file://", "")
-        
+
+        // Escape sed-special chars in value (&, /, \) to prevent injection
+        var safeValue = value.toString().replace(/[&/\\]/g, "\\$&")
+
         // sed -i 'Ns/^\(\s*key\s*=\s*\)[^;]*/\1value/' file
         // Search line 'line', if it matches 'key = ...', replace value preserving the previous part.
-        var cmd = "sed -i '" + line + "s/^\\(\\s*" + key + "\\s*=\\s*\\)[^;]*/\\1" + value + "/' " + filePath
+        var cmd = "sed -i '" + line + "s/^\\(\\s*" + key + "\\s*=\\s*\\)[^;]*/\\1" + safeValue + "/' '" + filePath + "'"
 
         var proc = Qt.createQmlObject('import Quickshell.Io; Process {}', root)
         proc.command = ["sh", "-c", cmd]
@@ -92,7 +95,7 @@ QtObject {
         setConfig("shadows.conf", 28, "shadow-color", "\"" + color + "\"")
     }
 
-    // Transpacency Control (0.0 -> 1.0)
+    // Transparency Control (0.0 -> 1.0)
     function setTransparency(inactive, active) {
         setConfig("transparency.conf", 27, "opacity", inactive)
         setConfig("transparency.conf", 33, "opacity", active)
@@ -112,6 +115,8 @@ QtObject {
         setShadows(Config.shadows.enabled, Config.shadows.color)
         setTransparency(Config.windows.inactiveOpacity, Config.windows.activeOpacity)
     }
+
+
     //  .-------------------------.
     //  | .---------------------. |
     //  | |    Picom Process    | |
@@ -127,7 +132,7 @@ QtObject {
     // Start Picom with the configuration file.
     property Process startPicom: Process {
         command: ["picom", "--config", picomFile.toString().replace("file://", "")]
-        
+
         // Logs for debugging in the Quickshell console
         stdout: SplitParser { onRead: data => console.log("[Picom]: " + data) }
         stderr: SplitParser { onRead: data => console.error("[Picom Error]: " + data) }

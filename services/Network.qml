@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -21,7 +21,6 @@
 // Quickshell
 pragma Singleton
 import QtQuick
-import Quickshell
 import Quickshell.Networking
 
 // Config
@@ -31,12 +30,12 @@ QtObject {
     id: root
 
 
-    // .-------------------------.
-    // | .---------------------. |
-    // | |  Networking Status  | |
-    // | `---------------------' |
-    // `-------------------------'
-    
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |  Networking Status  | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
     // Connectivity (Portal, Limited, Unknown, Full, None)
     readonly property var connectivity: Networking.connectivity
 
@@ -47,11 +46,11 @@ QtObject {
     readonly property bool wifiEnabled: Networking.wifiEnabled
 
 
-    // .-------------------------.
-    // | .---------------------. |
-    // | |    Wired Device     | |
-    // | `---------------------' |
-    // `-------------------------'
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |    Wired Device     | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     // cable connected (if any).
     readonly property WiredDevice wiredDevice: {
@@ -67,11 +66,11 @@ QtObject {
     readonly property int wiredSpeed: wiredDevice?.linkSpeed ?? 0
 
 
-    // .-------------------------.
-    // | .---------------------. |
-    // | |    Wi-Fi Device     | |
-    // | `---------------------' |
-    // `-------------------------'
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |    Wi-Fi Device     | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     // List of available networks.
     readonly property var networkList: wifiDevice?.networks.values ?? []
@@ -90,24 +89,24 @@ QtObject {
     readonly property bool wifiConnected: wifiDevice?.connected ?? false
 
 
-    // .-------------------------.
-    // | .---------------------. |
-    // | |  Connected Network  | |
-    // | `---------------------' |
-    // `-------------------------'
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |  Connected Network  | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     // The currently connected Wi-Fi network (if any).
     readonly property WifiNetwork activeNetwork: networkList.find(n => n.connected) ?? null
-    
+
     // Convenient properties for displaying in the UI.
     readonly property string ssid:           activeNetwork?.name           ?? ""
 
 
-    // .-------------------------.
-    // | .---------------------. |
-    // | |    Wi-Fi Scanner    | |
-    // | `---------------------' |
-    // `-------------------------'
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |    Wi-Fi Scanner    | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     readonly property bool scannerActive: wifiDevice?.scannerEnabled ?? false
 
@@ -115,11 +114,11 @@ QtObject {
     function disableScan() { if (wifiDevice) wifiDevice.scannerEnabled = false }
 
 
-    // .-------------------------.
-    // | .---------------------. |
-    // | |    Wi-Fi Actions    | |
-    // | `---------------------' |
-    // `-------------------------'
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |    Wi-Fi Actions    | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     // Enable/Disable wifi (Software)
     function toggleWifi()                   { Networking.wifiEnabled = !Networking.wifiEnabled }
@@ -137,30 +136,30 @@ QtObject {
     function forgetNetwork(network)         { if (network) network.forget()      }
 
 
-    // .-------------------------.
-    // | .---------------------. |
-    // | |     UI Helpers      | |
-    // | `---------------------' |
-    // `-------------------------'
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |     UI Helpers      | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     // Wifi signal strength
     function signalIcon(network) {
         if (!network) return "󰤭"  // wifi-strength-off-outline
         const s = network.signalStrength
         if (s > 0.75) return "󰤨"  // wifi-strength-4
-        if (s > 0.50) return "󰤥"  // wifi-strength-3  
+        if (s > 0.50) return "󰤥"  // wifi-strength-3
         if (s > 0.25) return "󰤢"  // wifi-strength-2
         return "󰤟"                // wifi-strength-1
     }
-    
+
     // Wifi signal strength (Secured)
     function signalIconLocked(network) {
         if (!network) return "󰤭"  // wifi-strength-off-outline
         const s = network.signalStrength
         if (s > 0.75) return "󰤪"  // wifi-strength-4
-        if (s > 0.50) return "󰤧"  // wifi-strength-3  
+        if (s > 0.50) return "󰤧"  // wifi-strength-3
         if (s > 0.25) return "󰤤"  // wifi-strength-2
-        return "󰤡"  
+        return "󰤡"
     }
 
     // check if it's Secured

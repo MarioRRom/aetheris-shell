@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -22,7 +22,6 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
-import Qt5Compat.GraphicalEffects
 
 // Config
 import qs.config
@@ -45,7 +44,7 @@ Rectangle {
 
     color: "transparent"
 
-    
+
 
     width: 390
     height: 85
@@ -78,7 +77,7 @@ Rectangle {
                 spread: 0.0
                 cached: true
             }
-            
+
             // Image
             MaskedImage {
                 id: albumport
@@ -89,7 +88,7 @@ Rectangle {
                 imageRadius: itemRadius
             }
         }
-        
+
 
         //  .-------------------------.
         //  | .---------------------. |
@@ -139,109 +138,33 @@ Rectangle {
                 spacing: 2
 
                 // Title Marquee
-                Rectangle {
+                MarqueeText {
                     Layout.fillWidth: true
                     height: 20
-                    color: "transparent"
-                    clip: true
-
-                    Text {
-                        id: titleText
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: Mpris.title
-                        font.pixelSize: 15
-                        font.family: ThemeManager.fonts.main
-                        font.bold: true
-                        color: ThemeManager.colors.text
-                    }
-
-                    SequentialAnimation {
-                        id: titleAnim
-                        loops: Animation.Infinite
-                        running: titleText.paintedWidth > parent.width
-
-                        PauseAnimation { duration: 2000 }
-                        NumberAnimation {
-                            target: titleText
-                            property: "x"
-                            from: 0
-                            to: titleText.parent.width - titleText.paintedWidth
-                            duration: 5000
-                        }
-                        PauseAnimation { duration: 2000 }
-                        NumberAnimation {
-                            target: titleText
-                            property: "x"
-                            from: titleText.parent.width - titleText.paintedWidth
-                            to: 0
-                            duration: 5000
-                        }
-                    }
-
-                    Connections {
-                        target: titleText
-                        function onTextChanged() {
-                            titleAnim.stop()
-                            titleText.x = 0
-                            if (titleText.paintedWidth > titleText.parent.width) titleAnim.start()
-                        }
-                    }
+                    pauseMs: 2000
+                    text: Mpris.title
+                    font.pixelSize: 15
+                    font.family: ThemeManager.fonts.main
+                    font.bold: true
+                    color: ThemeManager.colors.text
                 }
 
                 // Artist Marquee
-                Rectangle {
+                MarqueeText {
                     Layout.fillWidth: true
                     height: 16
-                    color: "transparent"
-                    clip: true
-
-                    Text {
-                        id: artistText
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: Mpris.artist
-                        font.pixelSize: 12
-                        font.family: ThemeManager.fonts.main
-                        color: ThemeManager.colors.text
-                    }
-
-                    SequentialAnimation {
-                        id: artistAnim
-                        loops: Animation.Infinite
-                        running: artistText.paintedWidth > parent.width
-
-                        PauseAnimation { duration: 2000 }
-                        NumberAnimation {
-                            target: artistText
-                            property: "x"
-                            from: 0
-                            to: artistText.parent.width - artistText.paintedWidth
-                            duration: 5000
-                        }
-                        PauseAnimation { duration: 2000 }
-                        NumberAnimation {
-                            target: artistText
-                            property: "x"
-                            from: artistText.parent.width - artistText.paintedWidth
-                            to: 0
-                            duration: 5000
-                        }
-                    }
-
-                    Connections {
-                        target: artistText
-                        function onTextChanged() {
-                            artistAnim.stop()
-                            artistText.x = 0
-                            if (artistText.paintedWidth > artistText.parent.width) artistAnim.start()
-                        }
-                    }
+                    pauseMs: 2000
+                    text: Mpris.artist
+                    font.pixelSize: 12
+                    font.family: ThemeManager.fonts.main
+                    color: ThemeManager.colors.text
                 }
 
                 // Fix Spacing
                 Rectangle {
                     Layout.fillHeight: true
                 }
-                
+
                 // Song Time
                 Rectangle {
                     Layout.fillWidth: true
@@ -289,5 +212,4 @@ Rectangle {
             }
         }
     }
-    
 }

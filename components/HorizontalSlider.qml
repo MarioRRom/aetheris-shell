@@ -24,15 +24,8 @@
 // Quickshell
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Effects
-import Qt5Compat.GraphicalEffects
-import Quickshell
-import Quickshell.Widgets
 
 // Config
-import qs.config
-import qs.components
-import qs.services
 import qs.themes
 
 
@@ -63,7 +56,7 @@ Rectangle {
     property bool updateOnPress: true
     property bool usePercentage: false
     property bool mouseEnabled: true
-    
+
 
     //  .-------------------------.
     //  | .---------------------. |
@@ -89,7 +82,7 @@ Rectangle {
 
     Rectangle {
         height: parent.height
-        width: Math.max(parent.height, parent.width * (horizontalSlider.value / (usePercentage ? 100 : 1)))
+        width: Math.max(parent.height, parent.width * Math.min(1, horizontalSlider.value / (usePercentage ? 100 : 1)))
         radius: 20
         color: "transparent"
         gradient: Gradient {
@@ -113,7 +106,7 @@ Rectangle {
             }
         }
     }
-    
+
 
     //  .-------------------------.
     //  | .---------------------. |

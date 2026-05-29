@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -36,11 +36,11 @@ WrapperMouseArea{
     onClicked: {
         controlCenterLoader.active = !controlCenterLoader.active
     }
-    
+
     WrapperRectangle {
         id: controlCenterButton
         height: parent.height
-        
+
         color: ThemeManager.colors.base
         radius: 24
 
@@ -73,7 +73,7 @@ WrapperMouseArea{
             spacing: 3
             leftPadding: 10
             rightPadding: 10
-            
+
             // Networking
             Text {
                 text: Network.statusIcon
@@ -91,7 +91,7 @@ WrapperMouseArea{
                 font.pixelSize: 16
                 anchors.verticalCenter: parent.verticalCenter
             }
-            
+
             // Battery
             Text {
                 text: "󰁹"

@@ -6,14 +6,14 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-// EUTHYMIA: El plano de la conciencia eterna. 
-// Monitors hardware integrity and energy flow. 
-// Like the alchemical opus, system variables 
+// EUTHYMIA: The plane of eternal consciousness.
+// Monitors hardware integrity and energy flow.
+// Like the alchemical opus, system variables
 // remain in an immutable constant, free from the erosion of the system.
 
 
@@ -28,7 +28,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
-import Quickshell.Widgets
 
 // Config
 import qs.config
@@ -56,7 +55,7 @@ PopupWindow {
     property int globalMargin: Config.global.margins
     property int globalWallborder: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
     property int cornerRadius: globalCorners - globalMargin
-    
+
     property int windowMargin: 10 // Internal margin.
     property int itemRadius: cornerRadius - windowMargin
 
@@ -152,7 +151,7 @@ PopupWindow {
                             anchors.fill: parent
                             anchors.margins: 8
                         }
-                        
+
                         // Decoration
                         InnerLine {
                             anchors.fill: parent
@@ -254,7 +253,7 @@ PopupWindow {
                         btnHeight: 41
                         icon: "󰗽"
                         btnText: LanguageManager.t("systeminfo.logout")
-                        command: ["bspc", "quit"]
+                        command: ["loginctl", "terminate-user", Quickshell.env("USER")]
                         hoverColor: ThemeManager.colors.mauve
                     }
 

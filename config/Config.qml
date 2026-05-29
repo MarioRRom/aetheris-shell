@@ -44,8 +44,8 @@ QtObject {
     // Global window state
     property QtObject windows: QtObject {
         property int borderWidth: 2 // Border thickness.
-        property color activeColor: ThemeManager.colors.base // Border color.
-        property color focusedColor: ThemeManager.colors.sky // Focused border color.
+        property color unfocusedBorderColor: ThemeManager.colors.base // Border of unfocused windows.
+        property color focusedBorderColor: ThemeManager.colors.sky // Border of focused windows.
         property string inactiveOpacity: "0.9" // Inactive window opacity.
         property string activeOpacity: "1.0" // Active window opacity.
         property bool enableBlur: true // Enable/Disable Blur.

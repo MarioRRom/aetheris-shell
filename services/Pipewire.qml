@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -21,7 +21,6 @@
 // Quickshell
 pragma Singleton
 import QtQuick
-import Quickshell
 import Quickshell.Services.Pipewire
 
 
@@ -31,9 +30,9 @@ import Quickshell.Services.Pipewire
 //  | `---------------------' |
 //  `-------------------------'
 
-Item {
+QtObject {
     id: root
-    
+
     // Pipewire Nodes
     readonly property var allNodes: Pipewire.nodes
     readonly property var nodesMap: allNodes.values.reduce((acc, node) => {
@@ -48,7 +47,7 @@ Item {
         sources: [],
         sinks: []
     })
-    
+
     // Mapping
     readonly property var availableSinks: nodesMap.sinks
     readonly property var availableSources: nodesMap.sources
@@ -61,11 +60,11 @@ Item {
     readonly property int volumePercent: Math.round(volume * 100)
     readonly property bool muted: !!sink?.audio?.muted
     readonly property string deviceName: sink ? sink.description : "No device"
-    
+
     // Microphone
     readonly property real micVolume: source?.audio?.volume ?? 0.0
     readonly property int micVolumePercent: Math.round(micVolume * 100)
-    
+
     // Icons
     readonly property string icon: {
         if (muted) return "󰝟"
@@ -74,16 +73,16 @@ Item {
         if (volumePercent <= 66) return "󰖀"
         return "󰕾"
     }
-    
+
     readonly property string iconMic: {
         if (source?.audio?.muted) return "󰍭"
         if (micVolumePercent <= 0) return "󰍭"
         if (micVolumePercent <= 33) return "󰍬"
         return "󰍬"
     }
-    
+
     // Node Tracker
-    PwObjectTracker {
+    property PwObjectTracker nodeTracker: PwObjectTracker {
         objects: [...root.availableSinks, ...root.availableSources]
     }
     // Audio Functions
@@ -93,23 +92,23 @@ Item {
             sink.audio.volume = newVol
         }
     }
-    
+
     function setVolumePercent(percent) { setVolume(percent / 100.0) }
-    
+
     function incrementVolume(stepPercent = 5) {
         if (volumePercent != 100) {
             setVolumePercent(volumePercent + stepPercent)
         }
     }
-    
+
     function decrementVolume(stepPercent = 5) { setVolumePercent(volumePercent - stepPercent) }
-    
+
     function toggleMute() {
         if (sink && sink.ready && sink.audio) {
             sink.audio.muted = !sink.audio.muted
         }
     }
-    
+
     // Microphone Functions
 
     function setVolumeMic(vol) {

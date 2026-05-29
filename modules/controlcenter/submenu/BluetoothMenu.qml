@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -21,16 +21,9 @@
 // Quickshell
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Effects
-import Qt5Compat.GraphicalEffects
-import Quickshell
-import Quickshell.Widgets
 
 // Config
-import qs.config
-import qs.components
 import qs.i18n
-import qs.services
 import qs.themes
 
 
@@ -43,7 +36,7 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         spacing: 10
-        
+
         // Back Button
         Rectangle {
             width: 40; height: 40; radius: 12
@@ -51,8 +44,8 @@ ColumnLayout {
             Text { text: ""; font.family: ThemeManager.fonts.icons; anchors.centerIn: parent; color: ThemeManager.colors.text; font.pixelSize: 20 }
             MouseArea { anchors.fill: parent; onClicked: root.currentView = "main"; cursorShape: Qt.PointingHandCursor }
         }
-        
-        Text { 
+
+        Text {
             text: LanguageManager.t("bluetoothmenu.bluetooth")
             color: ThemeManager.colors.text
             font.family: ThemeManager.fonts.main

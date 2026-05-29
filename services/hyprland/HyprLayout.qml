@@ -20,7 +20,6 @@
 
 // Quickshell
 import QtQuick
-import Quickshell
 import Quickshell.Hyprland
 
 // Config

@@ -24,7 +24,6 @@
 
 // Quickshell
 import QtQuick
-import Quickshell
 
 // Config
 import qs.themes
@@ -34,26 +33,26 @@ import qs.services.bspwm
 Row {
     id: iconRow
     spacing: 7
-    
+
     // Public property: monitor name
     property string monitorName: ""
-    
+
     // Internal data
     property var workspaceNames: []     // Workspace names (1, 2, 3...)
     property var workspaceIds: []       // Hex IDs
     property var occupiedWorkspaces: [] // Workspaces with windows
     property string focusedWorkspace: "" // Currently focused workspace
-    
+
     // Alias for compatibility
     readonly property string bspwmName: monitorName
 
-    
+
     //  .-------------------------.
     //  | .---------------------. |
     //  | |   Visual Layout     | |
     //  | `---------------------' |
     //  `-------------------------'
-        
+
     Repeater {
         model: workspaceNames
 
@@ -73,34 +72,34 @@ Row {
             }
         }
     }
-    
+
 
     //  .-------------------------.
     //  | .---------------------. |
     //  | |  Socket Connection  | |
     //  | `---------------------' |
     //  `-------------------------'
-    
+
     Connections {
         target: BspSocket
-        
+
         // When workspaces are updated
         function onWorkspacesUpdated(monitor) {
             if (monitor !== monitorName) return
-            
+
             var data = BspSocket.workspaceData[monitor]
             if (!data) return
-            
+
             // Update available data
             if (data.names) workspaceNames = data.names
             if (data.ids) workspaceIds = data.ids
             if (data.occupied) occupiedWorkspaces = data.occupied
             if (data.focused) focusedWorkspace = data.focused
-            
+
             // Continue with the next query ONLY after updating
             executeNextQuery()
         }
-        
+
         // When focused desktop changes
         function onDesktopFocused(monitorId, desktopId, desktopName) {
             // If the desktop belongs to this monitor, update focus
@@ -109,44 +108,44 @@ Row {
                 focusedWorkspace = workspaceNames[idx]
             }
         }
-        
+
         // When nodes change
         function onNodeChanged() {
             queryStep = 2  // Only update occupied
             executeNextQuery()
         }
     }
-    
+
 
     //  .-------------------------.
     //  | .---------------------. |
     //  | |      Functions      | |
     //  | `---------------------' |
     //  `-------------------------'
-    
+
     // Switch to a workspace
     function switchTo(index) {
         if (index >= 0 && index < workspaceIds.length) {
             BspSocket.switchDesktop(workspaceIds[index])
         }
     }
-    
 
-    
+
+
     // Query in progress state
     property int queryStep: 0
-    
+
     // Full workspace data query (SEQUENTIAL)
     function queryWorkspaceData() {
         if (monitorName === "") return
         queryStep = 0
         executeNextQuery()
     }
-    
+
     function executeNextQuery() {
         if (monitorName === "") return
-        
-        
+
+
         switch(queryStep) {
             case 0:
                 if (typeof BspSocket.queryWorkspaces === "function") {
@@ -167,20 +166,20 @@ Row {
         }
         queryStep++
     }
-    
+
 
     //  .-------------------------.
     //  | .---------------------. |
     //  | |   Initialization    | |
     //  | `---------------------' |
     //  `-------------------------'
-    
+
     Component.onCompleted: {
         console.log("Bspwm workspaces initialized for monitor:", monitorName)
         queryWorkspaceData()
 
     }
-    
+
     // Refresh when monitor changes
     onMonitorNameChanged: {
         if (monitorName !== "") {

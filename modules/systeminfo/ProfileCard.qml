@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -20,7 +20,6 @@
 
 // Quickshell
 import QtQuick
-import QtQuick.Effects
 import Quickshell
 
 // Config
@@ -39,7 +38,7 @@ import qs.services
 Item {
     anchors.fill: parent
     property int pfpRadius: itemRadius - 8
-        
+
     Row {
         anchors.margins: 50
         anchors.verticalCenter: parent.verticalCenter
@@ -51,7 +50,7 @@ Item {
             height: 80
             imageRadius: pfpRadius
 
-            imageSource: "file:///home/mario/.face"
+            imageSource: "file://" + Quickshell.env("HOME") + "/.face"
         }
 
         // User Info

@@ -11,6 +11,7 @@
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
+// Quickshell
 import QtQuick
 
 QtObject {
@@ -168,8 +169,11 @@ QtObject {
         //  | `---------------------' |
         //  `-------------------------'
 
-        "systemstatus.user": "Usuario",
         "systemstatus.distro": "Linux",
+        "systemstatus.uptime.week": "sem",
+        "systemstatus.uptime.day": "d",
+        "systemstatus.uptime.hour": "h",
+        "systemstatus.uptime.minute": "min",
 
 
         //  .-------------------------.

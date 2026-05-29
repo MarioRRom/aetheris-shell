@@ -6,14 +6,14 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
 
-// KHEMIA: The art of primordial transmutation. 
-// Interface designed to alter environment variables. 
-// It doesn't just adjust parameters; it transmutes the physical reality of the desktop 
+// KHEMIA: The art of primordial transmutation.
+// Interface designed to alter environment variables.
+// It doesn't just adjust parameters; it transmutes the physical reality of the desktop
 // defying the system's predetermined laws.
 
 
@@ -27,16 +27,16 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
-import Qt5Compat.GraphicalEffects
 import Quickshell
-import Quickshell.Widgets
 
 // Config
 import qs.config
 import qs.components
 import qs.services
 import qs.themes
-import qs.modules.controlcenter.submenu // Import Submenus
+
+// Submenus
+import qs.modules.controlcenter.submenu
 
 
 //  .-------------------------.
@@ -57,17 +57,17 @@ PopupWindow {
     property int globalMargin: Config.global.margins
     property int globalWallborder: Config.topBar.state === "maximized" ? Config.global.wallborder : 0
     property int cornerRadius: globalCorners - globalMargin
-    
+
     property int windowMargin: 10 // Internal margin.
     property int itemRadius: cornerRadius - windowMargin
 
     implicitWidth: 310
     implicitHeight: (root.currentView === "main" ? mainLayout.implicitHeight : 428) + (windowMargin * 2) + 10
-    
+
     anchor.window: bar
     anchor.rect.x: (bar.width - width) - ((globalMargin + globalWallborder) - 5) // 5px for the margin in the Main Container.
     anchor.rect.y: bar.height + (globalMargin - 5) //5px for the Margin of the Main Container.
-    
+
     color: "transparent"
 
     // Main Container
@@ -155,7 +155,7 @@ PopupWindow {
                 //  | |    Buttons Grid     | |
                 //  | `---------------------' |
                 //  `-------------------------'
-            
+
                 ButtonsGrid {
                     Layout.fillWidth: true
                 }

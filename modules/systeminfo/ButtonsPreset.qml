@@ -51,7 +51,7 @@ WrapperMouseArea {
     cursorShape: Qt.PointingHandCursor
     hoverEnabled: true
 
-    // Acciones
+    // Actions
     onClicked: {
         if (beforeCommand) beforeCommand()
         if (command) Quickshell.execDetached(command);
@@ -79,7 +79,7 @@ WrapperMouseArea {
             spread: 0.0
             cached: true
         }
-    
+
         Rectangle {
             id: buttonRectangle
 
@@ -116,7 +116,7 @@ WrapperMouseArea {
                 }
             }
 
-            // Content 
+            // Content
             Row {
                 spacing: 5
                 anchors.centerIn: parent

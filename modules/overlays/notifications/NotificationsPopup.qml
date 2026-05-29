@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -42,12 +42,12 @@ LazyLoader {
     //  | | Load Global Config  | |
     //  | `---------------------' |
     //  `-------------------------'
-    
+
     // global Status
     property int globalCorners: Config.global.corners
     property int globalMargin: Config.global.margins + 10
     property int cornerRadius: globalCorners - globalMargin
-    
+
     // bar maximized case
     property int wallborder: Config.global.wallborder
     property string topBarState: Config.topBar.state
@@ -64,7 +64,7 @@ LazyLoader {
     property int cardSpacing: 5
     property int animDuration: Notifications.popupAnimDuration // Sync with the backend
 
-    
+
     //  .-------------------------.
     //  | .---------------------. |
     //  | | Notification Popups | |
@@ -107,7 +107,7 @@ LazyLoader {
             anchors.right: parent.right
             anchors.margins: outMargin
             spacing: 0
-            
+
 
             Repeater {
                 id: listRepeater
@@ -123,7 +123,7 @@ LazyLoader {
 
                     //  .-------------------------.
                     //  | .---------------------. |
-                    //  | |     Animactions     | |
+                    //  | |     Animations      | |
                     //  | `---------------------' |
                     //  `-------------------------'
 
@@ -236,7 +236,7 @@ LazyLoader {
                             height: 3
                             radius: cornerRadius
                             color: "transparent"
-                            
+
                             // Timeout bar
                             Rectangle {
                                 anchors.left: parent.left
@@ -248,12 +248,14 @@ LazyLoader {
                                 Behavior on color { ColorAnimation { duration: 150 } }
                             }
                         }
+
+
                         //  .-------------------------.
                         //  | .---------------------. |
                         //  | |   Notif Structure   | |
                         //  | `---------------------' |
                         //  `-------------------------'
-                        
+
                         RowLayout {
                             anchors.fill: parent
                             anchors.margins: windowMargin
@@ -284,7 +286,7 @@ LazyLoader {
                                 Layout.alignment: Qt.AlignVCenter
                                 clip: true
                                 spacing: 0
-                                
+
                                 // AppName
                                 Text {
                                     text: notif.appName
@@ -363,7 +365,7 @@ LazyLoader {
                                 transitions: Transition {
                                     ColorAnimation { duration: 250 }
                                 }
-                            }                      
+                            }
                         }
                     }
                 }

@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -23,17 +23,15 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 import Qt5Compat.GraphicalEffects
-import Quickshell.Widgets
 
 // Config
 import qs.config
-import qs.components
 import qs.services
 import qs.themes
 
 Rectangle {
     Layout.fillWidth: true
-    
+
     height: 139
     color: "transparent"
 
@@ -54,14 +52,14 @@ Rectangle {
         spread: 0.0
         cached: true
     }
-    
-    
+
+
     // Background Image with Opacity Mask
     Image {
         anchors.fill: parent
         source: assetsPath + Weather.backgroundImage
         fillMode: Image.PreserveAspectCrop
-        
+
         layer.enabled: true
         layer.effect: OpacityMask {
             maskSource: bgMask
@@ -87,7 +85,7 @@ Rectangle {
         ColumnLayout {
             anchors.fill: parent
             spacing: 2
-            
+
             RowLayout {
                 spacing: 5
 
@@ -96,7 +94,7 @@ Rectangle {
                     color: "white"
                     font.pixelSize: 18
                     font.family: ThemeManager.fonts.icons
-                
+
                 }
                 Text {
                     text: Weather.location
@@ -104,7 +102,7 @@ Rectangle {
                     font.pixelSize: 18
                     font.family: ThemeManager.fonts.main
                     font.bold: true
-                
+
                 }
                 Item { Layout.fillWidth: true }
 
@@ -118,9 +116,9 @@ Rectangle {
                     font.bold: true
                 }
             }
-            
+
             Item { Layout.fillHeight: true }
-            
+
             Item {
                 Layout.fillWidth: true
                 height: 40
@@ -131,7 +129,7 @@ Rectangle {
                     radius: itemRadius - infoMargins
                     opacity: 0.5
                 }
-                
+
                 RowLayout {
                     anchors.centerIn: parent
                     spacing: 10
@@ -141,7 +139,7 @@ Rectangle {
                         RowLayout {
                             spacing:5
                             Layout.alignment: Qt.AlignRight
-                        
+
                             Text { text: Weather.windSpeed; color: "white"; font.family: ThemeManager.fonts.main }
                             Text { text: ""; color: "white"; font.family: ThemeManager.fonts.icons }
                         }

@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -20,14 +20,13 @@
 
 // Quickshell
 import QtQuick
-import QtQuick.Effects
 import Quickshell
 
 
 Variants {
     id: root
     model: Quickshell.screens
-    
+
     LazyLoader {
         active: true
         required property var modelData
@@ -40,7 +39,7 @@ Variants {
             // Below everything
             aboveWindows: true
             exclusionMode: ExclusionMode.Ignore
-            
+
             // Fullscreen on each monitor
             anchors {
                 top: true
@@ -48,10 +47,10 @@ Variants {
                 left: true
                 right: true
             }
-            
+
             color: "transparent"
 
-            // Filtro Naranja Calido
+            // Warm Orange Filter
             Rectangle {
                 anchors.fill: parent
                 color: Qt.rgba(1.0, 0.5, 0.3, 0.15)

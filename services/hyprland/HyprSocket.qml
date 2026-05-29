@@ -21,11 +21,11 @@
 // Quickshell
 pragma Singleton
 import QtQuick
-import Quickshell
 import Quickshell.Hyprland
 
 // Global
 import qs.config
+import qs.services
 
 QtObject {
     id: root
@@ -33,9 +33,8 @@ QtObject {
     // Public property to know if Hyprland is active
     property bool isActive: false
 
-    // FIX: if negative number, returns 0
-    property int globalRounding: (Config.global.corners - Config.global.margins)
-    property int calculedRounding: globalRounding > 0 ? globalRounding : 0
+    // Clamped rounding: prevents negative values from breaking Hyprland
+    property int rounding: Math.max(0, Config.global.corners - Config.global.margins)
 
 
     //  .-------------------------.
@@ -117,7 +116,7 @@ QtObject {
 
     function setFading(enabled) {
         if (enabled) {
-            sendCommand("animation fade, 1")
+            sendCommand("animation fade,1")
         } else {
             sendCommand("animation fade,0")
         }
@@ -129,19 +128,18 @@ QtObject {
 
         // Set gaps (with wallborder fix)
         setGaps(
-            Config.global.margins, 
-            Config.global.margins + (Config.topBar.state === "maximized" ? Config.global.wallborder : 0), 
-            Config.global.margins + (Config.topBar.state === "maximized" ? Config.global.wallborder : 0), 
+            Config.global.margins,
+            Config.global.margins + (Config.topBar.state === "maximized" ? Config.global.wallborder : 0),
+            Config.global.margins + (Config.topBar.state === "maximized" ? Config.global.wallborder : 0),
             Config.global.margins + (Config.topBar.state === "maximized" ? Config.global.wallborder : 0)
         )
 
         // Borders
         setBorderSize(Config.windows.borderWidth)
-        setBorderColors(Config.windows.focusedColor, Config.windows.activeColor)
+        setBorderColors(Config.windows.focusedBorderColor, Config.windows.unfocusedBorderColor)
 
-        // Corner Radius (automatic calculation for Hug Corners)
-        // FIX: if calculation is negative, returns 0
-        setRounding(calculedRounding)
+        // Corner Radius (clamped to non-negative)
+        setRounding(root.rounding)
 
         // Shadows
         setShadows(Config.shadows.enabled)
@@ -160,9 +158,7 @@ QtObject {
 
     Component.onCompleted: {
         // Check if we are in Hyprland
-        var session = (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
-        
-        if (session.indexOf("hyprland") !== -1) {
+        if (SystemStatus.desktop.indexOf("hyprland") !== -1) {
             isActive = true
             updateHyprlandSettings()
         }

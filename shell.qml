@@ -6,7 +6,7 @@
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
 //██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
-//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
 //                 https://github.com/MarioRRom/aetheris-shell
 //===========================================================================
@@ -29,14 +29,10 @@ import Quickshell.Io
 
 // Config
 import qs.config
-import qs.i18n
 import qs.modules
 import qs.modules.overlays.notifications
 import qs.modules.background
 import qs.modules.bar
-import qs.services
-import qs.services.hyprland
-import qs.services.bspwm
 
 
 //  .-------------------------.
@@ -46,8 +42,8 @@ import qs.services.bspwm
 //  `-------------------------'
 
 ShellRoot {
-    // Get the running Desktop session to load the Sockets.
-    property string _session: (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
+    // Session detection
+    readonly property string _session: (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
 
 
     //  .-------------------------.
@@ -55,11 +51,6 @@ ShellRoot {
     //  | |    Shell Configs    | |
     //  | `---------------------' |
     //  `-------------------------'
-
-    // Initialize Sockets to ensure configs are loaded and applied
-    property bool _initHyprSocket: _session.indexOf("hyprland") !== -1 ? HyprSocket.isActive : false
-    property bool _initBspSocket: _session.indexOf("bspwm") !== -1 ? BspSocket.isActive : false
-
 
     property bool enableBar: true
     property bool enableBackground: true
@@ -98,7 +89,10 @@ ShellRoot {
     }
 
     // Notifications Popup.
-    NotificationsPopup { isActivated: enablePopups; backgroundAnchor: background.backgroundAnchor }
+    NotificationsPopup {
+        isActivated: enablePopups
+        backgroundAnchor: background.backgroundAnchor
+    }
 
 
     //  .-------------------------.

@@ -68,7 +68,7 @@ Shape {
         fillColor: "transparent"
         strokeColor: root.foregroundColor
         strokeWidth: root.strokeWidth
-        capStyle: ShapePath.RoundCap // Extremos redondeados
+        capStyle: ShapePath.RoundCap // Rounded caps
 
         PathAngleArc {
             startAngle: root.startAngle
