@@ -25,13 +25,21 @@ import Quickshell.Hyprland
 
 // Global
 import qs.config
-import qs.services
 
 QtObject {
     id: root
 
     // Public property to know if Hyprland is active
     property bool isActive: false
+
+    // Injected by shell.qml on startup with the session identifier.
+    property string session: ""
+    onSessionChanged: {
+        if (session.indexOf("hyprland") !== -1) {
+            isActive = true
+            updateHyprlandSettings()
+        }
+    }
 
     // Clamped rounding: prevents negative values from breaking Hyprland
     property int rounding: Math.max(0, Config.global.corners - Config.global.margins)
@@ -122,7 +130,13 @@ QtObject {
         }
     }
 
-    // Reads global config and applies it to Hyprland.
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |   Apply Settings    | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
     function updateHyprlandSettings() {
         if (!isActive) return
 
@@ -154,13 +168,5 @@ QtObject {
 
         // Fading
         setFading(Config.windows.enableFading)
-    }
-
-    Component.onCompleted: {
-        // Check if we are in Hyprland
-        if (SystemStatus.desktop.indexOf("hyprland") !== -1) {
-            isActive = true
-            updateHyprlandSettings()
-        }
     }
 }

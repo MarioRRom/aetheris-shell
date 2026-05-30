@@ -34,6 +34,10 @@ import qs.modules.overlays.notifications
 import qs.modules.background
 import qs.modules.bar
 
+// WM Integrations
+import qs.services.hyprland
+import qs.services.bspwm
+
 
 //  .-------------------------.
 //  | .---------------------. |
@@ -97,7 +101,7 @@ ShellRoot {
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |    X11 Aditional    | |
+    //  | |    X11 Additional   | |
     //  | `---------------------' |
     //  `-------------------------'
 
@@ -113,8 +117,25 @@ ShellRoot {
         sourceComponent: Picom {}
     }
 
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |   WM Integrations   | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
     Component.onCompleted: {
+        // Hyprland
+        if (_session.indexOf("hyprland") !== -1) {
+            // Initialize the socket
+            HyprSocket.session = _session
+        }
+
+        // Bspwm
         if (_session.indexOf("bspwm") !== -1) {
+            // Initialize the socket
+            BspSocket.session = _session
+            // Apply fix for stacking
             fixStacking.running = true
         }
     }

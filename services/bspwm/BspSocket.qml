@@ -29,13 +29,23 @@ import Quickshell.Io
 
 // Config
 import qs.config
-import qs.services
 
 QtObject {
     id: root
 
     // Public property so widgets know if BSPWM is active
     property bool isActive: false
+
+    // Injected by shell.qml on startup with the session identifier.
+    property string session: ""
+    onSessionChanged: {
+        if (session.indexOf("bspwm") !== -1) {
+            isActive = true
+            queryMonitors()
+            updateBspwmSettings()
+            Qt.callLater(() => { bspwmEventSocket.connected = true })
+        }
+    }
 
     // bspwm socket (for commands)
     property Socket socket: Socket {
@@ -484,7 +494,7 @@ QtObject {
 
     //  .-------------------------.
     //  | .---------------------. |
-    //  | |   Internal Config   | |
+    //  | |   Apply Settings    | |
     //  | `---------------------' |
     //  `-------------------------'
 
@@ -512,21 +522,4 @@ QtObject {
         setFocusedBorderColor(Config.windows.focusedBorderColor)
     }
 
-    Component.onCompleted: {
-        // Check if we are in bspwm
-        if (SystemStatus.desktop !== "bspwm") return
-
-        isActive = true
-
-        // Query monitors at startup
-        queryMonitors()
-
-        // Set Internal Configuration
-        updateBspwmSettings()
-
-        // Activate event socket for real-time updates
-        Qt.callLater(() => {
-            bspwmEventSocket.connected = true
-        })
-    }
 }
