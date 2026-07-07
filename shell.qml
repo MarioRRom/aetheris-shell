@@ -100,6 +100,8 @@ ShellRoot {
         backgroundAnchor: background.backgroundAnchor
     }
 
+    // Polkit agent dialog
+    PolkitDialog {}
 
     //  .-------------------------.
     //  | .---------------------. |
