@@ -24,6 +24,8 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
+
+// Config
 import qs.config
 import qs.components
 import qs.services

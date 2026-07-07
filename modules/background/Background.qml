@@ -115,6 +115,7 @@ Variants {
                 //  | |     Now Playing     | |
                 //  | `---------------------' |
                 //  `-------------------------'
+                
                 NowPlaying {
                     anchors.left: parent.left
                     anchors.bottom: parent.bottom

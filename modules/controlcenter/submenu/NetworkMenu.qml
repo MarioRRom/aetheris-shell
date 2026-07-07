@@ -22,6 +22,8 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Widgets
+
+// Config
 import qs.components
 import qs.i18n
 import qs.services

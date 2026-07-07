@@ -66,7 +66,7 @@ PopupWindow {
 
     anchor.window: bar
     anchor.rect.x: (bar.width - width) - ((globalMargin + globalWallborder) - 5) // 5px for the margin in the Main Container.
-    anchor.rect.y: bar.height + (globalMargin - 5) //5px for the Margin of the Main Container.
+    anchor.rect.y: bar.height + (globalMargin - 5) // 5px for the Margin of the Main Container.
 
     color: "transparent"
 
