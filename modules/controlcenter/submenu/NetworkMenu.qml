@@ -31,7 +31,7 @@ import qs.themes
 
 
 ColumnLayout {
-    id: root
+    id: networkMenu
 
     anchors.fill: parent
     anchors.margins: windowMargin
