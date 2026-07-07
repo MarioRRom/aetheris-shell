@@ -23,6 +23,7 @@ import QtQuick
 import QtQuick.Layouts
 
 // Config
+import qs.components
 import qs.i18n
 import qs.services
 import qs.themes
@@ -72,12 +73,11 @@ Rectangle {
         width: parent.width - 30
         spacing: 10
 
-        Text {
-            text: Network.statusIcon
-            font.family: ThemeManager.fonts.icons
-            font.pixelSize: 28
+        SvgIcon {
+            icon: Network.statusIcon
+            size: 28
             color: active ? ThemeManager.colors.mantle : ThemeManager.colors.text
-            Layout.alignment: Qt.AlignVCenter
+            anchors.verticalCenter: parent.verticalCenter
         }
 
         ColumnLayout {

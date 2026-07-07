@@ -25,6 +25,7 @@ import QtQuick.Effects
 import Qt5Compat.GraphicalEffects
 
 // Config
+import qs.components
 import qs.config
 import qs.services
 import qs.themes
@@ -89,13 +90,12 @@ Rectangle {
             RowLayout {
                 spacing: 5
 
-                Text {
-                    text: ""
+                SvgIcon {
+                    icon: "maps/location"
+                    size: 18
                     color: "white"
-                    font.pixelSize: 18
-                    font.family: ThemeManager.fonts.icons
-
                 }
+
                 Text {
                     text: Weather.location
                     color: "white"
@@ -140,18 +140,51 @@ Rectangle {
                             spacing:5
                             Layout.alignment: Qt.AlignRight
 
-                            Text { text: Weather.windSpeed; color: "white"; font.family: ThemeManager.fonts.main }
-                            Text { text: ""; color: "white"; font.family: ThemeManager.fonts.icons }
+                            Text {
+                                text: Weather.windSpeed
+                                color: "white"
+                                font.pixelSize: 12
+                                font.family: ThemeManager.fonts.main
+                            }
+
+                            SvgIcon {
+                                icon: "weather/wind"
+                                size: 12
+                                color: "white"
+                            }
                         }
                         RowLayout {
                             Layout.alignment: Qt.AlignRight
                             spacing: 5
-                            Text { text: Weather.humidity; color: "white"; font.family: ThemeManager.fonts.main }
-                            Text { text: "󰖌"; color: "white"; font.family: ThemeManager.fonts.icons }
+                            Text {
+                                text: Weather.humidity
+                                color: "white"
+                                font.pixelSize: 12
+                                font.family: ThemeManager.fonts.main
+                            }
+
+                            SvgIcon {
+                                icon: "weather/humidity-percentage"
+                                size: 12
+                                color: "white"
+                            }
                         }
                     }
-                    Text { text: "|" ; color: "white"; font.pixelSize: 25; font.family: ThemeManager.fonts.main; font.bold: true }
-                    Text { text: Weather.description ; color: "white"; font.pixelSize: 18; font.family: ThemeManager.fonts.main; font.bold: true }
+                    Text {
+                        text: "|"
+                        color: "white"
+                        font.pixelSize: 25
+                        font.family: ThemeManager.fonts.main
+                        font.bold: true
+                    }
+
+                    Text {
+                        text: Weather.description
+                        color: "white"
+                        font.pixelSize: 18
+                        font.family: ThemeManager.fonts.main
+                        font.bold: true
+                    }
                 }
             }
         }

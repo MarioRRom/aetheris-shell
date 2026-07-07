@@ -129,10 +129,10 @@ Rectangle {
                 spacing: 15
 
                 // Previous Button
-                Text {
-                    text: "◀"
+                SvgIcon {
+                    icon: "general/chevron-left"
+                    size: 16
                     color: ThemeManager.colors.yellow
-                    font.pixelSize: 16
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
@@ -148,10 +148,10 @@ Rectangle {
                 }
 
                 // Next Button
-                Text {
-                    text: "▶"
+                SvgIcon {
+                    icon: "general/chevron-right"
+                    size: 16
                     color: ThemeManager.colors.yellow
-                    font.pixelSize: 16
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor

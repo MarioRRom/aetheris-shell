@@ -33,7 +33,7 @@ Rectangle {
     id: sliderRoot
     color: "transparent"
 
-    property var icon: "󰕾"
+    property var icon: "hardware/speaker"
     property var accent: ThemeManager.colors.green
     property var gradient: ThemeManager.colors.teal
 
@@ -79,10 +79,9 @@ Rectangle {
         anchors.rightMargin: 15
         spacing: 15
 
-        Text {
-            text: icon
-            font.family: ThemeManager.fonts.icons
-            font.pixelSize: 24
+        SvgIcon {
+            icon: sliderRoot.icon
+            size: 24
             color: accent
             Layout.alignment: Qt.AlignVCenter
             MouseArea {
@@ -99,11 +98,10 @@ Rectangle {
             usePercentage: true
             updateCommand: sliderRoot.updateCommand
         }
-
-        Text {
-            text: ""
-            font.family: ThemeManager.fonts.icons
-            font.pixelSize: 20
+        
+        SvgIcon {
+            icon: "general/settings"
+            size: 24
             color: ThemeManager.colors.text
             Layout.alignment: Qt.AlignVCenter
         }

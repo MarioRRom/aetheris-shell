@@ -26,6 +26,7 @@
 import QtQuick
 
 // Config
+import qs.components
 import qs.themes
 import qs.services.bspwm
 
@@ -56,12 +57,11 @@ Row {
     Repeater {
         model: workspaceNames
 
-        Text {
+        SvgIcon {
             property string wsName: modelData
-            text: wsName === focusedWorkspace ? "󰮯" : occupiedWorkspaces.indexOf(wsName) !== -1 ? "󰊠" : "󰧞"
+            icon: wsName === focusedWorkspace ? "workspaces/pacman" : occupiedWorkspaces.indexOf(wsName) !== -1 ? "workspaces/ghost" : "workspaces/dot"
             color: wsName === focusedWorkspace ? ThemeManager.colors.yellow : occupiedWorkspaces.indexOf(wsName) !== -1 ? ThemeManager.colors.sky : ThemeManager.colors.overlay1
-            font.family: ThemeManager.fonts.icons
-            font.pixelSize: 16
+            size: 16
             Behavior on color { ColorAnimation { duration: 350 } }
 
             MouseArea {

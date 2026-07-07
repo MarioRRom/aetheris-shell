@@ -23,6 +23,7 @@ import QtQuick
 import Quickshell.Widgets
 
 // Config
+import qs.components
 import qs.themes
 import qs.services
 
@@ -75,29 +76,26 @@ WrapperMouseArea{
             rightPadding: 10
 
             // Networking
-            Text {
-                text: Network.statusIcon
+            SvgIcon {
+                icon: Network.statusIcon
+                size: 18
                 color: ThemeManager.colors.mauve
-                font.family: ThemeManager.fonts.icons
-                font.pixelSize: 16
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Audio
-            Text {
-                text: Pipewire.icon
+            SvgIcon {
+                icon: Pipewire.icon
                 color: Pipewire.muted? ThemeManager.colors.red : ThemeManager.colors.green
-                font.family: ThemeManager.fonts.icons
-                font.pixelSize: 16
+                size: 18
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // Battery
-            Text {
-                text: "󰁹"
+            SvgIcon {
+                icon:"hardware/battery"
+                size: 18
                 color: ThemeManager.colors.peach
-                font.family: ThemeManager.fonts.icons
-                font.pixelSize: 16
                 anchors.verticalCenter: parent.verticalCenter
             }
         }

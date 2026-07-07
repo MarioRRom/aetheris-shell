@@ -67,18 +67,18 @@ QtObject {
 
     // Icons
     readonly property string icon: {
-        if (muted) return "󰝟"
-        if (volumePercent <= 0) return "󰝟"
-        if (volumePercent <= 33) return "󰕿"
-        if (volumePercent <= 66) return "󰖀"
-        return "󰕾"
+        if (muted) return "hardware/speaker-off"
+        if (volumePercent <= 0) return "hardware/speaker-off"
+        if (volumePercent <= 33) return "hardware/speaker-0"
+        if (volumePercent <= 66) return "hardware/speaker-1"
+        return "hardware/speaker"
     }
 
     readonly property string iconMic: {
-        if (source?.audio?.muted) return "󰍭"
-        if (micVolumePercent <= 0) return "󰍭"
-        if (micVolumePercent <= 33) return "󰍬"
-        return "󰍬"
+        if (source?.audio?.muted) return "hardware/microphone-off"
+        if (micVolumePercent <= 0) return "hardware/microphone-off"
+        if (micVolumePercent <= 33) return "hardware/microphone"
+        return "hardware/microphone"
     }
 
     // Node Tracker

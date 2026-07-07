@@ -23,6 +23,7 @@ import QtQuick
 import Quickshell.Widgets
 
 // Config
+import qs.components
 import qs.themes
 
 
@@ -34,11 +35,10 @@ WrapperMouseArea{
     onClicked: {
         sysInfoLoader.active = !sysInfoLoader.active
     }
-
-    Text {
-        text: "󰣇"
+    
+    SvgIcon {
+        icon: "distro/arch-linux"
+        size: 20
         color: ThemeManager.colors.blue
-        font.family: ThemeManager.fonts.icons
-        font.pixelSize: 24
     }
 }

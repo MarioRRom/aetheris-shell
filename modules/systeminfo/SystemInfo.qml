@@ -182,7 +182,7 @@ PopupWindow {
                             anchors.fill: parent
                             header: LanguageManager.t("systeminfo.cpu")
                             accent: ThemeManager.colors.red
-                            icon: ""
+                            icon: "hardware/cpu"
                             percentage: SystemStatus.cpuUsagePercent
                         }
                     }
@@ -197,7 +197,7 @@ PopupWindow {
                             anchors.fill: parent
                             header: LanguageManager.t("systeminfo.ram")
                             accent: ThemeManager.colors.yellow
-                            icon: ""
+                            icon: "hardware/memory"
                             percentage: SystemStatus.ramUsagePercent
                         }
                     }
@@ -216,7 +216,7 @@ PopupWindow {
                             anchors.fill: parent
                             header: LanguageManager.t("systeminfo.dsk")
                             accent: ThemeManager.colors.green
-                            icon: ""
+                            icon: "hardware/harddrive"
                             percentage: SystemStatus.diskUsage
                         }
                     }
@@ -231,7 +231,7 @@ PopupWindow {
                             anchors.fill: parent
                             header: LanguageManager.t("systeminfo.tmp")
                             accent: ThemeManager.colors.mauve
-                            icon: ""
+                            icon: "general/thermometer"
                             percentage: SystemStatus.temperature
                             temp: true
                         }
@@ -251,7 +251,7 @@ PopupWindow {
                     ButtonsPreset {
                         Layout.fillWidth: true
                         btnHeight: 41
-                        icon: "󰗽"
+                        icon: "general/logout"
                         btnText: LanguageManager.t("systeminfo.logout")
                         command: ["loginctl", "terminate-user", Quickshell.env("USER")]
                         hoverColor: ThemeManager.colors.mauve
@@ -261,7 +261,7 @@ PopupWindow {
                     ButtonsPreset {
                         Layout.fillWidth: true
                         btnHeight: 41
-                        icon: "⏻"
+                        icon: "general/shutdown"
                         btnText: LanguageManager.t("systeminfo.shutdown")
                         command: ["systemctl", "poweroff"]
                         hoverColor: ThemeManager.colors.red
@@ -275,7 +275,7 @@ PopupWindow {
                     ButtonsPreset {
                         Layout.fillWidth: true
                         btnHeight: 41
-                        icon: ""
+                        icon: "general/restart"
                         btnText: LanguageManager.t("systeminfo.reboot")
                         command: ["systemctl", "reboot"]
                         hoverColor: ThemeManager.colors.peach
@@ -285,7 +285,7 @@ PopupWindow {
                     ButtonsPreset {
                         Layout.fillWidth: true
                         btnHeight: 41
-                        icon: ""
+                        icon: "general/suspend"
                         btnText: LanguageManager.t("systeminfo.suspend")
                         command: ["systemctl", "suspend"]
                         hoverColor: ThemeManager.colors.sky

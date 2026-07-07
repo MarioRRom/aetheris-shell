@@ -52,6 +52,5 @@ QtObject {
     // Font configuration
     readonly property var fonts: QtObject {
         readonly property string main: Config.theme.mainfont // Text font
-        readonly property string icons: Config.theme.iconfont // icons font
     }
 }

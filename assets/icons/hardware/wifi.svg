@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="20px"
+   viewBox="0 -960 960 960"
+   width="20px"
+   fill="#e3e3e3"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="wifi.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="40.3"
+     inkscape:cx="10"
+     inkscape:cy="10"
+     inkscape:window-width="1876"
+     inkscape:window-height="1010"
+     inkscape:window-x="1100"
+     inkscape:window-y="466"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     d="M429-195 56-568q-11-11-16-24t-5-27q0-16 6.5-30T61-674q85-70 197-106t222-36q110 0 222 36t197 106q13 11 19.5 25t6.5 30q0 14-5 27t-16 24L531-195q-11 11-24 16t-27 5q-14 0-27-5t-24-16Z"
+     id="path1" />
+</svg>

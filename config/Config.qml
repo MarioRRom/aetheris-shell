@@ -65,6 +65,5 @@ QtObject {
     property QtObject theme: QtObject {
         property string colorscheme: "mocha" // latte, frappe, macchiato, mocha
         property string mainfont: "Sofia Pro" // Text font
-        property string iconfont: "Material Design Icons Desktop" // Icons font
     }
 }

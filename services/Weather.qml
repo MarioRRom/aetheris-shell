@@ -29,7 +29,13 @@ import qs.i18n
 QtObject {
     id: weatherManager
 
-    // Configuration
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |    Configuration    | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
     property string units: "metric"
 
     // Climate data
@@ -38,11 +44,11 @@ QtObject {
     property string location: LanguageManager.t("weather.unknown")
     property string windSpeed: "0 m/s"
     property string humidity: "0%"
-    property string icon: "?"
+    property string icon: "weather/cloudy"
     property string color: "#F28FAD"
     property string backgroundImage: "rain.png"
 
-    // Update timer (15 minutes)
+    // Lifecycle (15 minutes)
     property Timer updateTimer: Timer {
         interval: 900000
         running: true
@@ -53,6 +59,13 @@ QtObject {
     Component.onCompleted: {
         fetchLocation()
     }
+
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |   Weather Service   | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     // Get location for more Precision
     function fetchLocation() {
@@ -100,7 +113,13 @@ QtObject {
         xhr.send()
     }
 
-    // Process weather data
+   
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |   Data Processing   | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
     function processWeatherData(data, cityName) {
         var current = data.current_condition[0]
         var astronomy = data.weather[0].astronomy[0]
@@ -130,37 +149,120 @@ QtObject {
         backgroundImage = iconData.bg
     }
 
-    // Assign icons, colors and background
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |   Visual Settings   | |
+    //  | `---------------------' |
+    //  `-------------------------'
+
     function getIconData(weatherCode, isDay) {
         var code = parseInt(weatherCode)
 
-        // Sun/Clear
+        // Clear
         if (code === 113) {
-            return isDay ? {icon: "󰖨", color: ThemeManager.colors.peach, bg: "sun.png"}
-                         : {icon: "", color: ThemeManager.colors.blue, bg: "moon.png"}
+            return {
+                icon: isDay ? "weather/sun" : "weather/moon",
+                color: isDay ? ThemeManager.colors.peach : ThemeManager.colors.blue,
+                bg: isDay ? "sun.png" : "moon.png"
+            }
         }
 
-        // Cloudy/Partly Cloudy
-        if ([116, 119, 122].includes(code)) return {icon: "", color: ThemeManager.colors.subtext0, bg: "cloudy.png"}
+        // Partly Cloudy
+        if (code === 116) {
+            return {
+                icon: isDay ? "weather/partly-cloudy-day" : "weather/partly-cloudy-night",
+                color: isDay ? ThemeManager.colors.peach : ThemeManager.colors.blue,
+                bg: isDay ? "sun.png" : "moon.png"
+            }
+        }
 
-        // Fog/Mist
-        if ([143, 248, 260].includes(code)) return {icon: "", color: ThemeManager.colors.subtext0, bg: "wind.png"}
+        // Cloudy
+        if ([119, 122].includes(code)) {
+            return {
+                icon: "weather/cloudy",
+                color: ThemeManager.colors.subtext0,
+                bg: "cloudy.png"
+            }
+        }
 
-        // Rain
-        if ([176, 263, 266, 281, 284, 293, 296, 299, 302, 305, 308, 311, 314, 317, 350, 353, 356, 359, 362, 365].includes(code)) {
-            var bg = isDay ? "rain.png" : "nightrain.png"
-            return {icon: "", color: ThemeManager.colors.teal, bg: bg}
+        // Fog // Mist
+        if ([143, 248, 260].includes(code)) {
+            return {
+                icon: "weather/foggy",
+                color: ThemeManager.colors.overlay2,
+                bg: "wind.png"
+            }
+        }
+
+        // Drizzle // Rain light
+        if ([263, 266, 293, 296, 353].includes(code)) {
+            return {
+                icon: "weather/rainy",
+                color: ThemeManager.colors.sky,
+                bg: isDay ? "rain.png" : "nightrain.png"
+            }
+        }
+
+        // Heavy Rain
+         if ([299, 302, 305, 308, 356, 359].includes(code)) {
+            return {
+                icon: "weather/rainy",
+                color: ThemeManager.colors.blue,
+                bg: isDay ? "rain.png" : "nightrain.png"
+            }
+        }
+
+        // Freezing Rain
+        if ([281, 284, 311, 314].includes(code)) {
+            return {
+                icon: "weather/snowy",
+                color: ThemeManager.colors.sky,
+                bg: "snow.png"
+            }
+        }
+
+        // Sleet // Ice
+        if ([179, 182, 185, 317, 320, 350, 362, 365, 374, 377].includes(code)) {
+            return {
+                icon: "weather/snowy",
+                color: ThemeManager.colors.sky,
+                bg: "snow.png"
+            }
         }
 
         // Snow
-        if ([227, 230, 323, 326, 329, 332, 335, 338, 368, 371, 374, 377, 392, 395].includes(code))
-            return {icon: "", color: ThemeManager.colors.subtext0, bg: "snow.png"}
+         if ([227, 230, 323, 326, 329, 332, 335, 338, 368, 371].includes(code)) {
+            return {
+                icon: "weather/snowy",
+                color: ThemeManager.colors.subtext0,
+                bg: "snow.png"
+            }
+        }
 
         // Thunder
-        if ([200, 386, 389].includes(code)) return {icon: "", color: ThemeManager.colors.yellow, bg: "storm.png"}
-
-        return {icon: "?", color: ThemeManager.colors.red, bg: "rain.png"}
+        if ([200, 386, 389, 392, 395].includes(code)) {
+            return {
+                icon: "weather/thunderstorm",
+                color: ThemeManager.colors.yellow,
+                bg: "storm.png"
+            }
+        }
+        
+        // Unknown
+        return {
+            icon: "weather/cloudy",
+            color: ThemeManager.colors.red,
+            bg: "rain.png"
+        }
     }
+
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |      Utilities      | |
+    //  | `---------------------' |
+    //  `-------------------------'
 
     function setErrorState() {
         temperature = LanguageManager.t("weather.na")
@@ -168,26 +270,37 @@ QtObject {
         location = LanguageManager.t("weather.unknown")
         windSpeed = "0 m/s"
         humidity = "0%"
-        icon = "?"
+        icon = "weather/cloudy"
         color = ThemeManager.colors.red
         backgroundImage = "rain.png"
     }
 
     function parseTime(timeStr) {
-        var parts = timeStr.match(/(\d+):(\d+)\s+(AM|PM)/)
-        if (!parts) return 0
-        var hours = parseInt(parts[1])
-        var minutes = parseInt(parts[2])
-        var ampm = parts[3]
-        if (ampm === "PM" && hours < 12) hours += 12
-        if (ampm === "AM" && hours === 12) hours = 0
-        return hours * 60 + minutes
+        const match = timeStr.match(/(\d+):(\d+)\s+(AM|PM)/)
+        if (!match) return 0
+
+        let [, h, m, period] = match
+
+        h = Number(h)
+        m = Number(m)
+
+        if (period === "PM" && h !== 12) h += 12
+        if (period === "AM" && h === 12) h = 0
+
+        return h * 60 + m
     }
 
     function capitalizeFirst(str) {
         return str.charAt(0).toUpperCase() + str.slice(1)
     }
 
+
+    //  .-------------------------.
+    //  | .---------------------. |
+    //  | |      Public API     | |
+    //  | `---------------------' |
+    //  `-------------------------'
+    
     function refresh() {
         fetchLocation()
     }

@@ -23,6 +23,7 @@ import QtQuick
 import QtQuick.Layouts
 
 // Config
+import qs.components
 import qs.i18n
 import qs.themes
 
@@ -45,7 +46,7 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
-        onClicked: root.currentView = "internet"
+        onClicked: root.currentView = "bluetooth"
     }
 
     // Background
@@ -72,12 +73,10 @@ Rectangle {
         width: parent.width - 30
         spacing: 10
 
-        Text {
-            text: "󰂲"
-            font.family: ThemeManager.fonts.icons
-            font.pixelSize: 28
+        SvgIcon {
+            icon: "hardware/bluetooth"
+            size: 28
             color: isActive ? ThemeManager.colors.mantle : ThemeManager.colors.text
-            Layout.alignment: Qt.AlignVCenter
         }
 
         ColumnLayout {

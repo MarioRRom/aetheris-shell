@@ -65,13 +65,12 @@ Item {
         spacing: 5
 
         // Media Player Status Icon
-        Text {
+        SvgIcon {
             id: statusIcon
-            anchors.verticalCenter: parent.verticalCenter
-            text: "󰎆"
+            icon: "media/genres"
+            size: 18
             color: Mpris.isPaused ? ThemeManager.colors.yellow : ThemeManager.colors.green
-            font.family: ThemeManager.fonts.icons
-            font.pixelSize: 16
+            anchors.verticalCenter: parent.verticalCenter
 
             Behavior on color { ColorAnimation { duration: 200 } }
         }

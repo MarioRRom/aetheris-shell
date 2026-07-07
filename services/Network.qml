@@ -144,22 +144,22 @@ QtObject {
 
     // Wifi signal strength
     function signalIcon(network) {
-        if (!network) return "󰤭"  // wifi-strength-off-outline
+        if (!network) return "hardware/wifi-off"  // wifi-strength-off-outline
         const s = network.signalStrength
-        if (s > 0.75) return "󰤨"  // wifi-strength-4
-        if (s > 0.50) return "󰤥"  // wifi-strength-3
-        if (s > 0.25) return "󰤢"  // wifi-strength-2
-        return "󰤟"                // wifi-strength-1
+        if (s > 0.75) return "hardware/wifi"  // wifi-strength-4
+        if (s > 0.50) return "hardware/wifi-3"  // wifi-strength-3
+        if (s > 0.25) return "hardware/wifi-2"  // wifi-strength-2
+        return "hardware/wifi-1"                // wifi-strength-1
     }
 
     // Wifi signal strength (Secured)
     function signalIconLocked(network) {
-        if (!network) return "󰤭"  // wifi-strength-off-outline
+        if (!network) return "hardware/wifi-off"  // wifi-strength-off-outline
         const s = network.signalStrength
-        if (s > 0.75) return "󰤪"  // wifi-strength-4
-        if (s > 0.50) return "󰤧"  // wifi-strength-3
-        if (s > 0.25) return "󰤤"  // wifi-strength-2
-        return "󰤡"
+        if (s > 0.75) return "hardware/wifi-locked"  // wifi-strength-4
+        if (s > 0.50) return "hardware/wifi-3-locked"  // wifi-strength-3
+        if (s > 0.25) return "hardware/wifi-2-locked"  // wifi-strength-2
+        return "hardware/wifi-1-locked"
     }
 
     // check if it's Secured
@@ -169,12 +169,12 @@ QtObject {
 
     // Network status icon
     readonly property string statusIcon: {
-        if (wiredConnected) return "󰈀"
-        if (!wifiHardwareEnabled) return "󰤮"
-        if (!wifiEnabled)         return "󰤮"
-        if (!wifiConnected)       return "󰤭"
-        if (connectivity === NetworkConnectivity.Portal)  return "󰤬"
-        if (connectivity === NetworkConnectivity.Limited) return "󰤫"
+        if (wiredConnected) return "hardware/lan"
+        if (!wifiHardwareEnabled) return "hardware/wifi-off"
+        if (!wifiEnabled)         return "hardware/wifi-off"
+        if (!wifiConnected)       return "hardware/wifi-off"
+        if (connectivity === NetworkConnectivity.Portal)  return "hardware/wifi-bad"
+        if (connectivity === NetworkConnectivity.Limited) return "hardware/wifi-bad"
         return signalIcon(activeNetwork)
     }
 

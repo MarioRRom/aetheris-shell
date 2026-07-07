@@ -196,11 +196,12 @@ PopupWindow {
                             currentView = "listplayers"
                         }
 
-                        Text{
-                            text: ""
+                        SvgIcon {
+                            icon: "general/menu"
+                            size: 25
                             color: ThemeManager.colors.text
-                            font.family: ThemeManager.fonts.icons
-                            font.pixelSize: 25
+
+                            Behavior on color { ColorAnimation { duration: 200 } }
                         }
                     }
 
@@ -211,11 +212,10 @@ PopupWindow {
                             Mpris.shuffle()
                         }
 
-                        Text{
-                            text: Mpris.isShuffled ? "󰒝" : "󰒞"
+                        SvgIcon {
+                            icon: "media/shuffle"
+                            size: 25
                             color: Mpris.canShuffle ? (Mpris.isShuffled ? ThemeManager.colors.mauve : ThemeManager.colors.text) : ThemeManager.colors.overlay0
-                            font.family: ThemeManager.fonts.icons
-                            font.pixelSize: 30
 
                             Behavior on color { ColorAnimation { duration: 200 } }
                         }
@@ -228,11 +228,10 @@ PopupWindow {
                             Mpris.previous()
                         }
 
-                        Text{
-                            text: "󰙣"
+                        SvgIcon {
+                            icon: "media/skip-previous"
+                            size: 35
                             color: Mpris.canGoPrevious ? ThemeManager.colors.text : ThemeManager.colors.overlay0
-                            font.family: ThemeManager.fonts.icons
-                            font.pixelSize: 35
 
                             Behavior on color { ColorAnimation { duration: 200 } }
                         }
@@ -245,11 +244,10 @@ PopupWindow {
                             Mpris.playpause()
                         }
 
-                        Text{
-                            text: Mpris.isPaused ? "" : ""
+                        SvgIcon {
+                            icon: Mpris.isPaused ? "media/play-circle" : "media/pause-circle"
+                            size: 40
                             color: Mpris.canTogglePlaying ? (Mpris.isPaused ? ThemeManager.colors.yellow : ThemeManager.colors.text) : ThemeManager.colors.overlay0
-                            font.family: ThemeManager.fonts.icons
-                            font.pixelSize: 40
 
                             Behavior on color { ColorAnimation { duration: 200 } }
                         }
@@ -262,11 +260,10 @@ PopupWindow {
                             Mpris.next()
                         }
 
-                        Text{
-                            text: "󰙡"
+                        SvgIcon {
+                            icon: "media/skip-next"
+                            size: 35
                             color: Mpris.canGoNext ? ThemeManager.colors.text : ThemeManager.colors.overlay0
-                            font.family: ThemeManager.fonts.icons
-                            font.pixelSize: 35
 
                             Behavior on color { ColorAnimation { duration: 200 } }
                         }
@@ -279,11 +276,10 @@ PopupWindow {
                             Mpris.repeat()
                         }
 
-                        Text{
-                            text: Mpris.isRepeating === 0 ? "󰑗" : (Mpris.isRepeating === 1 ? "󰑘" : "󰑖")
+                        SvgIcon {
+                            icon: Mpris.isRepeating === 0 ? "media/repeat" : (Mpris.isRepeating === 1 ? "media/repeat-one" : "media/repeat")
+                            size: 25
                             color: Mpris.canRepeat ? (Mpris.isRepeating === 0 ? ThemeManager.colors.text : ThemeManager.colors.pink) : ThemeManager.colors.overlay0
-                            font.family: ThemeManager.fonts.icons
-                            font.pixelSize: 30
 
                             Behavior on color { ColorAnimation { duration: 200 } }
                         }
@@ -297,11 +293,10 @@ PopupWindow {
                             volumeControl = !volumeControl
                         }
 
-                        Text{
-                            text: "󰕾"
+                        SvgIcon {
+                            icon: "hardware/speaker"
+                            size: 25
                             color: Mpris.canVolume ? (volumeControl ? ThemeManager.colors.green : ThemeManager.colors.text) : ThemeManager.colors.overlay0
-                            font.family: ThemeManager.fonts.icons
-                            font.pixelSize: 25
 
                             Behavior on color { ColorAnimation { duration: 200 } }
                         }

@@ -22,18 +22,18 @@
 import QtQuick
 
 // Config
+import qs.components
 import qs.themes
 import qs.services.bspwm
 
-Text {
+SvgIcon {
     id: layoutIndicator
 
     property string currentLayout: "tiled"
 
-    text: getIcon()
+    icon: getIcon()
     color: getColor()
-    font.family: ThemeManager.fonts.icons
-    font.pixelSize: 24
+    size: 24
 
     Connections {
         target: BspSocket
@@ -62,9 +62,9 @@ Text {
 
     function getIcon() {
         switch(currentLayout) {
-            case "tiled": return "󰕮"
-            case "monocle": return "󱂬"
-            default: return "󰕮"
+            case "tiled": return "general/dashboard"
+            case "monocle": return "general/single-window"
+            default: return "general/dashboard"
         }
     }
 

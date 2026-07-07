@@ -121,12 +121,11 @@ WrapperMouseArea {
                 spacing: 5
                 anchors.centerIn: parent
 
-                Text {
+                SvgIcon {
                     anchors.verticalCenter: parent.verticalCenter
-                    text: icon
+                    icon: button.icon
+                    size: 15
                     color: ThemeManager.colors.text
-                    font.family: ThemeManager.fonts.icons
-                    font.pixelSize: 15
                 }
 
                 Text {

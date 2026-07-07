@@ -100,11 +100,10 @@ Rectangle {
                 radius: gridRadius
                 color: Notifications.dnd ? ThemeManager.colors.sky : ThemeManager.colors.surface0
                 Behavior on color { ColorAnimation { duration: 250 } }
-                Text {
+                SvgIcon {
                     anchors.centerIn: parent
-                    text: "󱏧"
-                    font.family: ThemeManager.fonts.icons
-                    font.pixelSize: iconSize
+                    icon: Notifications.dnd ? "communicate/notifications-paused" : "communicate/notifications-active"
+                    size: iconSize
                     color: Notifications.dnd ? ThemeManager.colors.base : ThemeManager.colors.text
                     Behavior on color { ColorAnimation { duration: 250 } }
                 }
@@ -125,11 +124,10 @@ Rectangle {
             Rectangle {
                 radius: gridRadius
                 color: ThemeManager.colors.surface0
-                Text {
+                SvgIcon {
                     anchors.centerIn: parent
-                    text: ""
-                    font.family: ThemeManager.fonts.icons
-                    font.pixelSize: iconSize
+                    icon: "general/night-light"
+                    size: iconSize
                     color: ThemeManager.colors.text
                 }
             }
@@ -149,11 +147,10 @@ Rectangle {
             Rectangle {
                 radius: gridRadius
                 color: ThemeManager.colors.surface0
-                Text {
+                SvgIcon {
                     anchors.centerIn: parent
-                    text: "󰀞" //"󰀝"
-                    font.family: ThemeManager.fonts.icons
-                    font.pixelSize: iconSize
+                    icon: "hardware/airplane-mode-off"
+                    size: iconSize
                     color: ThemeManager.colors.text
                 }
             }
@@ -173,11 +170,10 @@ Rectangle {
             Rectangle {
                 radius: gridRadius
                 color: ThemeManager.colors.surface0
-                Text {
+                SvgIcon {
                     anchors.centerIn: parent
-                    text: "󱣴"
-                    font.family: ThemeManager.fonts.icons
-                    font.pixelSize: iconSize
+                    icon: "general/screenshot"
+                    size: iconSize
                     color: ThemeManager.colors.text
                 }
             }
@@ -197,11 +193,10 @@ Rectangle {
             Rectangle {
                 radius: gridRadius
                 color: ThemeManager.colors.surface0
-                Text {
+                SvgIcon {
                     anchors.centerIn: parent
-                    text: "󰌪"
-                    font.family: ThemeManager.fonts.icons
-                    font.pixelSize: iconSize
+                    icon: "hardware/battery-saver"
+                    size: iconSize
                     color: ThemeManager.colors.text
                 }
             }

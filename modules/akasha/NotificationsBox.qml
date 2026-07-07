@@ -109,13 +109,13 @@ Rectangle {
                 visible: opacity > 0
                 Behavior on opacity { NumberAnimation { duration: 300 } }
 
-                Text {
-                    text: "󰂚"
-                    font.family: ThemeManager.fonts.icons
-                    font.pixelSize: 100
+                SvgIcon {
+                    icon: "communicate/notifications"
+                    size: 125
                     color: ThemeManager.colors.peach
                     Layout.alignment: Qt.AlignHCenter
                 }
+
                 Text {
                     text: LanguageManager.t("akasha.noNotifications")
                     font.pixelSize: 20
@@ -257,12 +257,11 @@ Rectangle {
                                 anchors.margins: internalMargin
 
                                 // Image or bell
-                                Text {
+                                SvgIcon {
                                     visible: iconSource == ""
-                                    text: "󰂚"
+                                    icon: "communicate/notifications"
+                                    size: parent.height
                                     color: ThemeManager.colors.peach
-                                    font.family: ThemeManager.fonts.icons
-                                    font.pixelSize: (parent.height -10 )
                                 }
                                 MaskedImage {
                                     visible: iconSource != ""
@@ -323,12 +322,11 @@ Rectangle {
                                     radius: notifRadius - internalMargin
                                     Layout.alignment: Qt.AlignTop
 
-                                    Text {
+                                    SvgIcon {
                                         anchors.centerIn: parent
-                                        text: ""
+                                        icon: "general/close-small"
+                                        size: parent.width + 8
                                         color: ThemeManager.colors.text
-                                        font.family: ThemeManager.fonts.icons
-                                        font.pixelSize: 16
                                     }
 
                                     MouseArea {

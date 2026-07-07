@@ -23,6 +23,7 @@ import QtQuick
 import Quickshell.Widgets
 
 // Config
+import qs.components
 import qs.services
 import qs.themes
 
@@ -81,13 +82,12 @@ WrapperMouseArea {
             rightPadding: 10
 
             // Notifications Indicator
-            Text {
+            SvgIcon {
                 visible: Notifications.history.length > 0
-                text: "󰧞"
+                icon: "general/circle"
                 color: ThemeManager.colors.text
-                font.family: ThemeManager.fonts.icons
+                size: 8
                 anchors.verticalCenter: parent.verticalCenter
-                font.pixelSize: 20
             }
 
             // System Time
@@ -101,12 +101,11 @@ WrapperMouseArea {
 
 
             // Weather Info
-            Text {
-                text: Weather.icon
+            SvgIcon {
+                icon: Weather.icon
                 color: Weather.color
-                font.family: ThemeManager.fonts.icons
+                size: 18
                 anchors.verticalCenter: parent.verticalCenter
-                font.pixelSize: 16
             }
 
             Text {

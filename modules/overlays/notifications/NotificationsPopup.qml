@@ -263,12 +263,11 @@ LazyLoader {
 
 
                             // Image or bell
-                            Text {
-                                visible: iconSource === ""
-                                text: "󰂚"
+                            SvgIcon {
+                                visible: iconSource == ""
+                                icon: "communicate/notifications"
+                                size: parent.height - 10
                                 color: ThemeManager.colors.peach
-                                font.family: ThemeManager.fonts.icons
-                                font.pixelSize: parent.height - 10
                             }
 
                             MaskedImage {
@@ -330,12 +329,11 @@ LazyLoader {
                                 radius: 100
                                 Layout.alignment: Qt.AlignTop
 
-                                Text {
+                                SvgIcon {
                                     anchors.centerIn: parent
-                                    text: ""
+                                    icon: "general/close-small"
+                                    size: parent.width + 8
                                     color: ThemeManager.colors.text
-                                    font.family: ThemeManager.fonts.icons
-                                    font.pixelSize: 16
                                 }
 
                                 MouseArea {

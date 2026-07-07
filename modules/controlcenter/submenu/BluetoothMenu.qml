@@ -23,6 +23,7 @@ import QtQuick
 import QtQuick.Layouts
 
 // Config
+import qs.components
 import qs.i18n
 import qs.themes
 
@@ -39,9 +40,9 @@ ColumnLayout {
 
         // Back Button
         Rectangle {
-            width: 40; height: 40; radius: 12
+            width: 35; height: 35; radius: 12
             color: ThemeManager.colors.surface0
-            Text { text: ""; font.family: ThemeManager.fonts.icons; anchors.centerIn: parent; color: ThemeManager.colors.text; font.pixelSize: 20 }
+            SvgIcon { icon: "general/chevron-left"; anchors.centerIn: parent; color: ThemeManager.colors.text; size: parent.width }
             MouseArea { anchors.fill: parent; onClicked: root.currentView = "main"; cursorShape: Qt.PointingHandCursor }
         }
 

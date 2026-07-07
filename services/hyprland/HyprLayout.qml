@@ -23,15 +23,15 @@ import QtQuick
 import Quickshell.Hyprland
 
 // Config
+import qs.components
 import qs.themes
 
-Text {
+SvgIcon {
     id: splitIndicator
 
-    text: "󰕮"
+    icon: "general/dashboard"
     color: ThemeManager.colors.sky
-    font.family: ThemeManager.fonts.icons
-    font.pixelSize: 24
+    size: 24
 
     MouseArea {
         anchors.fill: parent

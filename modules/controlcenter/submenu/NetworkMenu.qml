@@ -42,7 +42,7 @@ ColumnLayout {
         Rectangle {
             width: 35; height: 35; radius: itemRadius
             color: ThemeManager.colors.base
-            Text { text: ""; font.family: ThemeManager.fonts.icons; anchors.centerIn: parent; color: ThemeManager.colors.text; font.pixelSize: 20 }
+            SvgIcon { icon: "general/chevron-left"; anchors.centerIn: parent; color: ThemeManager.colors.text; size: parent.width }
             MouseArea { anchors.fill: parent; onClicked: root.currentView = "main"; cursorShape: Qt.PointingHandCursor }
         }
 
@@ -64,11 +64,10 @@ ColumnLayout {
             RowLayout {
                 anchors.centerIn: parent
                 spacing: 10
-                Text {
-                    text: Network.wifiEnabled ? "󰤨" : "󰤭"
-                    font.family: ThemeManager.fonts.icons
+                SvgIcon {
+                    icon: Network.wifiEnabled ? "hardware/wifi" : "hardware/wifi-off"
+                    size: 20
                     color: Network.wifiEnabled ? ThemeManager.colors.green : ThemeManager.colors.text
-                    font.pixelSize: 20
                 }
 
                 // Wi-Fi Toggle
@@ -103,12 +102,12 @@ ColumnLayout {
                 leftMargin: windowMargin; rightMargin: windowMargin
             }
             spacing: windowMargin
-
-            Text {
-                text: "󰈀"
-                font.family: ThemeManager.fonts.icons
-                font.pixelSize: 26
+            
+            SvgIcon {
+                icon: "hardware/lan"
+                size: 26
                 color: ThemeManager.colors.mauve
+                anchors.verticalCenter: parent.verticalCenter
             }
 
             Text {
@@ -229,14 +228,13 @@ ColumnLayout {
 
                                 RowLayout {
                                     spacing: 8
-
-                                    Text {
-                                        text: Network.isSecured(modelData)
+                                    
+                                    SvgIcon {
+                                        icon: Network.isSecured(modelData)
                                             ? Network.signalIconLocked(modelData)
                                             : Network.signalIcon(modelData)
-                                        font.family: ThemeManager.fonts.icons
+                                        size: 25
                                         color: modelData.connected ? ThemeManager.colors.mauve : ThemeManager.colors.subtext0
-                                        font.pixelSize: 25
                                     }
 
                                     Text {
@@ -248,12 +246,11 @@ ColumnLayout {
                                         elide: Text.ElideRight
                                     }
 
-                                    Text {
+                                    SvgIcon {
                                         visible: modelData.known
-                                        text: ""
-                                        font.family: ThemeManager.fonts.icons
+                                        icon: "general/save"
+                                        size: 20
                                         color: modelData.connected ? ThemeManager.colors.mauve : ThemeManager.colors.subtext0
-                                        font.pixelSize: 20
                                     }
                                 }
                             }
@@ -304,12 +301,11 @@ ColumnLayout {
                                             }
                                         }
 
-                                        Text {
+                                        SvgIcon {
                                             id: showPassword
                                             property bool checked: false
-                                            text: checked ? "󰛐" : "󰛑"
-                                            font.family: ThemeManager.fonts.icons
-                                            font.pixelSize: 16
+                                            icon: checked ? "general/visibility" : "general/visibility-off"
+                                            size: 16
                                             color: ThemeManager.colors.subtext0
                                             MouseArea {
                                                 anchors.fill: parent

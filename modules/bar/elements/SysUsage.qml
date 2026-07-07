@@ -22,6 +22,7 @@
 import QtQuick
 
 // Config
+import qs.components
 import qs.themes
 import qs.services
 
@@ -33,11 +34,10 @@ Row {
     spacing: 5
 
     // Cpu Icon
-    Text {
-        text: ""
+    SvgIcon {
+        icon: "hardware/cpu"
+        size: 14
         color: ThemeManager.colors.red
-        font.family: ThemeManager.fonts.icons
-        font.pixelSize: 14
         anchors.verticalCenter: parent.verticalCenter
     }
 
@@ -51,11 +51,10 @@ Row {
     }
 
     // Ram Icon
-    Text {
-        text: ""
+    SvgIcon {
+        icon: "hardware/memory"
+        size: 14
         color: ThemeManager.colors.yellow
-        font.family: ThemeManager.fonts.icons
-        font.pixelSize: 14
         anchors.verticalCenter: parent.verticalCenter
     }
 

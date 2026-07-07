@@ -105,12 +105,11 @@ Rectangle {
                     strokeWidth: 10
                 }
 
-                Text {
-                    anchors.centerIn: parent
-                    text: icon
+                SvgIcon {
+                    icon: root.icon
                     color: ThemeManager.colors.text
-                    font.family: ThemeManager.fonts.icons
-                    font.pixelSize: parent.height - 35
+                    size: parent.height - 35
+                    anchors.centerIn: parent
                 }
             }
 
