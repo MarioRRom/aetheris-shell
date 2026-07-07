@@ -36,6 +36,8 @@ import qs.themes
 //  `-------------------------'
 
 Rectangle {
+    id: root
+
     property bool active: Network.wifiEnabled || Network.wiredConnected
 
 

@@ -35,7 +35,7 @@ WrapperMouseArea{
     onClicked: {
         sysInfoLoader.active = !sysInfoLoader.active
     }
-    
+
     SvgIcon {
         icon: "distro/arch-linux"
         size: 20

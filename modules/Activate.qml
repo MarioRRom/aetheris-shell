@@ -27,6 +27,8 @@ import Quickshell
 import qs.i18n
 
 ShellRoot {
+    id: root
+
     Variants {
         // Create the panel once on each monitor.
         model: Quickshell.screens

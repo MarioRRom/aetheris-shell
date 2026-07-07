@@ -44,7 +44,7 @@ Item {
 
         radius: lineradius
         color: "transparent"
-        
+
         border.color: linecolor
         border.width: linewidth
     }

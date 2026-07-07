@@ -31,6 +31,8 @@ import qs.themes
 
 
 ColumnLayout {
+    id: root
+
     anchors.fill: parent
     anchors.margins: windowMargin
     spacing: windowMargin
@@ -104,7 +106,7 @@ ColumnLayout {
                 leftMargin: windowMargin; rightMargin: windowMargin
             }
             spacing: windowMargin
-            
+
             SvgIcon {
                 icon: "hardware/lan"
                 size: 26
@@ -230,7 +232,7 @@ ColumnLayout {
 
                                 RowLayout {
                                     spacing: 8
-                                    
+
                                     SvgIcon {
                                         icon: Network.isSecured(modelData)
                                             ? Network.signalIconLocked(modelData)

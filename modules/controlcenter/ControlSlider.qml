@@ -98,7 +98,7 @@ Rectangle {
             usePercentage: true
             updateCommand: sliderRoot.updateCommand
         }
-        
+
         SvgIcon {
             icon: "general/settings"
             size: 24

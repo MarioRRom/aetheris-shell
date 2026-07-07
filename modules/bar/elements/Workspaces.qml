@@ -29,6 +29,8 @@ import qs.services.bspwm
 import qs.services.hyprland
 
 WrapperRectangle {
+    id: root
+    
     color: ThemeManager.colors.base
     anchors.verticalCenter: parent.verticalCenter
     height: parent.height - 12

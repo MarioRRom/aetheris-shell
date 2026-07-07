@@ -26,16 +26,15 @@ import Qt5Compat.GraphicalEffects
 
 
 Item {
+    id: root
+
     // Config
-    // Path relative to assets/icons/, e.g. "hardware/wifi.svg" or "hardware/wifi-filled.svg"
-    property string icon: ""
+    property string icon: "" // Path relative to assets/icons/, e.g. "hardware/wifi.svg" or "hardware/wifi-filled.svg"
 
     property int size: 24
     property color color: "transparent"
     property var fillMode: Image.PreserveAspectFit
 
-    // Container
-    id: root
     implicitWidth: size
     implicitHeight: size
 

@@ -28,6 +28,7 @@ import qs.themes
 
 // Main Rectangle
 Rectangle {
+    id: root
 
     // Config
     property int size: 10

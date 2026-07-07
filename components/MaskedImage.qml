@@ -25,13 +25,14 @@ import QtQuick
 import Qt5Compat.GraphicalEffects
 
 Image {
+    id: image
+
     // Config
     property int imageRadius: 5
     property var imageFill: Image.PreserveAspectCrop
     property var imageSource: ""
 
     // Image
-    id: image
     cache: false
     smooth: false
     fillMode: imageFill

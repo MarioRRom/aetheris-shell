@@ -44,6 +44,7 @@ import qs.themes
 //  `-------------------------'
 
 PopupWindow {
+    id: root
 
     // Config
     property var bar

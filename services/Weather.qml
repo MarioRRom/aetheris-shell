@@ -113,7 +113,7 @@ QtObject {
         xhr.send()
     }
 
-   
+
     //  .-------------------------.
     //  | .---------------------. |
     //  | |   Data Processing   | |
@@ -205,7 +205,7 @@ QtObject {
         }
 
         // Heavy Rain
-         if ([299, 302, 305, 308, 356, 359].includes(code)) {
+        if ([299, 302, 305, 308, 356, 359].includes(code)) {
             return {
                 icon: "weather/rainy",
                 color: ThemeManager.colors.blue,
@@ -232,7 +232,7 @@ QtObject {
         }
 
         // Snow
-         if ([227, 230, 323, 326, 329, 332, 335, 338, 368, 371].includes(code)) {
+        if ([227, 230, 323, 326, 329, 332, 335, 338, 368, 371].includes(code)) {
             return {
                 icon: "weather/snowy",
                 color: ThemeManager.colors.subtext0,
@@ -248,7 +248,7 @@ QtObject {
                 bg: "storm.png"
             }
         }
-        
+
         // Unknown
         return {
             icon: "weather/cloudy",
@@ -300,7 +300,7 @@ QtObject {
     //  | |      Public API     | |
     //  | `---------------------' |
     //  `-------------------------'
-    
+
     function refresh() {
         fetchLocation()
     }
