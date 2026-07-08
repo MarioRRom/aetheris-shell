@@ -33,7 +33,7 @@ import qs.services.bspwm
 
 Row {
     id: iconRow
-    spacing: 7
+    spacing: 4
 
     // Public property: monitor name
     property string monitorName: ""
