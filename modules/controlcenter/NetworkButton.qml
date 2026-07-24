@@ -19,6 +19,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 
@@ -79,7 +80,7 @@ Rectangle {
             icon: Network.statusIcon
             size: 28
             color: active ? ThemeManager.colors.mantle : ThemeManager.colors.text
-            anchors.verticalCenter: parent.verticalCenter
+            Layout.alignment: Qt.AlignVCenter
         }
 
         ColumnLayout {

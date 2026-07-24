@@ -19,6 +19,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -36,7 +37,7 @@ ShellRoot {
         PanelWindow {
             id: w
 
-            property var modelData
+            required property var modelData
             screen: modelData
 
             anchors {

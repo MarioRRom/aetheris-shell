@@ -19,6 +19,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Widgets
 import QtQuick
@@ -317,6 +318,7 @@ PopupWindow {
                 model: Mpris.allPlayers
 
                 delegate: Rectangle {
+                    required property var modelData
                     width: ListView.view.width
                     height: 30
                     radius: itemRadius

@@ -19,6 +19,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 pragma Singleton
 import Quickshell.Services.Notifications
 import QtQuick
@@ -154,7 +155,7 @@ QtObject {
             to: 1.0
             duration: expireTimeout
             running: expireTimeout > 0 && popup
-            paused: expireLock
+            paused: running && expireLock
             onFinished: self.expire()
         }
 

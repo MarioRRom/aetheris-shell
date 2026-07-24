@@ -19,6 +19,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell.Widgets
 
@@ -31,6 +32,8 @@ import qs.services.hyprland
 WrapperRectangle {
     id: root
     
+    property string monitorName
+
     color: ThemeManager.colors.base
     anchors.verticalCenter: parent.verticalCenter
     height: parent.height - 12
@@ -45,7 +48,7 @@ WrapperRectangle {
             active: SystemStatus.desktop === "bspwm"
             sourceComponent: Component {
                 BspWorkspaces {
-                    monitorName: modelData.name
+                    monitorName: root.monitorName
                 }
             }
         }
@@ -54,7 +57,7 @@ WrapperRectangle {
             active: SystemStatus.desktop === "hyprland"
             sourceComponent: Component {
                 HyprWorkspaces {
-                    monitorName: modelData.name
+                    monitorName: root.monitorName
                 }
             }
         }

@@ -21,6 +21,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 
 Item {
@@ -106,6 +107,7 @@ Item {
 
         delegate: Item {
             anchors.fill: parent
+            required property int index
 
             function startWave() {
                 waveImg.opacity = 0
@@ -154,14 +156,15 @@ Item {
 
         delegate: Item {
             anchors.fill: parent
+            required property int index
 
             function startWave() {
-                waveImg.opacity = 0
-                waveAnim.restart()
+                rightWaveImg.opacity = 0
+                rightWaveAnim.restart()
             }
 
             Image {
-                id: waveImg
+                id: rightWaveImg
                 // Center of central image + half width + (index) * full width
                 x: pulseRoot.targetX + (pulseRoot.height / 2) + (index * pulseRoot.height)
                 y: 0
@@ -177,14 +180,14 @@ Item {
             }
 
             SequentialAnimation {
-                id: waveAnim
+                id: rightWaveAnim
 
                 PauseAnimation {
                     duration: (index + 1) * pulseRoot.animDelay
                 }
 
                 NumberAnimation {
-                    target: waveImg
+                    target: rightWaveImg
                     property: "opacity"
                     from: 0
                 to: Math.max(0, imageOpacity - ((index + 1) * pulseRoot.opacityStep))

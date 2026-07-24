@@ -19,6 +19,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import Quickshell
 import QtQuick
 import QtQuick.Effects
@@ -116,6 +117,9 @@ LazyLoader {
                 // Main Container.
                 delegate: Rectangle {
                     id: notificationsContainer
+
+                    required property var modelData
+                    required property int index
 
                     property var notif: modelData
                     property string iconSource: notif ? (notif.image !== "" ? notif.image : notif.appIcon) : ""

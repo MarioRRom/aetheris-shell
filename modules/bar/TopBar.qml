@@ -24,6 +24,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -168,7 +169,9 @@ Scope {
             }
 
             // Workspaces Indicator
-            Workspaces {}
+            Workspaces {
+              monitorName: topBarLoader.modelData.name
+            }
 
             // Media Player Info
             PlayerInfo {

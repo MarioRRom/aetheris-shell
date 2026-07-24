@@ -19,6 +19,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell.Hyprland
 
@@ -50,6 +51,8 @@ Row {
         model: workspaceNames
 
         SvgIcon {
+            required property var modelData
+
             property string wsName: modelData
 
             icon: wsName === focusedWorkspace ? "workspaces/pacman"

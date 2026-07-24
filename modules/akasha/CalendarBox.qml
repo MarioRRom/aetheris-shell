@@ -19,6 +19,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
@@ -175,6 +176,7 @@ Rectangle {
             Repeater {
                 model: root.days
                 Item {
+                    required property var modelData
                     Layout.fillWidth: true
                     height: 20
                     Text {
@@ -201,6 +203,7 @@ Rectangle {
                 model: 42 // 6 rows * 7 columns to cover any month
 
                 delegate: Item {
+                    required property int index
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 

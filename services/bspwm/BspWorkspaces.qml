@@ -23,6 +23,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 
 // Config
@@ -58,6 +59,9 @@ Row {
         model: workspaceNames
 
         SvgIcon {
+            required property var modelData
+            required property int index
+
             property string wsName: modelData
             icon: wsName === focusedWorkspace ? "workspaces/pacman" : occupiedWorkspaces.indexOf(wsName) !== -1 ? "workspaces/ghost" : "workspaces/dot"
             color: wsName === focusedWorkspace ? ThemeManager.colors.yellow : occupiedWorkspaces.indexOf(wsName) !== -1 ? ThemeManager.colors.sky : ThemeManager.colors.overlay1

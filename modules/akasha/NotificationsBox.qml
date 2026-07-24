@@ -19,6 +19,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
@@ -154,6 +155,7 @@ Rectangle {
 
                         delegate: Rectangle {
                             id: notifDelegate
+                            required property var modelData
                             Layout.fillWidth: true
 
                             color: "transparent"

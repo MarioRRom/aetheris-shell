@@ -22,6 +22,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 pragma Singleton
 import QtQuick
 import Quickshell

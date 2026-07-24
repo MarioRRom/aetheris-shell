@@ -19,6 +19,7 @@
 //  `-------------------------'
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Widgets
@@ -111,7 +112,7 @@ ColumnLayout {
                 icon: "hardware/lan"
                 size: 26
                 color: ThemeManager.colors.mauve
-                anchors.verticalCenter: parent.verticalCenter
+                Layout.alignment: Qt.AlignVCenter
             }
 
             Text {
@@ -184,6 +185,7 @@ ColumnLayout {
 
                     delegate: Rectangle {
                         id: networkCard
+                        required property var modelData
                         Layout.fillWidth: true
                         implicitHeight: cardContent.implicitHeight + 16
                         clip: true

@@ -12,6 +12,7 @@
 //===========================================================================
 
 // Quickshell
+pragma ComponentBehavior: Bound
 import QtQuick
 
 QtObject {
