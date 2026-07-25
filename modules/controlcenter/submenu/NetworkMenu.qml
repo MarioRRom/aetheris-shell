@@ -34,6 +34,11 @@ import qs.themes
 ColumnLayout {
     id: networkMenu
 
+    property var parentView
+    property var backButton
+    property var cornerRadius: parentView.itemRadius
+    property var windowMargin: parentView.windowMargin
+
     anchors.fill: parent
     anchors.margins: windowMargin
     spacing: windowMargin
@@ -45,10 +50,10 @@ ColumnLayout {
 
         // Back Button
         Rectangle {
-            width: 35; height: 35; radius: itemRadius
+            width: 35; height: 35; radius: networkMenu.cornerRadius
             color: ThemeManager.colors.base
             SvgIcon { icon: "general/chevron-left"; anchors.centerIn: parent; color: ThemeManager.colors.text; size: parent.width }
-            MouseArea { anchors.fill: parent; onClicked: root.currentView = "main"; cursorShape: Qt.PointingHandCursor }
+            MouseArea { anchors.fill: parent; onClicked: networkMenu.backButton(); cursorShape: Qt.PointingHandCursor }
         }
 
         Text {
@@ -64,7 +69,7 @@ ColumnLayout {
 
         // Toggle Wifi
         Rectangle {
-            width: 85; height: 35; radius: itemRadius
+            width: 85; height: 35; radius: networkMenu.cornerRadius
             color: ThemeManager.colors.base
             RowLayout {
                 anchors.centerIn: parent
@@ -92,7 +97,7 @@ ColumnLayout {
         implicitHeight: ethernetContent.implicitHeight + 20
         visible: Network.wiredConnected
         color: ThemeManager.colors.base
-        radius: itemRadius
+        radius: networkMenu.cornerRadius
 
         // Expand/collapse animation
         Behavior on implicitHeight {
@@ -104,9 +109,9 @@ ColumnLayout {
             anchors {
                 left: parent.left; right: parent.right
                 verticalCenter: parent.verticalCenter
-                leftMargin: windowMargin; rightMargin: windowMargin
+                leftMargin: networkMenu.windowMargin; rightMargin: networkMenu.windowMargin
             }
-            spacing: windowMargin
+            spacing: networkMenu.windowMargin
 
             SvgIcon {
                 icon: "hardware/lan"
@@ -132,7 +137,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
         color: ThemeManager.colors.base
-        radius: itemRadius
+        radius: networkMenu.cornerRadius
 
         // WiFi Disabled
         Text {
@@ -196,17 +201,17 @@ ColumnLayout {
                         }
 
                         color: ThemeManager.colors.surface0
-                        radius: itemRadius - 5
+                        radius: networkMenu.cornerRadius - 5
 
                         // Ask user for password
                         property bool awaitingPassword: false
 
                         // Listen for connectionFailed from this specific network
                         Connections {
-                            target: modelData
+                            target: networkCard.modelData
                             function onConnectionFailed(reason) {
                                 networkCard.awaitingPassword = true
-                                networkColumn.expandedNetwork = modelData.name
+                                networkColumn.expandedNetwork = networkCard.modelData.name
                             }
                         }
 
@@ -227,8 +232,8 @@ ColumnLayout {
                                 onClicked: {
                                     networkCard.awaitingPassword = false
                                     networkColumn.expandedNetwork =
-                                        networkColumn.expandedNetwork === modelData.name
-                                            ? "" : modelData.name
+                                        networkColumn.expandedNetwork === networkCard.modelData.name
+                                            ? "" : networkCard.modelData.name
                                 }
                                 cursorShape: Qt.PointingHandCursor
 
@@ -236,15 +241,15 @@ ColumnLayout {
                                     spacing: 8
 
                                     SvgIcon {
-                                        icon: Network.isSecured(modelData)
-                                            ? Network.signalIconLocked(modelData)
-                                            : Network.signalIcon(modelData)
+                                        icon: Network.isSecured(networkCard.modelData)
+                                            ? Network.signalIconLocked(networkCard.modelData)
+                                            : Network.signalIcon(networkCard.modelData)
                                         size: 25
-                                        color: modelData.connected ? ThemeManager.colors.mauve : ThemeManager.colors.subtext0
+                                        color: networkCard.modelData.connected ? ThemeManager.colors.mauve : ThemeManager.colors.subtext0
                                     }
 
                                     Text {
-                                        text: modelData.name
+                                        text: networkCard.modelData.name
                                         font.family: ThemeManager.fonts.main
                                         color: ThemeManager.colors.text
                                         font.pixelSize: 14
@@ -253,17 +258,17 @@ ColumnLayout {
                                     }
 
                                     SvgIcon {
-                                        visible: modelData.known
+                                        visible: networkCard.modelData.known
                                         icon: "general/save"
                                         size: 20
-                                        color: modelData.connected ? ThemeManager.colors.mauve : ThemeManager.colors.subtext0
+                                        color: networkCard.modelData.connected ? ThemeManager.colors.mauve : ThemeManager.colors.subtext0
                                     }
                                 }
                             }
 
                             // Password Input
                             ColumnLayout {
-                                visible: networkColumn.expandedNetwork === modelData.name && networkCard.awaitingPassword
+                                visible: networkColumn.expandedNetwork === networkCard.modelData.name && networkCard.awaitingPassword
                                 Layout.fillWidth: true
                                 spacing: 6
 
@@ -295,7 +300,7 @@ ColumnLayout {
                                             onVisibleChanged: if (!visible) text = ""
                                             Keys.onReturnPressed: {
                                                 if (text.length > 0) {
-                                                    Network.connectToNetwork(modelData, text)
+                                                    Network.connectToNetwork(networkCard.modelData, text)
                                                     networkColumn.expandedNetwork = ""
                                                     networkCard.awaitingPassword = false
                                                 }
@@ -336,7 +341,7 @@ ColumnLayout {
                                             enabled: passwordInput.text.length > 0
                                             cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
                                             onClicked: {
-                                                Network.connectToNetwork(modelData, passwordInput.text)
+                                                Network.connectToNetwork(networkCard.modelData, passwordInput.text)
                                                 networkColumn.expandedNetwork = ""
                                                 networkCard.awaitingPassword = false
                                             }
@@ -364,21 +369,21 @@ ColumnLayout {
                             RowLayout {
                                 id: actionRow
                                 spacing: 10
-                                visible: networkColumn.expandedNetwork === modelData.name && !networkCard.awaitingPassword
+                                visible: networkColumn.expandedNetwork === networkCard.modelData.name && !networkCard.awaitingPassword
 
                                 Text {
-                                    text: Network.activeNetwork === modelData ? LanguageManager.t("networkmenu.disconnect") : LanguageManager.t("networkmenu.connect")
+                                    text: Network.activeNetwork === networkCard.modelData ? LanguageManager.t("networkmenu.disconnect") : LanguageManager.t("networkmenu.connect")
                                     font.family: ThemeManager.fonts.main
-                                    color: Network.activeNetwork === modelData ? ThemeManager.colors.red : ThemeManager.colors.green
+                                    color: Network.activeNetwork === networkCard.modelData ? ThemeManager.colors.red : ThemeManager.colors.green
                                     font.pixelSize: 12
                                     MouseArea {
                                         anchors.fill: parent
                                         onClicked: {
-                                            if (Network.activeNetwork === modelData) {
-                                                Network.disconnectFromNetwork(modelData)
+                                            if (Network.activeNetwork === networkCard.modelData) {
+                                                Network.disconnectFromNetwork(networkCard.modelData)
                                             } else {
                                                 networkCard.awaitingPassword = false
-                                                Network.connectToNetwork(modelData)
+                                                Network.connectToNetwork(networkCard.modelData)
                                             }
                                         }
                                         cursorShape: Qt.PointingHandCursor
@@ -386,14 +391,14 @@ ColumnLayout {
                                 }
 
                                 Text {
-                                    visible: modelData.known
+                                    visible: networkCard.modelData.known
                                     text: LanguageManager.t("networkmenu.forget")
                                     font.family: ThemeManager.fonts.main
                                     color: ThemeManager.colors.subtext0
                                     font.pixelSize: 12
                                     MouseArea {
                                         anchors.fill: parent
-                                        onClicked: Network.forgetNetwork(modelData)
+                                        onClicked: Network.forgetNetwork(networkCard.modelData)
                                         cursorShape: Qt.PointingHandCursor
                                     }
                                 }

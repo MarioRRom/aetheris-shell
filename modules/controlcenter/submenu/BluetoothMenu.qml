@@ -30,9 +30,15 @@ import qs.themes
 
 
 ColumnLayout {
+    id: bluetoothMenu
+
+    property var parentView
+    property var backButton
+    property var cornerRadius: parentView.itemRadius
+
     anchors.fill: parent
-    anchors.margins: windowMargin
-    spacing: windowMargin
+    anchors.margins: parentView.windowMargin
+    spacing: parentView.windowMargin
 
     // Header
     RowLayout {
@@ -44,7 +50,7 @@ ColumnLayout {
             width: 35; height: 35; radius: 12
             color: ThemeManager.colors.surface0
             SvgIcon { icon: "general/chevron-left"; anchors.centerIn: parent; color: ThemeManager.colors.text; size: parent.width }
-            MouseArea { anchors.fill: parent; onClicked: root.currentView = "main"; cursorShape: Qt.PointingHandCursor }
+            MouseArea { anchors.fill: parent; onClicked: bluetoothMenu.backButton(); cursorShape: Qt.PointingHandCursor }
         }
 
         Text {
@@ -62,7 +68,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
         color: ThemeManager.colors.base
-        radius: itemRadius
+        radius: bluetoothMenu.cornerRadius
 
         Text {
             anchors.centerIn: parent

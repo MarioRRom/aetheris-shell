@@ -32,7 +32,7 @@ import Quickshell.Io
 import qs.config
 
 QtObject {
-    id: root
+    id: bsp
 
     // Public property so widgets know if BSPWM is active
     property bool isActive: false
@@ -75,7 +75,7 @@ QtObject {
                 responseBuffer = ""
             } else {
                 if (responseBuffer.trim() !== "") {
-                    root.handleMessage(responseBuffer)
+                    bsp.handleMessage(responseBuffer)
                 }
 
                 // Reset state
@@ -102,7 +102,7 @@ QtObject {
 
         parser: SplitParser {
             onRead: (message) => {
-                root.handleEvent(message)
+                bsp.handleEvent(message)
             }
         }
 

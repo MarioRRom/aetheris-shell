@@ -29,7 +29,7 @@ import QtQuick.Shapes
 import qs.themes
 
 Shape {
-    id: root
+    id: circularProgress
 
     // Variables
     property real value: 0.0 // Progress value, from 0.0 to 1.0
@@ -51,14 +51,14 @@ Shape {
     // Background Ring
     ShapePath {
         fillColor: "transparent"
-        strokeColor: root.backgroundColor
-        strokeWidth: root.strokeWidth
+        strokeColor: circularProgress.backgroundColor
+        strokeWidth: circularProgress.strokeWidth
 
         PathAngleArc {
-            radiusX: root.radius
-            radiusY: root.radius
-            centerX: root.size / 2
-            centerY: root.size / 2
+            radiusX: circularProgress.radius
+            radiusY: circularProgress.radius
+            centerX: circularProgress.size / 2
+            centerY: circularProgress.size / 2
             startAngle: 0
             sweepAngle: 360
         }
@@ -67,17 +67,17 @@ Shape {
     // Progress Ring
     ShapePath {
         fillColor: "transparent"
-        strokeColor: root.foregroundColor
-        strokeWidth: root.strokeWidth
+        strokeColor: circularProgress.foregroundColor
+        strokeWidth: circularProgress.strokeWidth
         capStyle: ShapePath.RoundCap // Rounded caps
 
         PathAngleArc {
-            startAngle: root.startAngle
-            sweepAngle: 360 * root.vValue
-            radiusX: root.radius
-            radiusY: root.radius
-            centerX: root.size / 2
-            centerY: root.size / 2
+            startAngle: circularProgress.startAngle
+            sweepAngle: 360 * circularProgress.vValue
+            radiusX: circularProgress.radius
+            radiusY: circularProgress.radius
+            centerX: circularProgress.size / 2
+            centerY: circularProgress.size / 2
 
             // Update Animation
             Behavior on sweepAngle { NumberAnimation { duration: 350 } }

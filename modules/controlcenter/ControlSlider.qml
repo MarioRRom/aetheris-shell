@@ -34,9 +34,11 @@ Rectangle {
     id: sliderRoot
     color: "transparent"
 
+    property var cornerRadius
+
     property var icon: "hardware/speaker"
     property var accent: ThemeManager.colors.green
-    property var gradient: ThemeManager.colors.teal
+    property var gradientColor: ThemeManager.colors.teal
 
     property real value: 50
     property var updateCommand: null
@@ -48,7 +50,7 @@ Rectangle {
     // Shadow
     RectangularShadow {
         anchors.fill: parent
-        radius: itemRadius
+        radius: sliderRoot.cornerRadius
         color: Config.shadows.color
 
         blur: 3
@@ -61,13 +63,13 @@ Rectangle {
     Rectangle {
         anchors.fill: parent
         color: ThemeManager.colors.base
-        radius: itemRadius
+        radius: sliderRoot.cornerRadius
         clip: true
 
         // Decoration
         InnerLine {
             anchors.fill: parent
-            lineradius: itemRadius
+            lineradius: sliderRoot.cornerRadius
             linewidth: 1
             linecolor: ThemeManager.colors.surface0
         }
@@ -83,7 +85,7 @@ Rectangle {
         SvgIcon {
             icon: sliderRoot.icon
             size: 24
-            color: accent
+            color: sliderRoot.accent
             Layout.alignment: Qt.AlignVCenter
             MouseArea {
                 anchors.fill: parent
@@ -95,7 +97,7 @@ Rectangle {
         HorizontalSlider {
             value: sliderRoot.value
             accent: sliderRoot.accent
-            gradient: sliderRoot.gradient
+            gradientColor: sliderRoot.gradientColor
             usePercentage: true
             updateCommand: sliderRoot.updateCommand
         }

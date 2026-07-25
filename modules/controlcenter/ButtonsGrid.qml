@@ -36,6 +36,8 @@ Rectangle {
     id: gridRoot
     color: "transparent"
 
+    property var cornerRadius
+
     property int gridMargin: 8
     property int gridRadius: 6
     property int iconSize: 38
@@ -46,7 +48,7 @@ Rectangle {
     // Shadow
     RectangularShadow {
         anchors.fill: parent
-        radius: itemRadius
+        radius: gridRoot.cornerRadius
         color: Config.shadows.color
 
         blur: 3
@@ -59,13 +61,13 @@ Rectangle {
     Rectangle {
         anchors.fill: parent
         color: ThemeManager.colors.base
-        radius: itemRadius
+        radius: gridRoot.cornerRadius
         clip: true
 
         // Decoration
         InnerLine {
             anchors.fill: parent
-            lineradius: itemRadius
+            lineradius: gridRoot.cornerRadius
             linewidth: 1
             linecolor: ThemeManager.colors.surface0
         }
@@ -79,19 +81,19 @@ Rectangle {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: gridMargin
+        anchors.margins: gridRoot.gridMargin
 
         // Grid configuration.
         columns: 4
         rows: 3
-        columnSpacing: gridMargin
-        rowSpacing: gridMargin
+        columnSpacing: gridRoot.gridMargin
+        rowSpacing: gridRoot.gridMargin
 
 
         // Do Not Disturb
         WrapperMouseArea {
             Layout.fillWidth: true
-            Layout.preferredHeight: itemHeight
+            Layout.preferredHeight: gridRoot.itemHeight
             cursorShape: Qt.PointingHandCursor
             visible: true
 
@@ -100,13 +102,13 @@ Rectangle {
             }
 
             Rectangle {
-                radius: gridRadius
+                radius: gridRoot.gridRadius
                 color: Notifications.dnd ? ThemeManager.colors.sky : ThemeManager.colors.surface0
                 Behavior on color { ColorAnimation { duration: 250 } }
                 SvgIcon {
                     anchors.centerIn: parent
                     icon: Notifications.dnd ? "communicate/notifications-paused" : "communicate/notifications-active"
-                    size: iconSize
+                    size: gridRoot.iconSize
                     color: Notifications.dnd ? ThemeManager.colors.base : ThemeManager.colors.text
                     Behavior on color { ColorAnimation { duration: 250 } }
                 }
@@ -116,7 +118,7 @@ Rectangle {
         // Night Mode
         WrapperMouseArea {
             Layout.fillWidth: true
-            Layout.preferredHeight: itemHeight
+            Layout.preferredHeight: gridRoot.itemHeight
             cursorShape: Qt.PointingHandCursor
             visible: true
 
@@ -125,12 +127,12 @@ Rectangle {
             }
 
             Rectangle {
-                radius: gridRadius
+                radius: gridRoot.gridRadius
                 color: ThemeManager.colors.surface0
                 SvgIcon {
                     anchors.centerIn: parent
                     icon: "general/night-light"
-                    size: iconSize
+                    size: gridRoot.iconSize
                     color: ThemeManager.colors.text
                 }
             }
@@ -139,7 +141,7 @@ Rectangle {
         // Airplane Mode
         WrapperMouseArea {
             Layout.fillWidth: true
-            Layout.preferredHeight: itemHeight
+            Layout.preferredHeight: gridRoot.itemHeight
             cursorShape: Qt.PointingHandCursor
             visible: true
 
@@ -148,12 +150,12 @@ Rectangle {
             }
 
             Rectangle {
-                radius: gridRadius
+                radius: gridRoot.gridRadius
                 color: ThemeManager.colors.surface0
                 SvgIcon {
                     anchors.centerIn: parent
                     icon: "hardware/airplane-mode-off"
-                    size: iconSize
+                    size: gridRoot.iconSize
                     color: ThemeManager.colors.text
                 }
             }
@@ -162,7 +164,7 @@ Rectangle {
         // Screenshot
         WrapperMouseArea {
             Layout.fillWidth: true
-            Layout.preferredHeight: itemHeight
+            Layout.preferredHeight: gridRoot.itemHeight
             cursorShape: Qt.PointingHandCursor
             visible: true
 
@@ -171,12 +173,12 @@ Rectangle {
             }
 
             Rectangle {
-                radius: gridRadius
+                radius: gridRoot.gridRadius
                 color: ThemeManager.colors.surface0
                 SvgIcon {
                     anchors.centerIn: parent
                     icon: "general/screenshot"
-                    size: iconSize
+                    size: gridRoot.iconSize
                     color: ThemeManager.colors.text
                 }
             }
@@ -185,7 +187,7 @@ Rectangle {
         // Power Saving Mode
         WrapperMouseArea {
             Layout.fillWidth: true
-            Layout.preferredHeight: itemHeight
+            Layout.preferredHeight: gridRoot.itemHeight
             cursorShape: Qt.PointingHandCursor
             visible: true
 
@@ -194,12 +196,12 @@ Rectangle {
             }
 
             Rectangle {
-                radius: gridRadius
+                radius: gridRoot.gridRadius
                 color: ThemeManager.colors.surface0
                 SvgIcon {
                     anchors.centerIn: parent
                     icon: "hardware/battery-saver"
-                    size: iconSize
+                    size: gridRoot.iconSize
                     color: ThemeManager.colors.text
                 }
             }

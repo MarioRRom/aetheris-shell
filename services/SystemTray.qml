@@ -50,7 +50,7 @@ Row {
                 anchors.centerIn: parent
                 width: 16
                 height: 16
-                source: modelData.icon || ""
+                source: sysItem.modelData.icon || ""
                 smooth: true
                 cache: false
             }
@@ -59,14 +59,15 @@ Row {
                 id: hoverArea
                 anchors.fill: parent
                 hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                 onClicked: mouse => {
                     if (mouse.button === Qt.LeftButton) {
-                        modelData.activate()
-                    } else if (mouse.button === Qt.RightButton && modelData.hasMenu) {
+                        sysItem.modelData.activate()
+                    } else if (mouse.button === Qt.RightButton && sysItem.modelData.hasMenu) {
                         // Calculate position just before opening
-                        var globalPos = sysItem.mapToItem(systray.bar.contentItem, 0, 0)
+                        let globalPos = sysItem.mapToItem(systray.bar.contentItem, 0, 0)
                         menuAnchor.anchor.rect.x = globalPos.x
                         menuAnchor.anchor.rect.y = systray.bar.height
                         menuAnchor.open()

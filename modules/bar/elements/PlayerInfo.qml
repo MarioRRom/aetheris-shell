@@ -34,6 +34,9 @@ Item {
     width: 190
     height: parent.height
 
+    property var bar
+    property var loader
+
     // Mouse Actions
     MouseArea {
         id: playerArea
@@ -44,16 +47,16 @@ Item {
 
         onClicked: (mouse) => {
             if (mouse.button === Qt.LeftButton) {
-                let gx = player.mapToItem(topBarRoot.contentItem, 0, 0).x
+                let gx = player.mapToItem(player.bar.contentItem, 0, 0).x
 
-                conPlayerLoader.active = !conPlayerLoader.active
+                player.loader.active = !player.loader.active
 
-                if (conPlayerLoader.active && conPlayerLoader.item) {
-                    conPlayerLoader.item.globalPos = gx
+                if (player.loader.active && player.loader.item) {
+                    player.loader.item.globalPos = gx
                 }
             } else if (mouse.button === Qt.RightButton) {
                 Mpris.playpause()
-                conPlayerLoader.active = false
+                player.loader.active = false
             }
         }
     }

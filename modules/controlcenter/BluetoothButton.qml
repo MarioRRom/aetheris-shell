@@ -36,6 +36,10 @@ import qs.themes
 //  `-------------------------'
 
 Rectangle {
+    id: bluetoothButton
+
+    property var changeView
+    property var cornerRadius
     property bool isActive: false
 
 
@@ -47,23 +51,23 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
-        onClicked: root.currentView = "bluetooth"
+        onClicked: bluetoothButton.changeView()
     }
 
     // Background
     Rectangle {
         id: background
         anchors.fill: parent
-        radius: itemRadius
+        radius: bluetoothButton.cornerRadius
         visible: true
         gradient: Gradient {
             GradientStop {
                 position: 0.0
-                color: isActive ? ThemeManager.colors.sapphire : ThemeManager.colors.surface0
+                color: bluetoothButton.isActive ? ThemeManager.colors.sapphire : ThemeManager.colors.surface0
             }
             GradientStop {
                 position: 1.0
-                color: isActive ? ThemeManager.colors.sapphire : ThemeManager.colors.surface1
+                color: bluetoothButton.isActive ? ThemeManager.colors.sapphire : ThemeManager.colors.surface1
             }
         }
     }
@@ -77,7 +81,7 @@ Rectangle {
         SvgIcon {
             icon: "hardware/bluetooth"
             size: 28
-            color: isActive ? ThemeManager.colors.mantle : ThemeManager.colors.text
+            color: bluetoothButton.isActive ? ThemeManager.colors.mantle : ThemeManager.colors.text
         }
 
         ColumnLayout {
@@ -89,14 +93,14 @@ Rectangle {
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 16
                 font.bold: false
-                color: isActive ? ThemeManager.colors.mantle : ThemeManager.colors.text
+                color: bluetoothButton.isActive ? ThemeManager.colors.mantle : ThemeManager.colors.text
             }
 
             Text {
                 text: LanguageManager.t("bluetoothmenu.disabled")
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 10
-                color: isActive ? ThemeManager.colors.mantle : ThemeManager.colors.text
+                color: bluetoothButton.isActive ? ThemeManager.colors.mantle : ThemeManager.colors.text
             }
         }
     }

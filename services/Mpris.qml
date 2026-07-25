@@ -82,7 +82,7 @@ QtObject {
     property var progressTimer: Timer {
         interval: 1000
         repeat: true
-        running: activePlayer !== null && activePlayer.playbackState === MprisPlaybackState.Playing
+        running: mediaPlayer.activePlayer !== null && mediaPlayer.activePlayer.playbackState === MprisPlaybackState.Playing
         onTriggered: {
             if (mediaPlayer.activePlayer) {
                 mediaPlayer.activePlayer.positionChanged(); // Despierta el valor

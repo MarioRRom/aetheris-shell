@@ -29,7 +29,7 @@ import qs.config
 import qs.themes
 
 Variants {
-    id: root
+    id: bgVariants
 
     model: Quickshell.screens
 
@@ -37,15 +37,16 @@ Variants {
     property QtObject backgroundAnchor: null
 
     LazyLoader {
-        active: isActivated
+        id: bgLoader
+        active: bgVariants.isActivated
 
         required property var modelData
 
         component: PanelWindow {
             visible: true
             id: bgRoot
-            screen: modelData
-            Component.onCompleted: if (!root.backgroundAnchor) root.backgroundAnchor = bgRoot
+            screen: bgLoader.modelData
+            Component.onCompleted: if (!bgVariants.backgroundAnchor) bgVariants.backgroundAnchor = bgRoot
 
             // Below everything
             aboveWindows: false
@@ -170,8 +171,8 @@ Variants {
                                 right: parent.right
 
                                 topMargin: Config.global.margins
-                                leftMargin: Math.round(modelData.width * 0.02)
-                                rightMargin: Math.round(modelData.width * 0.02)
+                                leftMargin: Math.round(bgLoader.modelData.width * 0.02)
+                                rightMargin: Math.round(bgLoader.modelData.width * 0.02)
                             }
 
                             height: Config.topBar.height

@@ -28,7 +28,7 @@ import QtQuick
 import qs.i18n
 
 QtObject {
-    id: root
+    id: notifService
 
 
     //  .-------------------------.
@@ -83,13 +83,13 @@ QtObject {
         onNotification: n => {
             n.tracked = true
 
-            const obj = notifComponent.createObject(root, {
+            const obj = notifComponent.createObject(notifService, {
                 notification: n,
-                popup: !root.dnd
+                popup: !notifService.dnd
             })
 
-            root.list = [obj, ...root.list]
-            root.newNotification(obj)
+            notifService.list = [obj, ...notifService.list]
+            notifService.newNotification(obj)
         }
     }
 
@@ -108,7 +108,7 @@ QtObject {
         for (const n of list.slice()) n.close()
     }
 
-    function toggleDnd() { root.dnd = !root.dnd }
+    function toggleDnd() { notifService.dnd = !notifService.dnd }
 
 
     //  .-------------------------.
@@ -153,18 +153,18 @@ QtObject {
             property: "progress"
             from: 0
             to: 1.0
-            duration: expireTimeout
-            running: expireTimeout > 0 && popup
-            paused: running && expireLock
+            duration: self.expireTimeout
+            running: self.expireTimeout > 0 && self.popup
+            paused: running && notifService.expireLock
             onFinished: self.expire()
         }
 
         // Exit delay synced with frontend popup animation
         readonly property Timer expireDelay: Timer {
-            interval: root.popupAnimDuration
+            interval: notifService.popupAnimDuration
             onTriggered: {
                 self.popup = false
-                root.expireLock = false
+                notifService.expireLock = false
                 if (self.closeAfterExpire) {
                     self.closeAfterExpire = false
                     self.close()
@@ -175,9 +175,9 @@ QtObject {
         function close() {
             if (closed) return
             closed = true
-            root.list = root.list.filter(n => n !== self)
+            notifService.list = notifService.list.filter(n => n !== self)
             notification?.dismiss()
-            root.notificationRemoved(self)
+            notifService.notificationRemoved(self)
             destroy()
         }
 
@@ -185,9 +185,9 @@ QtObject {
             if (closed) return
             if (!popup) return
             if (expireDelay.running) return
-            expireLock = true
+            notifService.expireLock = true
             progressAnim.stop()
-            root.notificationExpiring(self)
+            notifService.notificationExpiring(self)
             expireDelay.start()
         }
 
@@ -220,18 +220,18 @@ QtObject {
             target: self.notification
 
             function onClosed() { if (!self.expireDelay.running) self.close() }
-            function onSummaryChanged() { self.summary = notification.summary }
-            function onBodyChanged() { self.body = notification.body }
+            function onSummaryChanged() { self.summary = self.notification.summary }
+            function onBodyChanged() { self.body = self.notification.body }
             function onAppNameChanged() {
-                const desktopEntry = (notification.hints || {})["desktop-entry"]
-                self.appName = notification.appName || desktopEntry || LanguageManager.t("notifications.system")
+                const desktopEntry = (self.notification.hints || {})["desktop-entry"]
+                self.appName = self.notification.appName || desktopEntry || LanguageManager.t("notifications.system")
             }
-            function onAppIconChanged() { self.appIcon = notification.appIcon }
-            function onImageChanged() { self.image = notification.image }
-            function onUrgencyChanged() { self.urgency = notification.urgency }
-            function onResidentChanged() { self.resident = notification.resident }
+            function onAppIconChanged() { self.appIcon = self.notification.appIcon }
+            function onImageChanged() { self.image = self.notification.image }
+            function onUrgencyChanged() { self.urgency = self.notification.urgency }
+            function onResidentChanged() { self.resident = self.notification.resident }
             function onActionsChanged() {
-                self.actions = notification.actions.map(a => ({
+                self.actions = self.notification.actions.map(a => ({ // qmllint disable unresolved-type
                     identifier: a.identifier,
                     text: a.text,
                     invoke: () => a.invoke()
@@ -255,12 +255,12 @@ QtObject {
             if (notification.expireTimeout > 0) {
                 expireTimeout = notification.expireTimeout
             } else {
-                if (urgency === 0)      expireTimeout = root.popupTimeoutLow
-                else if (urgency === 1) expireTimeout = root.popupTimeoutNormal
-                else                    expireTimeout = root.popupTimeoutCritical
+                if (urgency === 0)      expireTimeout = notifService.popupTimeoutLow
+                else if (urgency === 1) expireTimeout = notifService.popupTimeoutNormal
+                else                    expireTimeout = notifService.popupTimeoutCritical
             }
 
-            actions = notification.actions.map(a => ({
+            actions = notification.actions.map(a => ({ // qmllint disable unresolved-type
                 identifier: a.identifier,
                 text: a.text,
                 invoke: () => a.invoke()

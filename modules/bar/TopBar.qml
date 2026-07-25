@@ -70,7 +70,7 @@ Scope {
 
     LazyLoader {
       id: topBarLoader
-      active: isActivated
+      active: topBar.isActivated
 
       required property var modelData
 
@@ -154,6 +154,7 @@ Scope {
 
             // System Info
             SysInfo {
+              loader: sysInfoLoader
               // LazyLoader for Optimization
               LazyLoader {
                 id: sysInfoLoader
@@ -175,6 +176,9 @@ Scope {
 
             // Media Player Info
             PlayerInfo {
+              bar: topBarRoot
+              loader: conPlayerLoader
+
               // LazyLoader for Optimization
               LazyLoader {
                 id: conPlayerLoader
@@ -197,6 +201,10 @@ Scope {
 
           // Clock and weather
           CenterPanel {
+            bar: topBarRoot
+            loader: akashaLoader
+            pulse: irmiPulse
+
             // Loader for Optimization
             LazyLoader {
               id: akashaLoader
@@ -237,6 +245,7 @@ Scope {
 
             // Control Center
             StatusIndicators {
+              loader: controlCenterLoader
               // LazyLoader for Optimization
               LazyLoader {
                 id: controlCenterLoader
@@ -269,7 +278,7 @@ Scope {
           // Float State
           states: State {
             name: "float"
-            when: panelState === "float"
+            when: topBar.panelState === "float"
             PropertyChanges {
               target: topBarContent
               cornerRadius: Config.global.corners

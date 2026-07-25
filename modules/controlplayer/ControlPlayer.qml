@@ -35,7 +35,7 @@ import qs.services
 
 
 PopupWindow {
-    id: root
+    id: playerPopup
 
     // Config
     property var bar
@@ -77,7 +77,7 @@ PopupWindow {
 
             sourceComponent:RectangularShadow {
                 anchors.fill: parent
-                radius: cornerRadius
+                radius: playerPopup.cornerRadius
                 color: Config.shadows.color
 
                 blur: 3
@@ -90,13 +90,13 @@ PopupWindow {
         // Window Content
         Rectangle {
             anchors.fill: parent
-            radius: cornerRadius
+            radius: playerPopup.cornerRadius
             color: ThemeManager.colors.mantle
 
             // Decoration
             InnerLine {
                 anchors.fill: parent
-                lineradius: cornerRadius
+                lineradius: playerPopup.cornerRadius
                 linewidth: 2
                 linecolor: ThemeManager.colors.surface0
             }
@@ -104,9 +104,9 @@ PopupWindow {
             // Main column (Player)
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: windowMargin
+                anchors.margins: playerPopup.windowMargin
                 spacing: 0
-                visible: currentView === "player"
+                visible: playerPopup.currentView === "player"
 
 
                 // Time and Volume Controls
@@ -122,13 +122,13 @@ PopupWindow {
                         sliderHeight: 10
                         backgroundColor: ThemeManager.colors.surface2
 
-                        accent: !volumeControl ? (Mpris.isPaused ? ThemeManager.colors.yellow : ThemeManager.colors.sapphire) : ThemeManager.colors.green
-                        gradient: !volumeControl ? (Mpris.isPaused ? ThemeManager.colors.peach : ThemeManager.colors.sky) : ThemeManager.colors.teal
+                        accent: !playerPopup.volumeControl ? (Mpris.isPaused ? ThemeManager.colors.yellow : ThemeManager.colors.sapphire) : ThemeManager.colors.green
+                        gradientColor: !playerPopup.volumeControl ? (Mpris.isPaused ? ThemeManager.colors.peach : ThemeManager.colors.sky) : ThemeManager.colors.teal
                         animationDuration: 650
-                        value: !volumeControl ? (Mpris.duration > 0 ? Mpris.position / Mpris.duration : 0) : Mpris.volume
-                        updateCommand: volumeControl ? Mpris.setVolume : Mpris.setPosition
-                        updateOnDrag: volumeControl
-                        mouseEnabled: volumeControl ? Mpris.canVolume : (Mpris.canSeek && Mpris.positionSupported)
+                        value: !playerPopup.volumeControl ? (Mpris.duration > 0 ? Mpris.position / Mpris.duration : 0) : Mpris.volume
+                        updateCommand: playerPopup.volumeControl ? Mpris.setVolume : Mpris.setPosition
+                        updateOnDrag: playerPopup.volumeControl
+                        mouseEnabled: playerPopup.volumeControl ? Mpris.canVolume : (Mpris.canSeek && Mpris.positionSupported)
                     }
 
 
@@ -194,7 +194,7 @@ PopupWindow {
                     WrapperMouseArea {
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            currentView = "listplayers"
+                            playerPopup.currentView = "listplayers"
                         }
 
                         SvgIcon {
@@ -291,13 +291,13 @@ PopupWindow {
                         cursorShape: Mpris.canVolume ? Qt.PointingHandCursor : Qt.ArrowCursor
                         enabled: Mpris.canVolume
                         onClicked: {
-                            volumeControl = !volumeControl
+                            playerPopup.volumeControl = !playerPopup.volumeControl
                         }
 
                         SvgIcon {
                             icon: "hardware/speaker"
                             size: 25
-                            color: Mpris.canVolume ? (volumeControl ? ThemeManager.colors.green : ThemeManager.colors.text) : ThemeManager.colors.overlay0
+                            color: Mpris.canVolume ? (playerPopup.volumeControl ? ThemeManager.colors.green : ThemeManager.colors.text) : ThemeManager.colors.overlay0
 
                             Behavior on color { ColorAnimation { duration: 200 } }
                         }
@@ -309,8 +309,8 @@ PopupWindow {
             ListView {
                 id: playerList
                 anchors.fill: parent
-                anchors.margins: windowMargin
-                visible: currentView === "listplayers"
+                anchors.margins: playerPopup.windowMargin
+                visible: playerPopup.currentView === "listplayers"
                 clip: true
                 spacing: 5
 
@@ -318,17 +318,18 @@ PopupWindow {
                 model: Mpris.allPlayers
 
                 delegate: Rectangle {
+                    id: players
                     required property var modelData
                     width: ListView.view.width
                     height: 30
-                    radius: itemRadius
+                    radius: playerPopup.itemRadius
                     color: modelData === Mpris.activePlayer ? ThemeManager.colors.overlay0 : ThemeManager.colors.surface0
 
 
                     Text {
                         anchors.centerIn: parent
                         // Shows the player name (e.g. "Spotify")
-                        text: modelData.identity || LanguageManager.t("weather.unknown")
+                        text: players.modelData.identity || LanguageManager.t("weather.unknown")
                         color: ThemeManager.colors.text
                         font.family: ThemeManager.fonts.main
                         font.bold: true
@@ -338,9 +339,9 @@ PopupWindow {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            Mpris.selectPlayer(modelData)
-                            currentView = "player"
-                            volumeControl = false
+                            Mpris.selectPlayer(players.modelData)
+                            playerPopup.currentView = "player"
+                            playerPopup.volumeControl = false
                         }
                     }
                 }

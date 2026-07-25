@@ -4,7 +4,7 @@
 //███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
 //████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
 //██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
-//██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██║  ██║██║   ██║██║╚██╔╝██║
+//██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
 //██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
 //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 //                          MarioRRom's Aetheris Shell
@@ -25,7 +25,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 
 Item {
-    id: pulseRoot
+    id: pulse
     anchors.fill: parent
 
     property real targetX: 0
@@ -34,29 +34,15 @@ Item {
     property var image: "../assets/akasha.svg"
     property real imageOpacity: 0.8
     property real opacityStep: 0.05
+    property int waveVersion: 0
 
-    anchors.margins: pulseRoot.height * 0.2
+    anchors.margins: pulse.height * 0.2
     opacity: 0
 
     function trigger(gx) {
         targetX = gx
-        pulseRoot.opacity = 1
-
-        // Trigger center image
-        centerItem.startWave()
-
-        // Trigger left waves
-        for (let i = 0; i < leftRepeater.count; i++) {
-            let item = leftRepeater.itemAt(i)
-            if (item) item.startWave()
-        }
-
-        // Trigger right waves
-        for (let i = 0; i < rightRepeater.count; i++) {
-            let item = rightRepeater.itemAt(i)
-            if (item) item.startWave()
-        }
-
+        pulse.opacity = 1
+        waveVersion++
         resetAnim.restart()
     }
 
@@ -65,21 +51,15 @@ Item {
         id: centerItem
         anchors.fill: parent
 
-        function startWave() {
-            centerImg.opacity = 0
-            centerAnim.restart()
-        }
-
         Image {
             id: centerImg
-            // Image center aligned with targetX
-            x: pulseRoot.targetX - (pulseRoot.height / 2)
+            x: pulse.targetX - (pulse.height / 2)
             y: 0
-            width: pulseRoot.height
-            height: pulseRoot.height
-            source: image
-            sourceSize.width: pulseRoot.height
-            sourceSize.height: pulseRoot.height
+            width: pulse.height
+            height: pulse.height
+            source: pulse.image
+            sourceSize.width: pulse.height
+            sourceSize.height: pulse.height
             mipmap: true
             smooth: true
             cache: false
@@ -93,9 +73,17 @@ Item {
                 target: centerImg
                 property: "opacity"
                 from: 0
-                to: imageOpacity
+                to: pulse.imageOpacity
                 duration: 300
                 easing.type: Easing.OutCubic
+            }
+        }
+
+        Connections {
+            target: pulse
+            function onWaveVersionChanged() {
+                centerImg.opacity = 0
+                centerAnim.restart()
             }
         }
     }
@@ -103,27 +91,22 @@ Item {
     // Waves to the left
     Repeater {
         id: leftRepeater
-        model: wavesPerSide
+        model: pulse.wavesPerSide
 
         delegate: Item {
+            id: leftDelegate
             anchors.fill: parent
             required property int index
 
-            function startWave() {
-                waveImg.opacity = 0
-                waveAnim.restart()
-            }
-
             Image {
-                id: waveImg
-                // Center of central image - half width - (index+1) * full width
-                x: pulseRoot.targetX - (pulseRoot.height / 2) - ((index + 1) * pulseRoot.height)
+                id: leftWaveImg
+                x: pulse.targetX - (pulse.height / 2) - ((leftDelegate.index + 1) * pulse.height)
                 y: 0
-                width: pulseRoot.height
-                height: pulseRoot.height
-                source: image
-                sourceSize.width: pulseRoot.height
-                sourceSize.height: pulseRoot.height
+                width: pulse.height
+                height: pulse.height
+                source: pulse.image
+                sourceSize.width: pulse.height
+                sourceSize.height: pulse.height
                 mipmap: true
                 smooth: true
                 cache: false
@@ -131,19 +114,27 @@ Item {
             }
 
             SequentialAnimation {
-                id: waveAnim
+                id: leftWaveAnim
 
                 PauseAnimation {
-                    duration: (index + 1) * pulseRoot.animDelay
+                    duration: (leftDelegate.index + 1) * pulse.animDelay
                 }
 
                 NumberAnimation {
-                    target: waveImg
+                    target: leftWaveImg
                     property: "opacity"
                     from: 0
-                to: Math.max(0, imageOpacity - ((index + 1) * pulseRoot.opacityStep))
+                    to: Math.max(0, pulse.imageOpacity - ((leftDelegate.index + 1) * pulse.opacityStep))
                     duration: 300
                     easing.type: Easing.OutCubic
+                }
+            }
+
+            Connections {
+                target: pulse
+                function onWaveVersionChanged() {
+                    leftWaveImg.opacity = 0
+                    leftWaveAnim.restart()
                 }
             }
         }
@@ -152,27 +143,22 @@ Item {
     // Waves to the right
     Repeater {
         id: rightRepeater
-        model: wavesPerSide
+        model: pulse.wavesPerSide
 
         delegate: Item {
+            id: rightDelegate
             anchors.fill: parent
             required property int index
 
-            function startWave() {
-                rightWaveImg.opacity = 0
-                rightWaveAnim.restart()
-            }
-
             Image {
                 id: rightWaveImg
-                // Center of central image + half width + (index) * full width
-                x: pulseRoot.targetX + (pulseRoot.height / 2) + (index * pulseRoot.height)
+                x: pulse.targetX + (pulse.height / 2) + (rightDelegate.index * pulse.height)
                 y: 0
-                width: pulseRoot.height
-                height: pulseRoot.height
-                source: image
-                sourceSize.width: pulseRoot.height
-                sourceSize.height: pulseRoot.height
+                width: pulse.height
+                height: pulse.height
+                source: pulse.image
+                sourceSize.width: pulse.height
+                sourceSize.height: pulse.height
                 mipmap: true
                 smooth: true
                 cache: false
@@ -183,16 +169,24 @@ Item {
                 id: rightWaveAnim
 
                 PauseAnimation {
-                    duration: (index + 1) * pulseRoot.animDelay
+                    duration: (rightDelegate.index + 1) * pulse.animDelay
                 }
 
                 NumberAnimation {
                     target: rightWaveImg
                     property: "opacity"
                     from: 0
-                to: Math.max(0, imageOpacity - ((index + 1) * pulseRoot.opacityStep))
+                    to: Math.max(0, pulse.imageOpacity - ((rightDelegate.index + 1) * pulse.opacityStep))
                     duration: 300
                     easing.type: Easing.OutCubic
+                }
+            }
+
+            Connections {
+                target: pulse
+                function onWaveVersionChanged() {
+                    rightWaveImg.opacity = 0
+                    rightWaveAnim.restart()
                 }
             }
         }

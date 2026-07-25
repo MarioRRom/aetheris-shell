@@ -31,7 +31,7 @@ import qs.components
 import qs.themes
 
 WrapperMouseArea {
-    id: root
+    id: statusItem
 
     // Variables
     required property string icon
@@ -55,9 +55,9 @@ WrapperMouseArea {
 
     onWheel: (wheel) => {
         if (wheel.angleDelta.y > 0) {
-            root.wheelUp()
+            statusItem.wheelUp()
         } else if (wheel.angleDelta.y < 0) {
-            root.wheelDown()
+            statusItem.wheelDown()
         }
         wheel.accepted = true
     }
@@ -77,9 +77,9 @@ WrapperMouseArea {
 
         // Status Icon
         SvgIcon {
-            icon: root.icon
-            color: root.color
-            size: root.iconSize
+            icon: statusItem.icon
+            color: statusItem.color
+            size: statusItem.iconSize
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -92,27 +92,27 @@ WrapperMouseArea {
 
         Text {
             id: valueLabel
-            text: root.valueText
+            text: statusItem.valueText
             font.pixelSize: 12
             font.family: ThemeManager.fonts.main
-            color: root.color
+            color: statusItem.color
             anchors.verticalCenter: parent.verticalCenter
             clip: true
 
             TextMetrics {
                 id: maxWidthMetrics
                 font: valueLabel.font
-                text: root.maxWidthSample
+                text: statusItem.maxWidthSample
             }
 
-            width: (root.containsMouse && root.canReveal) ? maxWidthMetrics.width : 0
-            opacity: (root.containsMouse && root.canReveal) ? 1 : 0
+            width: (statusItem.containsMouse && statusItem.canReveal) ? maxWidthMetrics.width : 0
+            opacity: (statusItem.containsMouse && statusItem.canReveal) ? 1 : 0
 
             Behavior on width {
-                NumberAnimation { duration: root.animationDuration; easing.type: Easing.OutCubic }
+                NumberAnimation { duration: statusItem.animationDuration; easing.type: Easing.OutCubic }
             }
             Behavior on opacity {
-                NumberAnimation { duration: root.animationDuration; easing.type: Easing.OutCubic }
+                NumberAnimation { duration: statusItem.animationDuration; easing.type: Easing.OutCubic }
             }
         }
     }

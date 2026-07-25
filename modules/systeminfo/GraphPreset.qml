@@ -30,9 +30,11 @@ import qs.components
 import qs.themes
 
 Rectangle {
-    id: root
+    id: graph
     anchors.fill: parent
     color: "transparent"
+
+    property var cornerRadius
 
     // Properties
     property var header
@@ -44,7 +46,7 @@ Rectangle {
     // Shadow
     RectangularShadow {
         anchors.fill: parent
-        radius: itemRadius
+        radius: graph.cornerRadius
         color: Config.shadows.color
 
         blur: 3
@@ -57,14 +59,14 @@ Rectangle {
     Rectangle {
         id: graphContainer
         anchors.fill: parent
-        radius: itemRadius
+        radius: graph.cornerRadius
         color: ThemeManager.colors.base
         clip: true
 
         // Decoration
         InnerLine {
             anchors.fill: parent
-            lineradius: itemRadius
+            lineradius: graph.cornerRadius
             linewidth: 1
             linecolor: ThemeManager.colors.surface0
         }
@@ -78,7 +80,7 @@ Rectangle {
 
         // Header
         Text {
-            text: header
+            text: graph.header
             color: ThemeManager.colors.subtext1
             font.family: ThemeManager.fonts.main
             font.pixelSize: 14
@@ -101,13 +103,13 @@ Rectangle {
                     anchors.centerIn: parent
                     width: parent.height
                     height: parent.height
-                    value: percentage / 100
-                    foregroundColor: accent
+                    value: graph.percentage / 100
+                    foregroundColor: graph.accent
                     strokeWidth: 10
                 }
 
                 SvgIcon {
-                    icon: root.icon
+                    icon: graph.icon
                     color: ThemeManager.colors.text
                     size: parent.height - 35
                     anchors.centerIn: parent
@@ -115,7 +117,7 @@ Rectangle {
             }
 
             Text { // Percentage
-                text: percentage + (temp ? "°C" : "%")
+                text: graph.percentage + (graph.temp ? "°C" : "%")
                 color: ThemeManager.colors.subtext1
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 12

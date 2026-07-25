@@ -32,9 +32,11 @@ import qs.services
 import qs.themes
 
 Rectangle {
-    id: notiRoot
+    id: notifBox
 
     color: "transparent"
+
+    required property int itemRadius
 
     // Internal calculations.
     property int rootRadius: itemRadius
@@ -57,7 +59,7 @@ Rectangle {
     // Shadow
     RectangularShadow {
         anchors.fill: parent
-        radius: itemRadius
+        radius: notifBox.itemRadius
         color: Config.shadows.color
 
         blur: 3
@@ -70,13 +72,13 @@ Rectangle {
     Rectangle {
         anchors.fill: parent
         color: ThemeManager.colors.base
-        radius: itemRadius
+        radius: notifBox.itemRadius
         clip: true
 
         // Decoration
         InnerLine {
             anchors.fill: parent
-            lineradius: itemRadius
+            lineradius: notifBox.itemRadius
             linewidth: 1
             linecolor: ThemeManager.colors.surface0
         }
@@ -85,9 +87,9 @@ Rectangle {
     // Notification Box
     ColumnLayout {
         anchors.fill: parent
-        anchors.topMargin: rootMargin
-        anchors.leftMargin: rootMargin
-        anchors.bottomMargin: rootMargin
+        anchors.topMargin: notifBox.rootMargin
+        anchors.leftMargin: notifBox.rootMargin
+        anchors.bottomMargin: notifBox.rootMargin
 
         // Notification List
         Item {
@@ -145,7 +147,7 @@ Rectangle {
 
                 ColumnLayout {
                     id: notiColumn
-                    width: parent.width - rootMargin
+                    width: parent.width - notifBox.rootMargin
                     spacing: 0
 
                     // Notification preset.
@@ -172,23 +174,23 @@ Rectangle {
                             //  `-------------------------'
 
                             opacity: notif.shown ? 1 : 0
-                            Behavior on opacity { NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic } }
+                            Behavior on opacity { NumberAnimation { duration: notifBox.animDuration; easing.type: Easing.OutCubic } }
 
                             // Entry/exit animation via height + opacity together
-                            Layout.preferredHeight: notif.shown ? (cardSize + (internalMargin * 2)) : 0
-                            Layout.bottomMargin: notif.shown ? cardSpacing : 0
+                            Layout.preferredHeight: notif.shown ? (notifBox.cardSize + (notifBox.internalMargin * 2)) : 0
+                            Layout.bottomMargin: notif.shown ? notifBox.cardSpacing : 0
 
                             Behavior on Layout.preferredHeight {
-                                NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic }
+                                NumberAnimation { duration: notifBox.animDuration; easing.type: Easing.OutCubic }
                             }
 
                             Behavior on Layout.bottomMargin {
-                                NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic }
+                                NumberAnimation { duration: notifBox.animDuration; easing.type: Easing.OutCubic }
                             }
 
                             property Timer slideClose: Timer {
-                                interval: animDuration
-                                onTriggered: notif.close()
+                                interval: notifBox.animDuration
+                                onTriggered: notifDelegate.notif.close()
                             }
 
                             Component.onCompleted: {
@@ -211,7 +213,7 @@ Rectangle {
 
                                 sourceComponent:RectangularShadow {
                                     anchors.fill: parent
-                                    radius: notifRadius
+                                    radius: notifBox.notifRadius
                                     color: Config.shadows.color
 
                                     blur: 3
@@ -224,14 +226,14 @@ Rectangle {
                             // Background
                             Rectangle {
                                 anchors.fill: parent
-                                radius: notifRadius
+                                radius: notifBox.notifRadius
                                 color: ThemeManager.colors.surface0
                                 clip: true
 
                                 // Decoration
                                 InnerLine {
                                     anchors.fill: parent
-                                    lineradius: notifRadius
+                                    lineradius: notifBox.notifRadius
                                     linewidth: 1
                                     linecolor: ThemeManager.colors.surface1
                                 }
@@ -247,31 +249,31 @@ Rectangle {
                             // Mouse Area to trigger the notification.
                             MouseArea {
                                 id: hoverArea
-                                visible: notif.actions > []
+                                visible: notifDelegate.notif.actions > []
                                 anchors.fill: parent
                                 cursorShape: Qt.PointingHandCursor
                                 hoverEnabled: true
-                                onClicked: notif.activate()
+                                onClicked: notifDelegate.notif.activate()
                             }
 
                             RowLayout {
                                 anchors.fill: parent
-                                anchors.margins: internalMargin
+                                anchors.margins: notifBox.internalMargin
 
                                 // Image or bell
                                 SvgIcon {
-                                    visible: iconSource == ""
+                                    visible: notifDelegate.iconSource == ""
                                     icon: "communicate/notifications"
                                     size: parent.height
                                     color: ThemeManager.colors.peach
                                 }
                                 MaskedImage {
-                                    visible: iconSource != ""
+                                    visible: notifDelegate.iconSource != ""
                                     Layout.preferredHeight: parent.height - 10
                                     Layout.preferredWidth: height
 
-                                    imageRadius: (rootRadius - 5)
-                                    imageSource: iconSource
+                                    imageRadius: (notifBox.rootRadius - 5)
+                                    imageSource: notifDelegate.iconSource
                                 }
 
                                 // Text strings
@@ -283,7 +285,7 @@ Rectangle {
 
                                     // AppName
                                     Text {
-                                        text: notif.appName
+                                        text: notifDelegate.notif.appName
                                         color: ThemeManager.colors.green
                                         font.family: ThemeManager.fonts.main
                                         font.pixelSize: 12
@@ -294,7 +296,7 @@ Rectangle {
 
                                     // Title
                                     Text {
-                                        text: notif.summary
+                                        text: notifDelegate.notif.summary
                                         color: ThemeManager.colors.text
                                         font.family: ThemeManager.fonts.main
                                         font.pixelSize: 18
@@ -305,7 +307,7 @@ Rectangle {
 
                                     // Content
                                     Text {
-                                        text: notif.body
+                                        text: notifDelegate.notif.body
                                         color: ThemeManager.colors.text
                                         font.family: ThemeManager.fonts.main
                                         font.pixelSize: 14
@@ -321,7 +323,7 @@ Rectangle {
                                     width: 23
                                     height: width
                                     color: ThemeManager.colors.surface0
-                                    radius: notifRadius - internalMargin
+                                    radius: notifBox.notifRadius - notifBox.internalMargin
                                     Layout.alignment: Qt.AlignTop
 
                                     SvgIcon {
@@ -337,8 +339,8 @@ Rectangle {
                                         cursorShape: Qt.PointingHandCursor
                                         hoverEnabled: true
                                         onClicked: {
-                                            notif.shown = false
-                                            slideClose.start()
+                                            notifDelegate.notif.shown = false
+                                            notifDelegate.slideClose.start()
                                         }
                                     }
 

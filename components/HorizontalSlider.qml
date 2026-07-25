@@ -31,12 +31,12 @@ import qs.themes
 
 
 Rectangle {
-    id: horizontalSlider
+    id: slider
 
     // Slider Aspect
     property real sliderHeight: 19
     property color accent: ThemeManager.colors.green
-    property color gradient: ThemeManager.colors.teal
+    property color gradientColor: ThemeManager.colors.teal
 
     property color backgroundColor: ThemeManager.colors.overlay0
     property color borderColor: ThemeManager.colors.surface0
@@ -83,26 +83,26 @@ Rectangle {
 
     Rectangle {
         height: parent.height
-        width: Math.max(parent.height, parent.width * Math.min(1, horizontalSlider.value / (usePercentage ? 100 : 1)))
+        width: Math.max(parent.height, parent.width * Math.min(1, slider.value / (slider.usePercentage ? 100 : 1)))
         radius: 20
         color: "transparent"
         gradient: Gradient {
             orientation: Gradient.Horizontal
             GradientStop {
                 position: 0.0
-                color: accent
+                color: slider.accent
                 Behavior on color { ColorAnimation { duration: 200 } }
             }
             GradientStop {
                 position: 1.0
-                color: horizontalSlider.gradient
+                color: slider.gradientColor
                 Behavior on color { ColorAnimation { duration: 200 } }
             }
         }
 
         Behavior on width {
             NumberAnimation {
-                duration: animationDuration
+                duration: slider.animationDuration
                 easing.type: Easing.OutQuint
             }
         }
@@ -117,23 +117,23 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
-        enabled: horizontalSlider.mouseEnabled
-        cursorShape: horizontalSlider.cursorShape
+        enabled: slider.mouseEnabled
+        cursorShape: slider.cursorShape
 
         function updateValue(mouseX) {
-            var maxVal = usePercentage ? 100 : 1;
+            var maxVal = slider.usePercentage ? 100 : 1;
             var newValue = Math.max(0, Math.min(maxVal, (mouseX / width) * maxVal));
-            if (horizontalSlider.updateCommand) horizontalSlider.updateCommand(usePercentage ? Math.round(newValue) : newValue);
+            if (slider.updateCommand) slider.updateCommand(slider.usePercentage ? Math.round(newValue) : newValue);
         }
 
         onPressed: (mouse) => {
-            if (updateOnPress) updateValue(mouse.x);
+            if (slider.updateOnPress) updateValue(mouse.x);
         }
         onPositionChanged: (mouse) => {
-            if (pressed && updateOnDrag) updateValue(mouse.x);
+            if (pressed && slider.updateOnDrag) updateValue(mouse.x);
         }
         onReleased: (mouse) => {
-            if (updateOnRelease) updateValue(mouse.x);
+            if (slider.updateOnRelease) updateValue(mouse.x);
         }
     }
 }

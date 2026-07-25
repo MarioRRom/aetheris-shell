@@ -37,13 +37,17 @@ WrapperMouseArea {
     cursorShape: Qt.PointingHandCursor
     hoverEnabled: true
 
+    property var bar
+    property var loader
+    property var pulse
+
     onClicked: {
-        akashaLoader.active = !akashaLoader.active
+        loader.active = !loader.active
 
         // Irminsul Animation
-        let gx = centerPanelArea.mapToItem(topBarRoot.contentItem, 0, 0).x
+        let gx = centerPanelArea.mapToItem(bar.contentItem, 0, 0).x
         let centerX = gx + (centerPanelArea.width / 2)
-        irmiPulse.trigger(centerX)
+        pulse.trigger(centerX)
     }
 
     WrapperRectangle {

@@ -31,12 +31,14 @@ import qs.i18n
 import qs.themes
 
 Rectangle {
-    id: root
+    id: calendar
 
     Layout.fillWidth: true
     Layout.fillHeight: true
 
     color: "transparent"
+
+    required property int itemRadius
 
     // Calendar Logic
     property date currentDate: new Date()
@@ -79,7 +81,7 @@ Rectangle {
     // Shadow
     RectangularShadow {
         anchors.fill: parent
-        radius: itemRadius
+        radius: calendar.itemRadius
         color: Config.shadows.color
 
         blur: 3
@@ -92,13 +94,13 @@ Rectangle {
     Rectangle {
         anchors.fill: parent
         color: ThemeManager.colors.base
-        radius: itemRadius
+        radius: calendar.itemRadius
         clip: true
 
         // Decoration
         InnerLine {
             anchors.fill: parent
-            lineradius: itemRadius
+            lineradius: calendar.itemRadius
             linewidth: 1
             linecolor: ThemeManager.colors.surface0
         }
@@ -118,7 +120,7 @@ Rectangle {
             Layout.fillWidth: true
 
             Text {
-                text: root.months[root.currentMonth] + " " + root.currentYear
+                text: calendar.months[calendar.currentMonth] + " " + calendar.currentYear
                 color: ThemeManager.colors.green
                 font.family: ThemeManager.fonts.main
                 font.bold: true
@@ -138,11 +140,11 @@ Rectangle {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            if (root.currentMonth === 0) {
-                                root.currentMonth = 11
-                                root.currentYear--
+                            if (calendar.currentMonth === 0) {
+                                calendar.currentMonth = 11
+                                calendar.currentYear--
                             } else {
-                                root.currentMonth--
+                                calendar.currentMonth--
                             }
                         }
                     }
@@ -157,11 +159,11 @@ Rectangle {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            if (root.currentMonth === 11) {
-                                root.currentMonth = 0
-                                root.currentYear++
+                            if (calendar.currentMonth === 11) {
+                                calendar.currentMonth = 0
+                                calendar.currentYear++
                             } else {
-                                root.currentMonth++
+                                calendar.currentMonth++
                             }
                         }
                     }
@@ -174,14 +176,15 @@ Rectangle {
             Layout.fillWidth: true
             spacing: 0
             Repeater {
-                model: root.days
+                model: calendar.days
                 Item {
+                    id: dayNameDelegate
                     required property var modelData
                     Layout.fillWidth: true
                     height: 20
                     Text {
                         anchors.centerIn: parent
-                        text: modelData
+                        text: dayNameDelegate.modelData
                         color: ThemeManager.colors.mauve
                         font.family: ThemeManager.fonts.main
                         font.pixelSize: 14
@@ -203,32 +206,33 @@ Rectangle {
                 model: 42 // 6 rows * 7 columns to cover any month
 
                 delegate: Item {
+                    id: dayCell
                     required property int index
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
                     // Calculations
-                    property int daysInCurrentMonth: root.getDaysInMonth(root.currentMonth, root.currentYear)
-                    property int dayOffset: root.getFirstDayOffset(root.currentMonth, root.currentYear)
+                    property int daysInCurrentMonth: calendar.getDaysInMonth(calendar.currentMonth, calendar.currentYear)
+                    property int dayOffset: calendar.getFirstDayOffset(calendar.currentMonth, calendar.currentYear)
 
                     // Previous month
-                    property int prevMonth: root.currentMonth === 0 ? 11 : root.currentMonth - 1
-                    property int prevMonthYear: root.currentMonth === 0 ? root.currentYear - 1 : root.currentYear
-                    property int daysInPrevMonth: root.getDaysInMonth(prevMonth, prevMonthYear)
+                    property int prevMonth: calendar.currentMonth === 0 ? 11 : calendar.currentMonth - 1
+                    property int prevMonthYear: calendar.currentMonth === 0 ? calendar.currentYear - 1 : calendar.currentYear
+                    property int daysInPrevMonth: calendar.getDaysInMonth(prevMonth, prevMonthYear)
 
                     // Cell State
-                    property bool isPrevMonthDay: index < dayOffset
-                    property bool isNextMonthDay: index >= dayOffset + daysInCurrentMonth
+                    property bool isPrevMonthDay: dayCell.index < dayOffset
+                    property bool isNextMonthDay: dayCell.index >= dayOffset + daysInCurrentMonth
                     property bool isCurrentMonthDay: !isPrevMonthDay && !isNextMonthDay
 
                     // Day Number
                     property int dayNumber: {
                         if (isPrevMonthDay) {
-                            return daysInPrevMonth - (dayOffset - 1 - index);
+                            return daysInPrevMonth - (dayOffset - 1 - dayCell.index);
                         } else if (isNextMonthDay) {
-                            return index - (dayOffset + daysInCurrentMonth) + 1;
+                            return dayCell.index - (dayOffset + daysInCurrentMonth) + 1;
                         } else { // isCurrentMonthDay
-                            return index - dayOffset + 1;
+                            return dayCell.index - dayOffset + 1;
                         }
                     }
 
@@ -237,8 +241,8 @@ Rectangle {
                         let today = new Date();
                         return isCurrentMonthDay &&
                                dayNumber === today.getDate() &&
-                               root.currentMonth === today.getMonth() &&
-                               root.currentYear === today.getFullYear();
+                               calendar.currentMonth === today.getMonth() &&
+                               calendar.currentYear === today.getFullYear();
                     }
 
                     Rectangle {
@@ -246,15 +250,15 @@ Rectangle {
                         width: 30
                         height: 30
                         radius: 15
-                        color: isToday ? ThemeManager.colors.sky : "transparent";
+                        color: dayCell.isToday ? ThemeManager.colors.sky : "transparent";
 
                         Text {
                             anchors.centerIn: parent
-                            text: dayNumber
+                            text: dayCell.dayNumber
                             color: {
-                                if (isToday) return ThemeManager.colors.base;
-                                if (isCurrentMonthDay) return ThemeManager.colors.text;
-                                return ThemeManager.colors.surface2; // Color for other months' days
+                                if (dayCell.isToday) return ThemeManager.colors.base;
+                                if (dayCell.isCurrentMonthDay) return ThemeManager.colors.text;
+                                return ThemeManager.colors.surface2;
                             }
                             font.family: ThemeManager.fonts.main
                             font.pixelSize: 14

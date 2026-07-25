@@ -45,7 +45,7 @@ import qs.themes
 //  `-------------------------'
 
 PopupWindow {
-    id: root
+    id: sysInfo
 
     // Config
     property var bar
@@ -83,7 +83,7 @@ PopupWindow {
 
             sourceComponent:RectangularShadow {
                 anchors.fill: parent
-                radius: cornerRadius
+                radius: sysInfo.cornerRadius
                 color: Config.shadows.color
 
                 blur: 3
@@ -96,14 +96,14 @@ PopupWindow {
         // Window Content
         Rectangle {
         anchors.fill: parent
-        radius: cornerRadius
+        radius: sysInfo.cornerRadius
         color: ThemeManager.colors.mantle
         clip: true
 
             // Decoration
             InnerLine {
                 anchors.fill: parent
-                lineradius: cornerRadius
+                lineradius: sysInfo.cornerRadius
                 linewidth: 2
                 linecolor: ThemeManager.colors.surface0
             }
@@ -114,8 +114,8 @@ PopupWindow {
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.margins: windowMargin
-                spacing: windowMargin
+                anchors.margins: sysInfo.windowMargin
+                spacing: sysInfo.windowMargin
 
 
                 //  .-------------------------.
@@ -132,7 +132,7 @@ PopupWindow {
                     // Shadow
                     RectangularShadow {
                         anchors.fill: parent
-                        radius: itemRadius
+                        radius: sysInfo.itemRadius
                         color: Config.shadows.color
 
                         blur: 3
@@ -145,18 +145,19 @@ PopupWindow {
                     Rectangle {
                         anchors.fill: parent
                         color: ThemeManager.colors.base
-                        radius: itemRadius
+                        radius: sysInfo.itemRadius
                         clip: true
 
                         ProfileCard {
                             anchors.fill: parent
                             anchors.margins: 8
+                            pfpRadius: sysInfo.itemRadius - 8
                         }
 
                         // Decoration
                         InnerLine {
                             anchors.fill: parent
-                            lineradius: itemRadius
+                            lineradius: sysInfo.itemRadius
                             linewidth: 1
                             linecolor: ThemeManager.colors.surface0
                         }
@@ -171,7 +172,7 @@ PopupWindow {
                 //  `-------------------------'
 
                 RowLayout {
-                    spacing: windowMargin
+                    spacing: sysInfo.windowMargin
                     Layout.fillWidth: true
 
                     // CPU usage
@@ -182,6 +183,7 @@ PopupWindow {
 
                         GraphPreset {
                             anchors.fill: parent
+                            cornerRadius: sysInfo.itemRadius
                             header: LanguageManager.t("systeminfo.cpu")
                             accent: ThemeManager.colors.red
                             icon: "hardware/cpu"
@@ -197,6 +199,7 @@ PopupWindow {
 
                         GraphPreset {
                             anchors.fill: parent
+                            cornerRadius: sysInfo.itemRadius
                             header: LanguageManager.t("systeminfo.ram")
                             accent: ThemeManager.colors.yellow
                             icon: "hardware/memory"
@@ -206,7 +209,7 @@ PopupWindow {
                 }
 
                 RowLayout {
-                    spacing: windowMargin
+                    spacing: sysInfo.windowMargin
 
                     // Disk usage
                     Rectangle {
@@ -216,6 +219,7 @@ PopupWindow {
 
                         GraphPreset {
                             anchors.fill: parent
+                            cornerRadius: sysInfo.itemRadius
                             header: LanguageManager.t("systeminfo.dsk")
                             accent: ThemeManager.colors.green
                             icon: "hardware/harddrive"
@@ -231,6 +235,7 @@ PopupWindow {
 
                         GraphPreset {
                             anchors.fill: parent
+                            cornerRadius: sysInfo.itemRadius
                             header: LanguageManager.t("systeminfo.tmp")
                             accent: ThemeManager.colors.mauve
                             icon: "general/thermometer"
@@ -248,11 +253,12 @@ PopupWindow {
                 //  `-------------------------'
 
                 RowLayout {
-                    spacing: windowMargin
+                    spacing: sysInfo.windowMargin
 
                     // Logout
                     ButtonsPreset {
                         Layout.fillWidth: true
+                        cornerRadius: sysInfo.itemRadius
                         btnHeight: 41
                         icon: "general/logout"
                         btnText: LanguageManager.t("systeminfo.logout")
@@ -263,6 +269,7 @@ PopupWindow {
                     // Shutdown
                     ButtonsPreset {
                         Layout.fillWidth: true
+                        cornerRadius: sysInfo.itemRadius
                         btnHeight: 41
                         icon: "general/shutdown"
                         btnText: LanguageManager.t("systeminfo.shutdown")
@@ -272,11 +279,12 @@ PopupWindow {
                 }
 
                 RowLayout {
-                    spacing: windowMargin
+                    spacing: sysInfo.windowMargin
 
                     // Reboot
                     ButtonsPreset {
                         Layout.fillWidth: true
+                        cornerRadius: sysInfo.itemRadius
                         btnHeight: 41
                         icon: "general/restart"
                         btnText: LanguageManager.t("systeminfo.reboot")
@@ -287,12 +295,13 @@ PopupWindow {
                     // Suspend
                     ButtonsPreset {
                         Layout.fillWidth: true
+                        cornerRadius: sysInfo.itemRadius
                         btnHeight: 41
                         icon: "general/suspend"
                         btnText: LanguageManager.t("systeminfo.suspend")
                         command: ["systemctl", "suspend"]
                         hoverColor: ThemeManager.colors.sky
-                        beforeCommand: root.closeWidgets
+                        beforeCommand: sysInfo.closeWidgets
                     }
                 }
             }

@@ -33,6 +33,7 @@ import qs.services
 
 
 LazyLoader {
+    id: popupLoader
     active: Notifications.popups.length > 0 && isActivated
     property bool isActivated: false
     property QtObject backgroundAnchor: null
@@ -78,14 +79,14 @@ LazyLoader {
 
         // Pin to Background
         // Prevents flickering as popup/transient window type
-        anchor.window: backgroundAnchor
-        anchor.rect.x: (backgroundAnchor?.width ?? 0) - implicitWidth - (totalMargin - outMargin)
-        anchor.rect.y: (backgroundAnchor?.height ?? 0) - implicitHeight - (totalMargin - outMargin)
-
+        anchor.window: popupLoader.backgroundAnchor
+        anchor.rect.x: (popupLoader.backgroundAnchor?.width ?? 0) - implicitWidth - (popupLoader.totalMargin - popupLoader.outMargin) // qmllint disable missing-property
+        anchor.rect.y: (popupLoader.backgroundAnchor?.height ?? 0) - implicitHeight - (popupLoader.totalMargin - popupLoader.outMargin) // qmllint disable missing-property
+ 
         // Dynamic size
         // Prevents black square when compositor disables transparency.
         implicitWidth: Notifications.popups.length > 0 ? 400 : 0
-        implicitHeight: Notifications.popups.length > 0 ? ((cardSize + cardSpacing) * cardCount) + (outMargin * 2) : 0
+        implicitHeight: Notifications.popups.length > 0 ? ((popupLoader.cardSize + popupLoader.cardSpacing) * popupLoader.cardCount) + (popupLoader.outMargin * 2) : 0
 
         color: "transparent"
 
@@ -95,7 +96,7 @@ LazyLoader {
             function onNotificationExpiring(notif) {
                 for (let i = 0; i < listRepeater.count; i++) {
                     const item = listRepeater.itemAt(i)
-                    if (item?.notif === notif) { item.animateOut(); break }
+                    if (item?.notif === notif) { item.animateOut(); break } // qmllint disable missing-property
                 }
             }
         }
@@ -106,13 +107,13 @@ LazyLoader {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: outMargin
+            anchors.margins: popupLoader.outMargin
             spacing: 0
 
 
             Repeater {
                 id: listRepeater
-                model: Notifications.popups.slice(0, cardCount + 1).reverse()
+                model: Notifications.popups.slice(0, popupLoader.cardCount + 1).reverse()
 
                 // Main Container.
                 delegate: Rectangle {
@@ -135,25 +136,25 @@ LazyLoader {
                     property real stackOpacity: {
                         if (!notif.shownPopup) return 0
                         const fadeIndex = listRepeater.count - 1 - index
-                        if (fadeIndex >= cardCount) return 1.0 - ((cardCount - 1) * 0.25)
+                        if (fadeIndex >= popupLoader.cardCount) return 1.0 - ((popupLoader.cardCount - 1) * 0.25)
                         if (hoverArea.containsMouse) return 1.0
                         if (closeArea.containsMouse) return 1.0
                         return 1.0 - (fadeIndex * 0.25)
                     }
 
                     opacity: stackOpacity
-                    Behavior on stackOpacity { NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic } }
+                    Behavior on stackOpacity { NumberAnimation { duration: popupLoader.animDuration; easing.type: Easing.OutCubic } }
 
                     // Entry/exit animation via height + opacity together
-                    Layout.preferredHeight: notif.shownPopup ? cardSize : 0
-                    Layout.bottomMargin: notif.shownPopup ? cardSpacing : 0
+                    Layout.preferredHeight: notif.shownPopup ? popupLoader.cardSize : 0
+                    Layout.bottomMargin: notif.shownPopup ? popupLoader.cardSpacing : 0
 
                     Behavior on Layout.preferredHeight {
-                        NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic }
+                        NumberAnimation { duration: popupLoader.animDuration; easing.type: Easing.OutCubic }
                     }
 
                     Behavior on Layout.bottomMargin {
-                        NumberAnimation { duration: animDuration; easing.type: Easing.OutCubic }
+                        NumberAnimation { duration: popupLoader.animDuration; easing.type: Easing.OutCubic }
                     }
 
                     Component.onCompleted: Qt.callLater(() => {

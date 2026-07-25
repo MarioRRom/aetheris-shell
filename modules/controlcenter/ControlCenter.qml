@@ -47,7 +47,7 @@ import qs.modules.controlcenter.submenu
 //  `-------------------------'
 
 PopupWindow {
-    id: root
+    id: controlCenter
 
     // Config
     property var bar
@@ -63,7 +63,7 @@ PopupWindow {
     property int itemRadius: cornerRadius - windowMargin
 
     implicitWidth: 310
-    implicitHeight: (root.currentView === "main" ? mainLayout.implicitHeight : 428) + (windowMargin * 2) + 10
+    implicitHeight: (controlCenter.currentView === "main" ? mainLayout.implicitHeight : 428) + (windowMargin * 2) + 10
 
     anchor.window: bar
     anchor.rect.x: (bar.width - width) - ((globalMargin + globalWallborder) - 5) // 5px for the margin in the Main Container.
@@ -86,7 +86,7 @@ PopupWindow {
 
             sourceComponent: RectangularShadow {
                 anchors.fill: parent
-                radius: cornerRadius
+                radius: controlCenter.cornerRadius
                 color: Config.shadows.color
 
                 blur: 3
@@ -99,14 +99,14 @@ PopupWindow {
         // Window content
         Rectangle {
             anchors.fill: parent
-            radius: cornerRadius
+            radius: controlCenter.cornerRadius
             color: ThemeManager.colors.mantle
             clip: true
 
             // Decoration
             InnerLine {
                 anchors.fill: parent
-                lineradius: cornerRadius
+                lineradius: controlCenter.cornerRadius
                 linewidth: 2
                 linecolor: ThemeManager.colors.surface0
             }
@@ -114,17 +114,17 @@ PopupWindow {
             // Main column
             ColumnLayout {
                 id: mainLayout
-                visible: root.currentView === "main"
+                visible: controlCenter.currentView === "main"
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.margins: windowMargin
-                spacing: windowMargin
+                anchors.margins: controlCenter.windowMargin
+                spacing: controlCenter.windowMargin
 
 
                 // First Line
                 RowLayout {
-                    spacing: windowMargin
+                    spacing: controlCenter.windowMargin
                     Layout.fillWidth: true
 
 
@@ -135,7 +135,8 @@ PopupWindow {
                     //  `-------------------------'
 
                     NetworkButton {
-
+                        changeView: function() { controlCenter.currentView = "internet" }
+                        cornerRadius: controlCenter.itemRadius
                     }
 
 
@@ -146,7 +147,8 @@ PopupWindow {
                     //  `-------------------------'
 
                     BluetoothButton {
-
+                        changeView: function() { controlCenter.currentView = "bluetooth" }
+                        cornerRadius: controlCenter.itemRadius
                     }
                 }
 
@@ -159,6 +161,7 @@ PopupWindow {
 
                 ButtonsGrid {
                     Layout.fillWidth: true
+                    cornerRadius: controlCenter.itemRadius
                 }
 
 
@@ -176,7 +179,8 @@ PopupWindow {
                     updateCommand: Pipewire.setVolumePercent
                     muteCommand: Pipewire.toggleMute
                     accent: ThemeManager.colors.green
-                    gradient: ThemeManager.colors.teal
+                    gradientColor: ThemeManager.colors.teal
+                    cornerRadius: controlCenter.itemRadius
                 }
 
                 // Mic
@@ -187,7 +191,8 @@ PopupWindow {
                     updateCommand: Pipewire.setVolumeMicPercent
                     muteCommand: Pipewire.toggleMic
                     accent: ThemeManager.colors.red
-                    gradient: ThemeManager.colors.maroon
+                    gradientColor: ThemeManager.colors.maroon
+                    cornerRadius: controlCenter.itemRadius
                 }
             }
 
@@ -199,11 +204,15 @@ PopupWindow {
             //  `-------------------------'
 
             NetworkMenu {
-                visible: root.currentView === "internet"
+                visible: controlCenter.currentView === "internet"
+                backButton: function() { controlCenter.currentView = "main" }
+                parentView: controlCenter
             }
 
             BluetoothMenu {
-                visible: root.currentView === "bluetooth"
+                visible: controlCenter.currentView === "bluetooth"
+                backButton: function() { controlCenter.currentView = "main" }
+                parentView: controlCenter
             }
         }
     }

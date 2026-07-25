@@ -33,8 +33,10 @@ WrapperMouseArea{
     cursorShape: Qt.PointingHandCursor
     anchors.verticalCenter: parent.verticalCenter
 
+    property var loader
+
     onClicked: {
-        sysInfoLoader.active = !sysInfoLoader.active
+        loader.active = !loader.active
     }
 
     SvgIcon {

@@ -28,7 +28,7 @@ import Quickshell
 import qs.i18n
 
 ShellRoot {
-    id: root
+    id: activate
 
     Variants {
         // Create the panel once on each monitor.

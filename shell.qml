@@ -47,6 +47,7 @@ import qs.services.bspwm
 //  `-------------------------'
 
 ShellRoot {
+    id: shellRoot
     // Session detection
     readonly property string _session: (Quickshell.env("DESKTOP_SESSION") || Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase()
 
@@ -71,7 +72,7 @@ ShellRoot {
     //  `-------------------------'
 
     LazyLoader {
-        active: enableNightMode
+        active: shellRoot.enableNightMode
 
         component: NightMode {
         }
@@ -79,14 +80,14 @@ ShellRoot {
 
     // Quickshell Background
     // DISCLAIMER. all overlays are connected to this element.
-    Background { id: background; isActivated: enableBackground }
+    Background { id: background; isActivated: shellRoot.enableBackground }
 
     // Quickshell Bar
-    TopBar { isActivated: enableBar }
+    TopBar { isActivated: shellRoot.enableBar }
 
     // Active Linux easter egg
     Loader {
-        active: enableActivate
+        active: shellRoot.enableActivate
 
         sourceComponent: Activate {
         }
@@ -95,7 +96,7 @@ ShellRoot {
 
     // Notifications Popup.
     NotificationsPopup {
-        isActivated: enablePopups
+        isActivated: shellRoot.enablePopups
         backgroundAnchor: background.backgroundAnchor
     }
 
@@ -114,7 +115,7 @@ ShellRoot {
 
     // Load Picom (X11)
     Loader {
-        active: _session.indexOf("bspwm") !== -1
+        active: shellRoot._session.indexOf("bspwm") !== -1
         sourceComponent: Picom {}
     }
 

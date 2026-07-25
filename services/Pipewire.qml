@@ -32,7 +32,7 @@ import Quickshell.Services.Pipewire
 //  `-------------------------'
 
 QtObject {
-    id: root
+    id: audio
 
     // Pipewire Nodes
     readonly property var allNodes: Pipewire.nodes
@@ -84,12 +84,12 @@ QtObject {
 
     // Node Tracker
     property PwObjectTracker nodeTracker: PwObjectTracker {
-        objects: [...root.availableSinks, ...root.availableSources]
+        objects: [...audio.availableSinks, ...audio.availableSources]
     }
     // Audio Functions
     function setVolume(vol) {
         if (sink?.ready && sink?.audio) {
-            var newVol = Math.max(0.0, Math.min(1.5, vol))
+            let newVol = Math.max(0.0, Math.min(1.5, vol))
             sink.audio.volume = newVol
         }
     }
@@ -114,7 +114,7 @@ QtObject {
 
     function setVolumeMic(vol) {
         if (source?.ready && source?.audio) {
-            var newVol = Math.max(0.0, Math.min(1.5, vol))
+            let newVol = Math.max(0.0, Math.min(1.5, vol))
             source.audio.volume = newVol
         }
     }

@@ -29,7 +29,7 @@ import Quickshell.Io
 import qs.i18n
 
 QtObject {
-    id: root
+    id: sysStatus
 
 
     //  .-------------------------.
@@ -46,7 +46,7 @@ QtObject {
         command: ["bash", "-c", "grep '^PRETTY_NAME=' /etc/os-release | cut -d= -f2 | tr -d '\"'"]
         running: false
         stdout: SplitParser {
-            onRead: data => root.distro = data.trim()
+            onRead: data => sysStatus.distro = data.trim()
         }
     }
 
@@ -81,7 +81,7 @@ QtObject {
                 if (hours > 0) parts.push(hours + LanguageManager.t("systemstatus.uptime.hour"))
                 if (minutes > 0) parts.push(minutes + LanguageManager.t("systemstatus.uptime.minute"))
 
-                root.uptime = parts.slice(0, 2).join(", ")
+                sysStatus.uptime = parts.slice(0, 2).join(", ")
             }
         }
     }
@@ -91,7 +91,7 @@ QtObject {
         command: ["bash", "-c", "df / --output=pcent | tail -1 | tr -d '% \n'"]
         running: false
         stdout: SplitParser {
-            onRead: data => root.diskUsage = parseInt(data)
+            onRead: data => sysStatus.diskUsage = parseInt(data)
         }
     }
 
@@ -102,7 +102,7 @@ QtObject {
         stdout: SplitParser {
             onRead: data => {
                 const val = parseInt(data)
-                if (!isNaN(val)) root.temperature = Math.round(val / 1000)
+                if (!isNaN(val)) sysStatus.temperature = Math.round(val / 1000)
             }
         }
     }
@@ -114,8 +114,8 @@ QtObject {
         repeat: true
         triggeredOnStart: true
         onTriggered: {
-            procUptime.running = true
-            procDisk.running = true
+            sysStatus.procUptime.running = true
+            sysStatus.procDisk.running = true
         }
     }
 
@@ -125,7 +125,7 @@ QtObject {
         running: true
         repeat: true
         triggeredOnStart: true
-        onTriggered: procTemp.running = true
+        onTriggered: sysStatus.procTemp.running = true
     }
 
 
@@ -156,8 +156,8 @@ QtObject {
                 if (parts.length === 2) {
                     const total = parseInt(parts[0])
                     const used = parseInt(parts[1])
-                    root.ramUsagePercent = total > 0 ? Math.round((used / total) * 100) : 0
-                    root.ramText = root.formatBytes(used) + " / " + root.formatBytes(total)
+                    sysStatus.ramUsagePercent = total > 0 ? Math.round((used / total) * 100) : 0
+                    sysStatus.ramText = sysStatus.formatBytes(used) + " / " + sysStatus.formatBytes(total)
                 }
             }
         }
@@ -179,12 +179,12 @@ QtObject {
                         let total = 0
                         for (let i = 1; i < parts.length; i++) total += parseInt(parts[i])
 
-                        const diffTotal = total - root._prevCpu.total
-                        const diffIdle = idle - root._prevCpu.idle
+                        const diffTotal = total - sysStatus._prevCpu.total
+                        const diffIdle = idle - sysStatus._prevCpu.idle
 
-                        if (diffTotal > 0) root.cpuUsagePercent = Math.round(((diffTotal - diffIdle) / diffTotal) * 100)
+                        if (diffTotal > 0) sysStatus.cpuUsagePercent = Math.round(((diffTotal - diffIdle) / diffTotal) * 100)
 
-                        root._prevCpu = {total: total, idle: idle}
+                        sysStatus._prevCpu = {total: total, idle: idle}
                     }
                 }
             }
@@ -197,8 +197,8 @@ QtObject {
         repeat: true
         triggeredOnStart: true
         onTriggered: {
-            procRam.running = true
-            procCpu.running = true
+            sysStatus.procRam.running = true
+            sysStatus.procCpu.running = true
         }
     }
 

@@ -26,7 +26,7 @@ import QtQuick
 import Qt5Compat.GraphicalEffects
 
 Image {
-    id: image
+    id: maskedImg
 
     // Config
     property int imageRadius: 5
@@ -51,6 +51,6 @@ Image {
         id: bgMask
         anchors.fill: parent
         visible: false
-        radius: imageRadius
+        radius: maskedImg.imageRadius
     }
 }

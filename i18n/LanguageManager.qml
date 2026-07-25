@@ -28,7 +28,7 @@ import qs.config
 import qs.i18n.translations as Translations
 
 QtObject {
-    id: languageManager
+    id: langManager
 
     // active language
     property string currentLanguage: Config.global.language

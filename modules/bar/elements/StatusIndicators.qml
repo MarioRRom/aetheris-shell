@@ -36,6 +36,8 @@ WrapperMouseArea {
     cursorShape: Qt.PointingHandCursor
     hoverEnabled: true
 
+    property var loader
+    
     // icons show text on hover
     property bool revealActive: false
 
@@ -61,7 +63,7 @@ WrapperMouseArea {
 
     // Click action
     onClicked: {
-        controlCenterLoader.active = !controlCenterLoader.active
+        loader.active = !loader.active
     }
 
     WrapperRectangle {

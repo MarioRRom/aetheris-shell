@@ -39,6 +39,8 @@ import qs.themes
 Rectangle {
     id: networkButton
 
+    property var changeView
+    property var cornerRadius
     property bool active: Network.wifiEnabled || Network.wiredConnected
 
 
@@ -50,22 +52,22 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
-        onClicked: root.currentView = "internet"
+        onClicked: networkButton.changeView()
     }
 
     // Background
     Rectangle {
         anchors.fill: parent
-        radius: itemRadius
+        radius: networkButton.cornerRadius
         visible: true
         gradient: Gradient {
             GradientStop {
                 position: 0.0
-                color: active ? ThemeManager.colors.mauve : ThemeManager.colors.surface0
+                color: networkButton.active ? ThemeManager.colors.mauve : ThemeManager.colors.surface0
             }
             GradientStop {
                 position: 1.0
-                color: active ? ThemeManager.colors.pink : ThemeManager.colors.surface1
+                color: networkButton.active ? ThemeManager.colors.pink : ThemeManager.colors.surface1
             }
         }
     }
@@ -79,7 +81,7 @@ Rectangle {
         SvgIcon {
             icon: Network.statusIcon
             size: 28
-            color: active ? ThemeManager.colors.mantle : ThemeManager.colors.text
+            color: networkButton.active ? ThemeManager.colors.mantle : ThemeManager.colors.text
             Layout.alignment: Qt.AlignVCenter
         }
 
@@ -92,14 +94,14 @@ Rectangle {
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 16
                 font.bold: false
-                color: active ? ThemeManager.colors.mantle : ThemeManager.colors.text
+                color: networkButton.active ? ThemeManager.colors.mantle : ThemeManager.colors.text
             }
 
             Text {
                 text: Network.statusText
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 10
-                color: active ? ThemeManager.colors.mantle : ThemeManager.colors.text
+                color: networkButton.active ? ThemeManager.colors.mantle : ThemeManager.colors.text
             }
         }
     }

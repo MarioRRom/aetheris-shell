@@ -28,7 +28,7 @@ import Quickshell.Networking
 import qs.i18n
 
 QtObject {
-    id: root
+    id: network
 
 
     //  .-------------------------.

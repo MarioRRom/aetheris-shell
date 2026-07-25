@@ -24,31 +24,31 @@ import QtQuick
 import QtMultimedia
 
 Item {
-
+    id: wallpaper
     property var sourceWallpaper: "../../assets/wallpapers/paimon.png"
     property bool isVideoWallpaper: false
 
     Image {
-        id: wallpaper
+        id: wallpaperImage
         anchors.fill: parent
-        visible: !isVideoWallpaper
+        visible: !wallpaper.isVideoWallpaper
         cache: false
         smooth: false
         fillMode: Image.PreserveAspectCrop
 
         // Wallpaper Path
-        source: sourceWallpaper
+        source: wallpaper.sourceWallpaper
     }
 
     Video {
         id: wallpaperVideo
         anchors.fill: parent
-        visible: isVideoWallpaper
-        autoPlay: isVideoWallpaper
+        visible: wallpaper.isVideoWallpaper
+        autoPlay: wallpaper.isVideoWallpaper
         loops: MediaPlayer.Infinite
         fillMode: VideoOutput.PreserveAspectCrop
 
         // Wallpaper Path
-        source: sourceWallpaper
+        source: wallpaper.sourceWallpaper
     }
 }

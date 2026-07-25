@@ -28,7 +28,7 @@ import Quickshell.Hyprland
 import qs.config
 
 QtObject {
-    id: root
+    id: hypr
 
     // Public property to know if Hyprland is active
     property bool isActive: false
@@ -154,7 +154,7 @@ QtObject {
         setBorderColors(Config.windows.focusedBorderColor, Config.windows.unfocusedBorderColor)
 
         // Corner Radius (clamped to non-negative)
-        setRounding(root.rounding)
+        setRounding(hypr.rounding)
 
         // Shadows
         setShadows(Config.shadows.enabled)

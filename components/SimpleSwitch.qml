@@ -29,7 +29,7 @@ import qs.themes
 
 // Main Rectangle
 Rectangle {
-    id: root
+    id: toggleSwitch
 
     // Config
     property int size: 10
@@ -47,10 +47,10 @@ Rectangle {
     Rectangle {
         width: parent.height - 4
         height: parent.height - 4
-        radius: size
-        color: status ? ThemeManager.colors.surface0 :ThemeManager.colors.text
+        radius: toggleSwitch.size
+        color: toggleSwitch.status ? ThemeManager.colors.surface0 :ThemeManager.colors.text
         Behavior on color { ColorAnimation { duration: 250 } }
-        x: status ? (size  - ( height + 2))  : 2
+        x: toggleSwitch.status ? (toggleSwitch.size  - ( height + 2))  : 2
         Behavior on x { NumberAnimation { duration: 250; easing.type: Easing.OutQuad } }
         y: 2
     }
@@ -60,6 +60,6 @@ Rectangle {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
         hoverEnabled: true
-        onClicked: action()
+        onClicked: toggleSwitch.action()
     }
 }

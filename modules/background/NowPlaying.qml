@@ -32,6 +32,7 @@ import qs.services
 
 
 Rectangle {
+    id: nowPlaying
     property int globalRadius: Config.global.corners
     property int globalMargin: Config.global.margins + 10
     property int itemRadius: globalRadius - globalMargin
@@ -70,7 +71,7 @@ Rectangle {
             RectangularShadow {
                 visible: Config.shadows.enabled
                 anchors.fill: parent
-                radius: itemRadius
+                radius: nowPlaying.itemRadius
                 color: Config.shadows.color
 
                 blur: 3
@@ -86,7 +87,7 @@ Rectangle {
                 anchors.margins: 2
 
                 imageSource: Mpris.artUrl
-                imageRadius: itemRadius
+                imageRadius: nowPlaying.itemRadius
             }
         }
 
@@ -106,7 +107,7 @@ Rectangle {
             Rectangle {
                 anchors.fill: parent
 
-                radius: itemRadius
+                radius: nowPlaying.itemRadius
                 anchors.margins: 2
                 property color baseColor: ThemeManager.colors.mantle
                 color: Qt.rgba(baseColor.r, baseColor.g, baseColor.b, 0.8)
@@ -117,7 +118,7 @@ Rectangle {
                 visible: Config.shadows.enabled
                 anchors.fill: parent
                 anchors.margins: 0
-                radius: itemRadius
+                radius: nowPlaying.itemRadius
                 border.color: Config.shadows.color
                 border.width: 5
                 color: "transparent"
@@ -204,7 +205,7 @@ Rectangle {
                     backgroundColor: ThemeManager.colors.surface2
 
                     accent: ThemeManager.colors.subtext1
-                    gradient: ThemeManager.colors.text
+                    gradientColor: ThemeManager.colors.text
                     animationDuration: 650
                     value: Mpris.position / Mpris.duration
                     mouseEnabled: false

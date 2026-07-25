@@ -77,7 +77,7 @@ QtObject {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
                     try {
-                        var data = JSON.parse(xhr.responseText)
+                        let data = JSON.parse(xhr.responseText)
                         fetchWeather(data.lat, data.lon, data.city)
                     } catch (e) {
                         setErrorState()
@@ -100,7 +100,7 @@ QtObject {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
                     try {
-                        var data = JSON.parse(xhr.responseText)
+                        let data = JSON.parse(xhr.responseText)
                         processWeatherData(data, city)
                     } catch (e) {
                         setErrorState()

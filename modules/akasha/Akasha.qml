@@ -45,7 +45,7 @@ import qs.themes
 //  `-------------------------'
 
 PopupWindow {
-    id: root
+    id: akasha
 
     // Config
     property var bar
@@ -82,7 +82,7 @@ PopupWindow {
 
             sourceComponent:RectangularShadow {
                 anchors.fill: parent
-                radius: cornerRadius
+                radius: akasha.cornerRadius
                 color: Config.shadows.color
 
                 blur: 3
@@ -95,14 +95,14 @@ PopupWindow {
         // Window Content
         Rectangle {
         anchors.fill: parent
-        radius: cornerRadius
+        radius: akasha.cornerRadius
         color: ThemeManager.colors.mantle
         clip: true
 
             // Decoration
             InnerLine {
                 anchors.fill: parent
-                lineradius: cornerRadius
+                lineradius: akasha.cornerRadius
                 linewidth: 2
                 linecolor: ThemeManager.colors.surface0
             }
@@ -113,8 +113,8 @@ PopupWindow {
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.margins: windowMargin
-                spacing: windowMargin
+                anchors.margins: akasha.windowMargin
+                spacing: akasha.windowMargin
 
 
                 //  .-------------------------.
@@ -132,6 +132,7 @@ PopupWindow {
                     NotificationsBox {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+                        itemRadius: akasha.itemRadius
                     }
 
                     // Footer (Switch and Button)
@@ -177,7 +178,7 @@ PopupWindow {
 
                                 sourceComponent:RectangularShadow {
                                     anchors.fill: parent
-                                    radius: itemRadius
+                                    radius: akasha.itemRadius
                                     color: Config.shadows.color
 
                                     blur: 3
@@ -191,14 +192,14 @@ PopupWindow {
                             Rectangle {
                                 id: notsClearAll
                                 anchors.fill: parent
-                                radius: itemRadius
+                                radius: akasha.itemRadius
                                 color: ThemeManager.colors.base
                                 clip: true
 
                                 // Decoration
                                 InnerLine {
                                     anchors.fill: parent
-                                    lineradius: itemRadius
+                                    lineradius: akasha.itemRadius
                                     linewidth: 1
                                     linecolor: ThemeManager.colors.surface0
                                 }
@@ -287,10 +288,13 @@ PopupWindow {
                     CalendarBox {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 240
+                        itemRadius: akasha.itemRadius
                     }
 
                     // Weather Card
-                    WeatherCard {}
+                    WeatherCard {
+                        itemRadius: akasha.itemRadius
+                    }
                 }
             }
         }

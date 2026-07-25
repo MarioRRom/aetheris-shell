@@ -41,6 +41,8 @@ import qs.components
 WrapperMouseArea {
     id: button
 
+    property var cornerRadius
+
     // Import properties
     property int btnHeight
     property var btnText
@@ -74,7 +76,7 @@ WrapperMouseArea {
         // Shadow
         RectangularShadow {
             anchors.fill: parent
-            radius: itemRadius
+            radius: button.cornerRadius
             color: Config.shadows.color
 
             blur: 3
@@ -89,13 +91,13 @@ WrapperMouseArea {
             // Config
             anchors.fill: parent
             color: ThemeManager.colors.base
-            radius: itemRadius
+            radius: button.cornerRadius
             clip: true
 
             // Decoration
             InnerLine {
                 anchors.fill: parent
-                lineradius: itemRadius
+                lineradius: button.cornerRadius
                 linewidth: 1
                 linecolor: ThemeManager.colors.surface0
             }
@@ -104,7 +106,7 @@ WrapperMouseArea {
             Rectangle {
                 id: colorOverlay
                 anchors.fill: parent
-                radius: itemRadius
+                radius: button.cornerRadius
                 color: "transparent"
 
                 Behavior on color {
@@ -133,7 +135,7 @@ WrapperMouseArea {
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
-                    text: btnText
+                    text: button.btnText
                     color: ThemeManager.colors.text
                     font.family: ThemeManager.fonts.main
                     font.pixelSize: 15

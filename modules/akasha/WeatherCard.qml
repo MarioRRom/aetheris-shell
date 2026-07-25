@@ -32,10 +32,13 @@ import qs.services
 import qs.themes
 
 Rectangle {
+    id: weatherCard
     Layout.fillWidth: true
 
     height: 139
     color: "transparent"
+
+    required property int itemRadius
 
     // Background assets path
     readonly property string assetsPath: "../../assets/weather/"
@@ -46,7 +49,7 @@ Rectangle {
     // Shadow
     RectangularShadow {
         anchors.fill: parent
-        radius: itemRadius
+        radius: weatherCard.itemRadius
         color: Config.shadows.color
 
         blur: 3
@@ -59,7 +62,7 @@ Rectangle {
     // Background Image with Opacity Mask
     Image {
         anchors.fill: parent
-        source: assetsPath + Weather.backgroundImage
+        source: weatherCard.assetsPath + Weather.backgroundImage
         fillMode: Image.PreserveAspectCrop
 
         layer.enabled: true
@@ -70,7 +73,7 @@ Rectangle {
         Rectangle {
             id: bgMask
             anchors.fill: parent
-            radius: itemRadius
+            radius: weatherCard.itemRadius
             visible: false
         }
     }
@@ -79,10 +82,10 @@ Rectangle {
     Item {
         id: container
         anchors.fill: parent
-        anchors.leftMargin: infoMargins
-        anchors.rightMargin: infoMargins
-        anchors.topMargin: (infoMargins / 2)
-        anchors.bottomMargin: infoMargins
+        anchors.leftMargin: weatherCard.infoMargins
+        anchors.rightMargin: weatherCard.infoMargins
+        anchors.topMargin: (weatherCard.infoMargins / 2)
+        anchors.bottomMargin: weatherCard.infoMargins
 
         ColumnLayout {
             anchors.fill: parent
@@ -127,7 +130,7 @@ Rectangle {
                 Rectangle {
                     anchors.fill: parent
                     color: "#1e1e2e"
-                    radius: itemRadius - infoMargins
+                    radius: weatherCard.itemRadius - weatherCard.infoMargins
                     opacity: 0.5
                 }
 

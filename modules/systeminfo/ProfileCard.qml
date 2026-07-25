@@ -37,8 +37,9 @@ import qs.services
 //  `-------------------------'
 
 Item {
+    id: profileCard
     anchors.fill: parent
-    property int pfpRadius: itemRadius - 8
+    property int pfpRadius: 0
 
     Row {
         anchors.margins: 50
@@ -49,7 +50,7 @@ Item {
         MaskedImage {
             width: 80
             height: 80
-            imageRadius: pfpRadius
+            imageRadius: profileCard.pfpRadius
 
             imageSource: "file://" + Quickshell.env("HOME") + "/.face"
         }

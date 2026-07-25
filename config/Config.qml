@@ -28,14 +28,21 @@ import qs.themes
 
 QtObject {
 
+    // public API
+    property ShadowsConfig shadows: ShadowsConfig {}
+    property TopBarConfig topBar: TopBarConfig {}
+    property WindowsConfig windows: WindowsConfig {}
+    property GlobalConfig global: GlobalConfig {}
+    property ThemeConfig theme: ThemeConfig {}
+
     // Global Shadows configuration.
-    property QtObject shadows: QtObject {
+    component ShadowsConfig: QtObject {
         property bool enabled: true // Enable shadows.
         property var color: "#80000000" // Shadow color.
     }
 
     // Global top bar state
-    property QtObject topBar: QtObject {
+    component TopBarConfig: QtObject {
         property string state: "maximized" // float or maximized.
         property int height: 36 // Bar size, minimum 16 to avoid bugs.
 
@@ -43,7 +50,7 @@ QtObject {
     }
 
     // Global window state
-    property QtObject windows: QtObject {
+    component WindowsConfig: QtObject {
         property int borderWidth: 2 // Border thickness.
         property color unfocusedBorderColor: ThemeManager.colors.base // Border of unfocused windows.
         property color focusedBorderColor: ThemeManager.colors.sky // Border of focused windows.
@@ -55,7 +62,7 @@ QtObject {
     }
 
     // Global Configuration
-    property QtObject global: QtObject {
+    component GlobalConfig: QtObject {
         property int corners: 30 // radius, max 40 to prevent bugs.
         property int margins: 10 // margin from the edge, max 30 to prevent bugs.
         property int wallborder: 10 // Desktop borders
@@ -63,7 +70,7 @@ QtObject {
     }
 
     // Theme Manager
-    property QtObject theme: QtObject {
+    component ThemeConfig: QtObject {
         property string colorscheme: "mocha" // latte, frappe, macchiato, mocha
         property string mainfont: "Sofia Pro" // Text font
     }

@@ -34,7 +34,7 @@ import qs.config
 //  `-------------------------'
 
 QtObject {
-    id: root
+    id: picom
 
     // Config
     property string picomDir: "picom/"
@@ -62,7 +62,7 @@ QtObject {
         // Search line 'line', if it matches 'key = ...', replace value preserving the previous part.
         var cmd = "sed -i '" + line + "s/^\\(\\s*" + key + "\\s*=\\s*\\)[^;]*/\\1" + safeValue + "/' '" + filePath + "'"
 
-        var proc = Qt.createQmlObject('import Quickshell.Io; Process {}', root)
+        var proc = Qt.createQmlObject('import Quickshell.Io; Process {}', picom)
         proc.command = ["sh", "-c", cmd]
         proc.running = true
         proc.onExited.connect(() => proc.destroy())
@@ -127,12 +127,12 @@ QtObject {
     // Kill the Picom process if it is running.
     property Process killPicom: Process {
         command: ["killall", "-q", "picom"]
-        onExited: startPicom.running = true
+        onExited: picom.startPicom.running = true // qmllint disable signal-handler-parameters
     }
 
     // Start Picom with the configuration file.
     property Process startPicom: Process {
-        command: ["picom", "--config", picomFile.toString().replace("file://", "")]
+        command: ["picom", "--config", picom.picomFile.toString().replace("file://", "")]
 
         // Logs for debugging in the Quickshell console
         stdout: SplitParser { onRead: data => console.log("[Picom]: " + data) }

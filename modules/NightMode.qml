@@ -25,7 +25,7 @@ import Quickshell
 
 
 Variants {
-    id: root
+    id: nightMode
     model: Quickshell.screens
 
     LazyLoader {

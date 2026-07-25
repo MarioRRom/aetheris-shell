@@ -25,7 +25,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 
 Item {
-    id: root
+    id: innerBorder
     anchors.fill: parent
     anchors.bottomMargin: lineradius
     anchors.rightMargin: lineradius
@@ -43,10 +43,10 @@ Item {
         anchors.bottomMargin: -100
         anchors.rightMargin: -100
 
-        radius: lineradius
+        radius: innerBorder.lineradius
         color: "transparent"
 
-        border.color: linecolor
-        border.width: linewidth
+        border.color: innerBorder.linecolor
+        border.width: innerBorder.linewidth
     }
 }

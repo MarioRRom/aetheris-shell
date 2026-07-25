@@ -25,7 +25,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 
 Item {
-    id: root
+    id: marquee
     clip: true
 
     // Text content to display
@@ -38,7 +38,7 @@ Item {
     property int pauseMs: 1000
 
     // Whether the text is currently scrolling (readonly)
-    readonly property bool scrolling: contentText.paintedWidth > root.width
+    readonly property bool scrolling: contentText.paintedWidth > marquee.width
 
     // Direct access to the internal Text item for advanced use
     readonly property alias textItem: contentText
@@ -54,29 +54,29 @@ Item {
     Text {
         id: contentText
         anchors.verticalCenter: parent.verticalCenter
-        text: root.text
+        text: marquee.text
     }
 
     SequentialAnimation {
         id: anim
         loops: Animation.Infinite
-        running: contentText.paintedWidth > root.width
+        running: contentText.paintedWidth > marquee.width
 
-        PauseAnimation { duration: root.pauseMs }
+        PauseAnimation { duration: marquee.pauseMs }
         NumberAnimation {
             target: contentText
             property: "x"
             from: 0
-            to: root.width - contentText.paintedWidth
-            duration: Math.max(1, (contentText.paintedWidth - root.width) / root.scrollSpeed * 1000)
+            to: marquee.width - contentText.paintedWidth
+            duration: Math.max(1, (contentText.paintedWidth - marquee.width) / marquee.scrollSpeed * 1000)
         }
-        PauseAnimation { duration: root.pauseMs }
+        PauseAnimation { duration: marquee.pauseMs }
         NumberAnimation {
             target: contentText
             property: "x"
-            from: root.width - contentText.paintedWidth
+            from: marquee.width - contentText.paintedWidth
             to: 0
-            duration: Math.max(1, (contentText.paintedWidth - root.width) / root.scrollSpeed * 1000)
+            duration: Math.max(1, (contentText.paintedWidth - marquee.width) / marquee.scrollSpeed * 1000)
         }
     }
 
@@ -85,7 +85,7 @@ Item {
         function onTextChanged() {
             anim.stop()
             contentText.x = 0
-            if (contentText.paintedWidth > root.width) anim.start()
+            if (contentText.paintedWidth > marquee.width) anim.start()
         }
     }
 
@@ -93,7 +93,7 @@ Item {
         if (contentText.text) {
             anim.stop()
             contentText.x = 0
-            if (contentText.paintedWidth > root.width) anim.start()
+            if (contentText.paintedWidth > marquee.width) anim.start()
         }
     }
 }

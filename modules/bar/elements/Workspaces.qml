@@ -30,7 +30,7 @@ import qs.services.bspwm
 import qs.services.hyprland
 
 WrapperRectangle {
-    id: root
+    id: workspaces
     
     property string monitorName
 
@@ -48,7 +48,7 @@ WrapperRectangle {
             active: SystemStatus.desktop === "bspwm"
             sourceComponent: Component {
                 BspWorkspaces {
-                    monitorName: root.monitorName
+                    monitorName: workspaces.monitorName
                 }
             }
         }
@@ -57,7 +57,7 @@ WrapperRectangle {
             active: SystemStatus.desktop === "hyprland"
             sourceComponent: Component {
                 HyprWorkspaces {
-                    monitorName: root.monitorName
+                    monitorName: workspaces.monitorName
                 }
             }
         }
