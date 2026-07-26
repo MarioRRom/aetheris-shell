@@ -13,8 +13,8 @@
 
 // KHEMIA: The art of primordial transmutation.
 // Interface designed to alter environment variables.
-// It doesn't just adjust parameters; it transmutes the physical reality of the desktop
-// defying the system's predetermined laws.
+// It doesn't just adjust parameters; it reshapes the desktop environment,
+// breaking through the limitations imposed by the system.
 
 
 //  .-------------------------.

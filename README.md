@@ -1,6 +1,6 @@
 <div align="center">
-  
-```
+
+<pre>
  ▄▄▄      ▓█████▄▄▄█████▓ ██░ ██ ▓█████  ██▀███   ██▓  ██████ 
 ▒████▄    ▓█   ▀▓  ██▒ ▓▒▓██░ ██▒▓█   ▀ ▓██ ▒ ██▒▓██▒▒██    ▒ 
 ▒██  ▀█▄  ▒███  ▒ ▓██░ ▒░▒██▀▀██░▒███   ▓██ ░▄█ ▒▒██▒░ ▓██▄   
@@ -10,7 +10,7 @@
   ▒   ▒▒ ░ ░ ░  ░   ░     ▒ ░▒░ ░ ░ ░  ░  ░▒ ░ ▒░ ▒ ░░ ░▒  ░ ░
   ░   ▒      ░    ░       ░  ░░ ░   ░     ░░   ░  ▒ ░░  ░  ░  
       ░  ░   ░  ░         ░  ░  ░   ░  ░   ░      ░        ░  
-```
+</pre>
  
 <img
   src="https://readme-typing-svg.demolab.com?font=Iosevka&size=16&pause=1000&color=cba6f7&center=true&vCenter=true&width=565&lines=A+shell+for+people+who+like+their+tiling+WM+to+feel+alive."
@@ -40,7 +40,7 @@
 > *Not recommended for daily use in production environments yet.*
 
 <div align="center">
-<img src="assets/preview.png" alt="Ætheris-shell preview" width="800px">
+<img src="assets/preview/preview.png" alt="Ætheris-shell preview" width="800px">
 
 <sub>📹 A demo video is planned for a future update.</sub>
 </div>
@@ -67,20 +67,172 @@ The name comes from *Aether*, a character from a game whose story left a real ma
 **Legend:** 🟢 Main target, actively developed · 🟡 Experimental / usable but incomplete · ⚪ Planned, not started
 
 
-## 🚧 Features
+## 🚀 Features
 
-Under the hood, Ætheris-shell handles **window & layer management** on BSPWM — scripts like `fix_stacking.sh` keep bars and wallpapers respecting the window manager's Z-order, staying above or below windows as needed.
+Under the hood, Ætheris-shell is built around several modules designed to
+provide a comfortable and visually polished desktop experience.
 
-On top of that foundation, the shell is organized into modules, each responsible for one part of the experience:
+Each module is responsible for a specific part of the shell:
 
-- **`systeminfo`** — a user card plus a live system preview: CPU%, RAM%, disk usage, and temperature (°C/°F). Includes four power-control actions: logout, shutdown, reboot, and suspend.
-- **`controlplayer`** — control any media player over **MPRIS**.
-- **`Akasha`** *(center panel)* — the notification box, clock and date, a calendar, and a nicely designed weather card.
-- **`controlcenter`** — the main hub for quick settings: networking menu, Bluetooth (WIP), volume and microphone sliders with sink/source selection, and a grid of toggle buttons still being planned/built out.
-- **Wallpaper engine** — wallpapers are rendered by Quickshell itself, with support for **video wallpapers**. It also hosts small, non-interactive visual widgets on top of the wallpaper — currently a *Now Playing* card, with a clock, a VU meter, and other ambient widgets planned for the future.
-- **`Irminsul`** *(the bar)* — currently a top bar only. Moving it to the bottom isn't planned for now, but isn't ruled out either.
+<table>
+<tr>
+<td width="220">
 
-### 🔮 Work in progress
+<img src="assets/preview/systeminfo.png" width="200">
+
+</td>
+
+<td>
+
+### EUTHYMIA *(systeminfo)*
+
+> *The Plane of Eternal Consciousness.*
+
+Monitors hardware integrity and energy flow. Like the alchemical opus,
+system variables remain in an immutable constant, free from the erosion
+of the system.
+
+**Capabilities**
+
+- Live `CPU`, `RAM` and `Disk` usage
+- Temperature monitoring (°C / °F)
+- User profile card
+- Logout, Suspend, Reboot and Shutdown actions
+
+</td>
+</tr>
+</table>
+
+---
+
+<table>
+<tr>
+<td> 
+
+### Control Player
+
+> *The Symphony of Endless Resonance.*
+
+A unified media controller built on `MPRIS`, providing a consistent interface
+for your favorite music players. Designed to keep playback controls always
+within reach, without breaking your workflow.
+
+**Capabilities**
+
+- Control any `MPRIS` compatible media player
+- Interactive playback timeline with seek support
+- Application volume control *(when supported)*
+- Play/Pause, Previous and Next controls
+- Shuffle and Repeat modes
+- Built-in player switcher for quick source selection
+
+</td>
+
+<td width="320">
+
+<img src="assets/preview/controlplayer.png" alt="controlplayer" width="300px">
+
+</td>
+</tr>
+</table>
+
+---
+
+<table>
+<tr>
+<td width="320">
+
+<img src="assets/preview/akasha.png" alt="akasha" width="300px">
+
+</td>
+
+<td>
+
+### AKASHA *(centerpanel)*
+
+> *The terminal of absolute wisdom.*
+
+Centralizes the reception of data and external notifications.
+Transforms the flow of raw information into actionable knowledge for the user, operating as Sumeru's neural network.
+
+**Capabilities**
+
+- Centralized notification archive
+- Dynamic clock and date display
+- Interactive calendar overview
+- Real-time weather information card
+
+</td>
+</tr>
+</table>
+
+---
+
+<table>
+<tr>
+<td> 
+
+### KHEMIA *(controlcenter)*
+
+> *The art of primordial transmutation.*
+
+Interface designed to alter environment variables.
+It doesn't just adjust parameters; it reshapes the desktop environment, breaking through the limitations imposed by the system.
+
+**Capabilities**
+
+- Networking quick settings
+- Bluetooth controls *(WIP)*
+- Volume and microphone controls with sink/source selection
+- Quick toggle grid *(WIP)*
+
+</td>
+
+<td width="220">
+
+<img src="assets/preview/controlcenter.png" alt="KHEMIA" width="200px">
+
+</td>
+</tr>
+</table>
+
+---
+
+<table>
+<tr>
+<td width="320">
+
+<img src="assets/preview/desktop.png" alt="akasha" width="300px">
+
+</td>
+
+<td>
+
+### Irminsul *(the bar)*
+
+> *The axis of the world.*
+
+The upper structure that holds the information network.
+Acts as the main branch from which the knowledge of Akasha and the transmutations of Khemia emerge.
+
+**Capabilities**
+
+- Workspace and system information
+- Now Playing information display
+- Clock and weather
+- Integrated shell controls
+
+**Wallpaper System**
+
+- Quickshell-native wallpaper rendering
+- Video wallpaper support
+- Overlay visual widgets *(currently Now Playing)*
+
+</td>
+</tr>
+</table>
+
+### 🔮 Roadmap
 
 - A **dock** at the bottom of the screen for quickly launching pinned apps and viewing currently open windows.
 - A **Polkit authentication window** (actively being developed on a feature branch).

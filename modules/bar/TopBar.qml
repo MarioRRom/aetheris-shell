@@ -13,8 +13,8 @@
 
 // IRMINSUL: The axis of the world.
 // The upper structure that holds the information network.
-// Acts as the main branch from which the fruits
-// of knowledge Akasha and the laws of reality Khemia hang.
+// Acts as the main branch from which the knowledge of 
+// Akasha and the transmutations of Khemia emerge.
 
 
 //  .-------------------------.
