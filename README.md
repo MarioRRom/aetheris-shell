@@ -103,49 +103,8 @@ of the system.
 </tr>
 </table>
 
----
-
 <table>
 <tr>
-<td> 
-
-### Control Player
-
-> *The Symphony of Endless Resonance.*
-
-A unified media controller built on `MPRIS`, providing a consistent interface
-for your favorite music players. Designed to keep playback controls always
-within reach, without breaking your workflow.
-
-**Capabilities**
-
-- Control any `MPRIS` compatible media player
-- Interactive playback timeline with seek support
-- Application volume control *(when supported)*
-- Play/Pause, Previous and Next controls
-- Shuffle and Repeat modes
-- Built-in player switcher for quick source selection
-
-</td>
-
-<td width="320">
-
-<img src="assets/preview/controlplayer.png" alt="controlplayer" width="300px">
-
-</td>
-</tr>
-</table>
-
----
-
-<table>
-<tr>
-<td width="320">
-
-<img src="assets/preview/akasha.png" alt="akasha" width="300px">
-
-</td>
-
 <td>
 
 ### AKASHA *(centerpanel)*
@@ -162,15 +121,26 @@ Transforms the flow of raw information into actionable knowledge for the user, o
 - Interactive calendar overview
 - Real-time weather information card
 
+
+</td>
+
+<td width="320">
+
+<img src="assets/preview/akasha.png" alt="akasha" width="300px">
+
 </td>
 </tr>
 </table>
 
----
-
 <table>
 <tr>
-<td> 
+<td width="220"> 
+
+<img src="assets/preview/controlcenter.png" alt="KHEMIA" width="200px">
+
+</td>
+
+<td>
 
 ### KHEMIA *(controlcenter)*
 
@@ -187,25 +157,11 @@ It doesn't just adjust parameters; it reshapes the desktop environment, breaking
 - Quick toggle grid *(WIP)*
 
 </td>
-
-<td width="220">
-
-<img src="assets/preview/controlcenter.png" alt="KHEMIA" width="200px">
-
-</td>
 </tr>
 </table>
 
----
-
 <table>
 <tr>
-<td width="320">
-
-<img src="assets/preview/desktop.png" alt="akasha" width="300px">
-
-</td>
-
 <td>
 
 ### Irminsul *(the bar)*
@@ -227,6 +183,35 @@ Acts as the main branch from which the knowledge of Akasha and the transmutation
 - Quickshell-native wallpaper rendering
 - Video wallpaper support
 - Overlay visual widgets *(currently Now Playing)*
+
+</td>
+
+<td width="320">
+
+<img src="assets/preview/desktop.png" alt="akasha" width="300px">
+
+</td>
+</tr>
+</table>
+
+### Other Components
+<table>
+<tr>
+<td width="320">
+
+### Control Player
+<img src="assets/preview/controlplayer.png" alt="akasha" width="300px">
+
+A unified media controller built on `MPRIS`, providing a consistent interface
+for your favorite music players. Designed to keep playback controls always
+within reach, without breaking your workflow.
+
+</td>
+
+<td>
+
+### Notifications Popups
+<img src="assets/preview/popNotifications.png" alt="akasha" width="300px">
 
 </td>
 </tr>
