@@ -184,7 +184,7 @@ PopupWindow {
                         GraphPreset {
                             anchors.fill: parent
                             cornerRadius: sysInfo.itemRadius
-                            header: LanguageManager.t("systeminfo.cpu")
+                            header: qsTr("CPU:")
                             accent: ThemeManager.colors.red
                             icon: "hardware/cpu"
                             percentage: SystemStatus.cpuUsagePercent
@@ -200,7 +200,7 @@ PopupWindow {
                         GraphPreset {
                             anchors.fill: parent
                             cornerRadius: sysInfo.itemRadius
-                            header: LanguageManager.t("systeminfo.ram")
+                            header: qsTr("RAM:")
                             accent: ThemeManager.colors.yellow
                             icon: "hardware/memory"
                             percentage: SystemStatus.ramUsagePercent
@@ -220,7 +220,7 @@ PopupWindow {
                         GraphPreset {
                             anchors.fill: parent
                             cornerRadius: sysInfo.itemRadius
-                            header: LanguageManager.t("systeminfo.dsk")
+                            header: qsTr("DSK:")
                             accent: ThemeManager.colors.green
                             icon: "hardware/harddrive"
                             percentage: SystemStatus.diskUsage
@@ -236,7 +236,7 @@ PopupWindow {
                         GraphPreset {
                             anchors.fill: parent
                             cornerRadius: sysInfo.itemRadius
-                            header: LanguageManager.t("systeminfo.tmp")
+                            header: qsTr("TMP:")
                             accent: ThemeManager.colors.mauve
                             icon: "general/thermometer"
                             percentage: SystemStatus.temperature
@@ -261,7 +261,7 @@ PopupWindow {
                         cornerRadius: sysInfo.itemRadius
                         btnHeight: 41
                         icon: "general/logout"
-                        btnText: LanguageManager.t("systeminfo.logout")
+                        btnText: qsTr("Logout")
                         command: ["loginctl", "terminate-user", Quickshell.env("USER")]
                         hoverColor: ThemeManager.colors.mauve
                     }
@@ -272,7 +272,7 @@ PopupWindow {
                         cornerRadius: sysInfo.itemRadius
                         btnHeight: 41
                         icon: "general/shutdown"
-                        btnText: LanguageManager.t("systeminfo.shutdown")
+                        btnText: qsTr("Shutdown")
                         command: ["systemctl", "poweroff"]
                         hoverColor: ThemeManager.colors.red
                     }
@@ -287,7 +287,7 @@ PopupWindow {
                         cornerRadius: sysInfo.itemRadius
                         btnHeight: 41
                         icon: "general/restart"
-                        btnText: LanguageManager.t("systeminfo.reboot")
+                        btnText: qsTr("Reboot")
                         command: ["systemctl", "reboot"]
                         hoverColor: ThemeManager.colors.peach
                     }
@@ -298,7 +298,7 @@ PopupWindow {
                         cornerRadius: sysInfo.itemRadius
                         btnHeight: 41
                         icon: "general/suspend"
-                        btnText: LanguageManager.t("systeminfo.suspend")
+                        btnText: qsTr("Suspend")
                         command: ["systemctl", "suspend"]
                         hoverColor: ThemeManager.colors.sky
                         beforeCommand: sysInfo.closeWidgets

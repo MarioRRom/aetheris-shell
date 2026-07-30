@@ -67,7 +67,7 @@ Item {
                 font.pixelSize: 23
             }
             Text {
-                text: LanguageManager.t("profilecard.welcome") + SystemStatus.distro
+                text: qsTr("welcome to %1").arg(SystemStatus.distro)
                 color: ThemeManager.colors.subtext1
                 font.family: ThemeManager.fonts.main
                 font.pixelSize: 14
