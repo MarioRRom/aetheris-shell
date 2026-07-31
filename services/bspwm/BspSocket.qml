@@ -53,8 +53,8 @@ QtObject {
         id: bspwmSocket
 
         path: {
-            var display = Quickshell.env("DISPLAY") || ":0"
-            var displayNum = display.replace(":", "").split(".")[0]
+            const display = Quickshell.env("DISPLAY") || ":0"
+            const displayNum = display.replace(":", "").split(".")[0]
             return "/tmp/bspwm_" + displayNum + "_0-socket"
         }
 
@@ -79,17 +79,12 @@ QtObject {
                 }
 
                 // Reset state
-                processingCommand = false
-                currentQueryType = ""
+                bsp.processingCommand = false
+                bsp.currentQueryType = ""
                 Qt.callLater(() => {
-                    processQueue()
+                    bsp.processQueue()
                 })
             }
-        }
-
-        onError: (error) => {
-            // Error 1 = PeerClosedError (normal, bspwm closes after responding)
-            // Other errors are silently ignored
         }
     }
 
@@ -110,7 +105,7 @@ QtObject {
             if (connected) {
                 // Subscribe to events
                 Qt.callLater(() => {
-                    subscribeToEvents()
+                    bsp.subscribeToEvents()
                 })
             }
         }
@@ -120,11 +115,11 @@ QtObject {
     function subscribeToEvents() {
         if (!bspwmEventSocket.connected) return
 
-        var cmd = "subscribe desktop_focus desktop_layout node_add node_remove node_transfer"
-        var args = cmd.split(" ")
+        const cmd = "subscribe desktop_focus desktop_layout node_add node_remove node_transfer"
+        const args = cmd.split(" ")
 
         // bspwm protocol: arg1\0arg2\0arg3\0
-        for (var i = 0; i < args.length; i++) {
+        for (let i = 0; i < args.length; i++) {
             bspwmEventSocket.write(args[i] + "\0")
         }
         bspwmEventSocket.flush()
@@ -293,7 +288,7 @@ QtObject {
             return
         }
 
-        var item = commandQueue.shift()
+        const item = commandQueue.shift()
         processingCommand = true
         currentQueryType = item.type
 
@@ -319,11 +314,11 @@ QtObject {
     // @param {string} cmd - Command to send
     function writeCommand(cmd) {
         // bspwm protocol: arg1\0arg2\0arg3\0
-        var args = cmd.split(" ")
+        const args = cmd.split(" ")
 
         // Build complete message
-        var message = ""
-        for (var i = 0; i < args.length; i++) {
+        let message = ""
+        for (let i = 0; i < args.length; i++) {
             message += args[i] + "\0"
         }
 
@@ -376,48 +371,48 @@ QtObject {
             return
         }
 
-        var parts = currentQueryType.split(":")
-        var queryType = parts[0]
-        var monitor = parts[1] || ""
+        const parts = currentQueryType.split(":")
+        const queryType = parts[0]
+        const monitor = parts[1] || ""
 
         if (queryType === "workspaces") {
-            var names = message.split("\n").filter(n => n.trim() !== "")
+            const names = message.split("\n").filter(n => n.trim() !== "")
             if (!workspaceData[monitor]) workspaceData[monitor] = {}
             workspaceData[monitor].names = names
             workspacesUpdated(monitor)
         } else if (queryType === "workspace_ids") {
-            var parts = message.split("0x").slice(1)
-            var ids = parts.map(p => "0x" + p.substring(0, 8))
+            const parts = message.split("0x").slice(1)
+            const ids = parts.map(p => "0x" + p.substring(0, 8))
             if (!workspaceData[monitor]) workspaceData[monitor] = {}
             workspaceData[monitor].ids = ids
             workspacesUpdated(monitor)
         } else if (queryType === "occupied") {
-            var occupied = message.split("\n").filter(o => o.trim() !== "")
+            const occupied = message.split("\n").filter(o => o.trim() !== "")
             if (!workspaceData[monitor]) workspaceData[monitor] = {}
             workspaceData[monitor].occupied = occupied
             workspacesUpdated(monitor)
         } else if (queryType === "focused") {
-            var focused = message.trim()
+            const focused = message.trim()
             if (!workspaceData[monitor]) workspaceData[monitor] = {}
             workspaceData[monitor].focused = focused
             workspacesUpdated(monitor)
         } else if (queryType === "layout") {
             try {
-                var json = JSON.parse(message)
-                var layout = json.userLayout || "tiled"
+                const json = JSON.parse(message)
+                const layout = json.userLayout || "tiled"
                 layoutChanged(layout, currentDesktop || "focused")
             } catch (e) {
                 // Ignore parsing errors
             }
         } else if (queryType === "monitor_ids") {
-            var ids = message.split("\n").filter(l => l.trim() !== "")
+            const ids = message.split("\n").filter(l => l.trim() !== "")
             sendCommand("query -M --names", "monitor_names")
             // Store ids temporarily
             tempMonitorIds = ids
         } else if (queryType === "monitor_names") {
-            var names = message.split("\n").filter(l => l.trim() !== "")
+            const names = message.split("\n").filter(l => l.trim() !== "")
             monitorData = {}
-            for (var i = 0; i < Math.min(tempMonitorIds.length, names.length); i++) {
+            for (let i = 0; i < Math.min(tempMonitorIds.length, names.length); i++) {
                 monitorData[names[i].trim()] = tempMonitorIds[i].trim()
             }
         }
@@ -436,11 +431,11 @@ QtObject {
     // @param {string} message - Event message
     function handleDesktopFocus(message) {
         // Format: desktop_focus <monitor_id> <desktop_id> <desktop_name>
-        var parts = message.split(" ")
+        const parts = message.split(" ")
         if (parts.length >= 3) {
-            var monitorId = parts[1]
-            var desktopId = parts[2]
-            var desktopName = parts[3] || ""
+            const monitorId = parts[1]
+            const desktopId = parts[2]
+            const desktopName = parts[3] || ""
             desktopFocused(monitorId, desktopId, desktopName)
         }
     }
@@ -449,11 +444,11 @@ QtObject {
     // @param {string} message - Event message
     function handleDesktopLayout(message) {
         // Format: desktop_layout <monitor_id> <desktop_id> <layout>
-        var parts = message.split(" ")
+        const parts = message.split(" ")
         if (parts.length >= 4) {
-            var monitorId = parts[1]
-            var desktopId = parts[2]
-            var layout = parts[3]
+            const monitorId = parts[1]
+            const desktopId = parts[2]
+            const layout = parts[3]
             desktopLayoutChanged(monitorId, desktopId, layout)
         }
     }
