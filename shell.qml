@@ -113,12 +113,6 @@ ShellRoot {
         command: ["sh", Qt.resolvedUrl("scripts/fix_stacking.sh").toString().replace("file://", "")]
     }
 
-    // Load Picom (X11)
-    Loader {
-        active: shellRoot._session.indexOf("bspwm") !== -1
-        sourceComponent: Picom {}
-    }
-
 
     //  .-------------------------.
     //  | .---------------------. |
@@ -139,6 +133,8 @@ ShellRoot {
             BspSocket.session = _session
             // Apply fix for stacking
             fixStacking.running = true
+            // Load Picom
+            Picom.updatePicomSettings
         }
     }
 }
