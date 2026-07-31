@@ -55,13 +55,16 @@ QtObject {
     // value: New value
     function setConfig(file, line, key, value) {
         var filePath = Qt.resolvedUrl(picomDir + file).toString().replace("file://", "")
+        var rawValue = value.toString()
 
         // Escape sed-special chars in value (&, /, \) to prevent injection
-        var safeValue = value.toString().replace(/[&/\\]/g, "\\$&")
+        var safeValue = rawValue.replace(/[&/\\]/g, "\\$&")
+        var quotedValue = "'" + rawValue.replace(/'/g, "'\\''") + "'"
 
-        // sed -i 'Ns/^\(\s*key\s*=\s*\)[^;]*/\1value/' file
-        // Search line 'line', if it matches 'key = ...', replace value preserving the previous part.
-        var cmd = "sed -i '" + line + "s/^\\(\\s*" + key + "\\s*=\\s*\\)[^;]*/\\1" + safeValue + "/' '" + filePath + "'"
+        // Only change the line if the current value differs from the requested value.
+        var cmd = "old=$(sed -n '" + line + "p' '" + filePath + "' | sed -n 's/^\\s*" + key + "\\s*=\\s*\\([^;]*\\).*/\\1/p'); ";
+        cmd += "if [ \"$old\" != " + quotedValue + " ]; then ";
+        cmd += "sed -i '" + line + "s/^\\(\\s*" + key + "\\s*=\\s*\\)[^;]*/\\1" + safeValue + "/' '" + filePath + "'; fi"
 
         var proc = Qt.createQmlObject('import Quickshell.Io; Process {}', picom)
         proc.command = ["sh", "-c", cmd]
